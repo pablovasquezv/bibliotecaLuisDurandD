@@ -1,2 +1,4 @@
-package com.complejo.educacional.luis.durand.durand.models;public class Editorial {
+package com.complejo.educacional.luis.durand.durand.models;
+
+public class Editorial {
 }

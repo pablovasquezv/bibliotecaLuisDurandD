@@ -41,12 +41,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "biblioteca/autor")
+@RequestMapping(value = "biblioteca/v1/")
 public class AutorRestController {
 	@Autowired
 	private IAutorImplements iAutorImplements;
 
-	@PostMapping(value = "create")
+	@PostMapping(value = "autor/create")
 	private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody Autor autor,
 			BindingResult bindingResult) throws Exception {
 		Map<String, Object> responseAsMap = new HashMap<String, Object>();
@@ -79,7 +79,7 @@ public class AutorRestController {
 		return responseEntity;
 	}
 
-	@GetMapping(value = "/get/all")
+	@GetMapping(value = "autor/get/all")
 	@ResponseStatus(HttpStatus.OK)
 	private ResponseEntity<List<Autor>> findAllAutor(@RequestParam(required = false) Integer page,
 												     @RequestParam(required = false) Integer size) {
