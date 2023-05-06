@@ -41,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "biblioteca/v1/")
+@RequestMapping(value = "/biblioteca/v1/")
 public class AutorRestController {
 	@Autowired
 	private IAutorImplements iAutorImplements;
@@ -114,7 +114,7 @@ public class AutorRestController {
 		return responseEntity;
 	}
 
-	@GetMapping(value = "{id}")
+	@GetMapping(value = "pais/{id}")
 	private ResponseEntity<Autor> findById(@PathVariable int id) {
 		Autor autor = null;
 		ResponseEntity<Autor> responseEntity = null;

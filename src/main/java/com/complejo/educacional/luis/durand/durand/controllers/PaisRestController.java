@@ -42,12 +42,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "biblioteca/pais")
+@RequestMapping(value = "/biblioteca/v1/")
 public class PaisRestController {
 	@Autowired
 	private IPaisImplements iPaisImplements;
 
-	@PostMapping("/create")
+	@PostMapping("pais/create")
 	private ResponseEntity<Map<String, Object>> addNewPais(@Valid @RequestBody Pais pais, BindingResult bindingResult)
 			throws Exception {
 		Map<String, Object> responseAsMap = new HashMap<String, Object>();
@@ -81,7 +81,7 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
-	@PutMapping("/update/{id}")
+	@PutMapping("pais/update/{id}")
 	private ResponseEntity<Map<String, Object>> updatePais(@PathVariable long id, @Valid @RequestBody Pais pais,
 			BindingResult bindingResult) throws Exception {
 		Map<String, Object> responseAsMap = new HashMap<String, Object>();
@@ -115,7 +115,7 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
-	@GetMapping("/get/all")
+	@GetMapping("pais/get/all")
 	@ResponseStatus(HttpStatus.OK)
 	private ResponseEntity<List<Pais>> findAllAlumnos(@RequestParam(required = false) Integer page,
 			@RequestParam(required = false) Integer size) {
@@ -167,7 +167,7 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("pais/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     private ResponseEntity<Pais> deleteById(@PathVariable int id) {
         // TODO Auto-generated method stub
