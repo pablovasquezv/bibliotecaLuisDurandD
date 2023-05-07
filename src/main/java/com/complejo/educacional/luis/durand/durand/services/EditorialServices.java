@@ -48,7 +48,7 @@ public class EditorialServices implements IEditorialImplements {
             optionalEditorial = iEditorialRepository.findById(id);
             editorialUpdate = optionalEditorial.get();
             editorialUpdate = iEditorialRepository.save(editorial);
-            log.info("¡Editorial Actualizada!"+objectMapper.writeValueAsString());
+            log.info("¡Editorial Actualizada!"+objectMapper.writeValueAsString(iEditorialRepository.save(editorial)));
         } catch (Exception e) {
             log.error("Falló la actualización de la Editorial =>", e);
         }
