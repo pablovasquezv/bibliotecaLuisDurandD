@@ -14,11 +14,11 @@ import java.util.List;
 public interface IEditorialRepository extends JpaRepository <Editorial, Long>{
     // Seleccionar todas la instancias desde la BD
 
-    @Query(value = "select e from Editorial a")
+    @Query(value = "select e from Editorial e")
     public List<Editorial> findAllEditorialSort(Sort sort);
 
     // Contar la cantidad de Editorial que vienen en la búsqueda y páginarlos
-    @Query(value = "select a from Editorial",
+    @Query(value = "select e from Editorial e",
             countQuery = "select count(e) from Editorial")
     public Page<Editorial> findAllEditorialPage(Pageable pageable);
 
