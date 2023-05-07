@@ -15,7 +15,7 @@ public interface IEditorialRepository extends JpaRepository <Editorial, Long>{
     // Seleccionar todas la instancias desde la BD
 
     @Query(value = "select e from Editorial a")
-    public List<Editorial> findAllEditorial(Sort sort);
+    public List<Editorial> findAllEditorialSort(Sort sort);
 
     // Contar la cantidad de Editorial que vienen en la búsqueda y páginarlos
     @Query(value = "select a from Editorial",
