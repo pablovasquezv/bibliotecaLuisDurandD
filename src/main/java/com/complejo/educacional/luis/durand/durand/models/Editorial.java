@@ -67,9 +67,9 @@ public class Editorial implements Serializable {
     @NotEmpty(message = "¡El nombre del autor no debe ser vacío!")
     @Size(min = 3, max = 50, message = "¡El campo nombre categoría debe contener 4 carácters como minimo y 50 como máximo!")
     @Column(name = "nombre_editorial")
-    private String nombre_autor;
+    private String nombre_editorial;
 
-    @NotEmpty(message = "¡La decripción no debe ser vacía!")
+    @NotEmpty(message = "¡La descripción no debe ser vacía!")
     @Size(min = 4, max = 50, message = "¡La descripción debe contener 4 carácteres y 50 como máximo!")
     @Column(name = "descripcion_categoria")
     private String descripcion_categoria;
