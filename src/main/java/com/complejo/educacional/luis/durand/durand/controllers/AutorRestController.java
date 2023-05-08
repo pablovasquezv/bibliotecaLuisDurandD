@@ -87,15 +87,15 @@ public class AutorRestController {
 		Sort sortByName = Sort.by("nombres_autor");
 		ResponseEntity<List<Autor>> responseEntity = null;
 		List<Autor> autores = null;
-
+		Pageable pageable= null;
 		try {
 			if (page != null & size != null) {
-				Pageable pageable = PageRequest.of(page, size, sortByName);
+				pageable = PageRequest.of(page, size, sortByName);
 				autores = iAutorImplements.findAllAutorPage(pageable).getContent();
 			} else {
 				autores = iAutorImplements.findAllAutorSort(sortByName);
 			}
-			// Validación sí tiene Paises la lista
+			// Validación sí tiene Autores la lista
 			responseEntity=(autores.size() > 0)?
 					new ResponseEntity<List<Autor>>(autores,HttpStatus.OK)
 					:
