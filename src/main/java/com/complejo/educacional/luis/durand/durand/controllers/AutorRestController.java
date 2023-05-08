@@ -114,7 +114,7 @@ public class AutorRestController {
 		return responseEntity;
 	}
 
-	@GetMapping(value = "pais/{id}")
+	@GetMapping(value = "autor/{id}")
 	private ResponseEntity<Autor> findById(@PathVariable int id) {
 		Autor autor = null;
 		ResponseEntity<Autor> responseEntity = null;
