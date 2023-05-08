@@ -146,7 +146,7 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
-	@GetMapping(value = "{id}")
+	@GetMapping(value = "pais/{id}")
 	private ResponseEntity<Pais> findById(@PathVariable int id) {
 		Pais pais = null;
 		ResponseEntity<Pais> responseEntity = null;
