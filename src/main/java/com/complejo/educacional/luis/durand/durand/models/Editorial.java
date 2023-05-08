@@ -71,8 +71,8 @@ public class Editorial implements Serializable {
 
     @NotEmpty(message = "¡La descripción no debe ser vacía!")
     @Size(min = 4, max = 50, message = "¡La descripción debe contener 4 carácteres y 50 como máximo!")
-    @Column(name = "descripcion_categoria")
-    private String descripcion_categoria;
+    @Column(name = "descripcion_editorial")
+    private String descripcion_editorial;
 
     @Column(updatable = false)
     private Date createAt;
