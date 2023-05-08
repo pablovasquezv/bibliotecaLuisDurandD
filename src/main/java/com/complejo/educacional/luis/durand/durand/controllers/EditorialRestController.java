@@ -2,6 +2,7 @@ package com.complejo.educacional.luis.durand.durand.controllers;
 
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
+import com.complejo.educacional.luis.durand.durand.models.Pais;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -59,6 +60,38 @@ public class EditorialRestController {
         return responseEntity;
     }
 
+    @PutMapping(value = "editorial/update/{id}")
+    private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody Editorial editorial,
+                                                                BindingResult bindingResult) throws Exception{
+        Map<String, Object> responseAsMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        List<String> errores = null;
+        if (bindingResult.hasErrors()) {
+            errores = new ArrayList<>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("errores", errores);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        try {
+            Editorial editorialFromDB = iEditorialImplements.updateEditorial(id,editorial);
+            if (editorialFromDB !=null){
+                responseAsMap.put("Editorial", editorial);
+                responseAsMap.put("Mensaje", "¡La Editorial con ID"+ editorial.getId_editorial()+ "Sé actualizo correctamente!");
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            }else {
+                responseAsMap.put("Mensaje", "¡La Editorial No se actualizo!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }catch (DataAccessException dataAccessException){
+            responseAsMap.put("Mensaje: ", "¡No se actualizó la Editorial!"+ dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
     @GetMapping(value = "editorial/get/all")
     private ResponseEntity<List<Editorial>> findAllEditoriales(@RequestParam(required = false) Integer page,
                                                                @RequestParam(required = false) Integer size) {
@@ -84,6 +117,25 @@ public class EditorialRestController {
             log.error("Ocurrio un error al Obtener todas las Editoriales =>", e);
         }
         return responseEntity;
+    }
+
+    @DeleteMapping(value = "editorial/delete/{id}")
+    private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception
+    {
+        Editorial editorial = null;
+        ResponseEntity<Editorial> responseEntity = null;
+        try {
+            editorial= iEditorialImplements.findByIdEditorial(id);
+            if (editorial != null){
+                iEditorialImplements.deleteEditorialById(id);
+                responseEntity= new ResponseEntity<Editorial>(HttpStatus.OK);
+            }else {
+                responseEntity = new ResponseEntity<Editorial>(HttpStatus.NO_CONTENT);
+            }
+        }catch (DataAccessException dataAccessException){
+            log.error("Ocurrio un error: "+dataAccessException.getMostSpecificCause().toString());
+        }
+        return  responseEntity;
     }
 }
 
