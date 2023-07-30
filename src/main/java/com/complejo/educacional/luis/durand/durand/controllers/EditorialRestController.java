@@ -62,7 +62,7 @@ public class EditorialRestController {
 
     @PutMapping(value = "editorial/update/{id}")
     private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody Editorial editorial,
-                                                                BindingResult bindingResult) throws Exception{
+                                                                BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         List<String> errores = null;
@@ -76,17 +76,17 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            Editorial editorialFromDB = iEditorialImplements.updateEditorial(id,editorial);
-            if (editorialFromDB !=null){
+            Editorial editorialFromDB = iEditorialImplements.updateEditorial(id, editorial);
+            if (editorialFromDB != null) {
                 responseAsMap.put("Editorial", editorial);
-                responseAsMap.put("Mensaje", "¡La Editorial con ID"+ editorial.getId_editorial()+ "Sé actualizo correctamente!");
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
-            }else {
+                responseAsMap.put("Mensaje", "¡La Editorial con ID" + editorial.getId_editorial() + "Sé actualizo correctamente!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+            } else {
                 responseAsMap.put("Mensaje", "¡La Editorial No se actualizo!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }catch (DataAccessException dataAccessException){
-            responseAsMap.put("Mensaje: ", "¡No se actualizó la Editorial!"+ dataAccessException.getMostSpecificCause().toString());
+        } catch (DataAccessException dataAccessException) {
+            responseAsMap.put("Mensaje: ", "¡No se actualizó la Editorial!" + dataAccessException.getMostSpecificCause().toString());
             responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
@@ -114,28 +114,29 @@ public class EditorialRestController {
                     new ResponseEntity<List<Editorial>>(editorials, HttpStatus.NO_CONTENT);
 
         } catch (Exception e) {
-            log.error("Ocurrio un error al Obtener todas las Editoriales =>", e);
+            log.error("Ocurrio un error al Obtener todas las Editoriales =>", e.getCause().toString());
+            responseEntity = new ResponseEntity<List<Editorial>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
 
     @DeleteMapping(value = "editorial/delete/{id}")
-    private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception
-    {
+    private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception {
         Editorial editorial = null;
         ResponseEntity<Editorial> responseEntity = null;
         try {
-            editorial= iEditorialImplements.findByIdEditorial(id);
-            if (editorial != null){
+            editorial = iEditorialImplements.findByIdEditorial(id);
+            if (editorial != null) {
                 iEditorialImplements.deleteEditorialById(id);
-                responseEntity= new ResponseEntity<Editorial>(HttpStatus.OK);
-            }else {
+                responseEntity = new ResponseEntity<Editorial>(HttpStatus.OK);
+            } else {
                 responseEntity = new ResponseEntity<Editorial>(HttpStatus.NO_CONTENT);
             }
-        }catch (DataAccessException dataAccessException){
-            log.error("Ocurrio un error: "+dataAccessException.getMostSpecificCause().toString());
+        } catch (DataAccessException dataAccessException) {
+            log.error("Ocurrio un error: " + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Editorial>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return  responseEntity;
+        return responseEntity;
     }
 }
 
