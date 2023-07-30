@@ -25,7 +25,7 @@ public interface IAutorImplements {
 
 	public Page<Autor> findAllAutorPage(Pageable pageable) throws Exception;
 
-	public Autor findById(long id) throws Exception;
+	public Autor findByIdAutor(long id) throws Exception;
 
-	public void deleteAutor(long id) throws Exception;
+	public void deleteAutorById(long id) throws Exception;
 }

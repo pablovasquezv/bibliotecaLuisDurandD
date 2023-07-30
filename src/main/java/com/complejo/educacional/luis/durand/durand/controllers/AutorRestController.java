@@ -3,10 +3,7 @@
  */
 package com.complejo.educacional.luis.durand.durand.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.validation.Valid;
 
@@ -29,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Pablo
- *
  */
 @Slf4j
 @RestController
@@ -73,34 +69,34 @@ public class AutorRestController {
 
     @PutMapping(value = "autor/upadate/{id}")
     private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody Autor autor,
-                                                            BindingResult bindingResult) throws  Exception {
+                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
-		ResponseEntity<Map<String, Object>> responseEntity= null;
-        List<String> errores= null;
-		if (bindingResult.hasErrors()){
-			errores= new ArrayList<>();
-			for (ObjectError error:bindingResult.getAllErrors()){
-				errores.add(error.getDefaultMessage());
-			}
-			responseAsMap.put("Errores", errores);
-			responseEntity= new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
-			return responseEntity;
-		}
-		try {
-			Autor autorFromDB = iAutorImplements.updateAutor(id,autor);
-			if (autorFromDB!=null){
-				responseAsMap.put("Editorial", autor);
-				responseAsMap.put("Mensaje:", "El Autor con ID: "+autor.getId_autor()+"¡Sé Actualizó corectamente!");
-				responseEntity= new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
-			}else{
-				responseAsMap.put("Mensajes", "El Autor ¡No sé actualizo!");
-				responseEntity= new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} catch (DataAccessException dataAccessException){
-			responseAsMap.put("Mensaje: ","¡El Autor no se actualizó!"+ dataAccessException.getMostSpecificCause().toString());
-			responseEntity= new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return responseEntity;
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        List<String> errores = null;
+        if (bindingResult.hasErrors()) {
+            errores = new ArrayList<>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("Errores", errores);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        try {
+            Autor autorFromDB = iAutorImplements.updateAutor(id, autor);
+            if (autorFromDB != null) {
+                responseAsMap.put("Editorial", autor);
+                responseAsMap.put("Mensaje:", "El Autor con ID: " + autor.getId_autor() + "¡Sé Actualizó corectamente!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensajes", "El Autor ¡No sé actualizo!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException dataAccessException) {
+            responseAsMap.put("Mensaje: ", "¡El Autor no se actualizó!" + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
     @GetMapping(value = "autor/get/all")
@@ -143,7 +139,7 @@ public class AutorRestController {
         Autor autor = null;
         ResponseEntity<Autor> responseEntity = null;
         try {
-            autor = iAutorImplements.findById(id);
+            autor = iAutorImplements.findByIdAutor(id);
             if (autor != null) {
                 responseEntity = new ResponseEntity<Autor>(autor, HttpStatus.OK);
             } else {
@@ -155,4 +151,26 @@ public class AutorRestController {
         }
         return responseEntity;
     }
+
+    @DeleteMapping(value = "autor/delete/{id}")
+    private ResponseEntity<Autor> deleteById(@PathVariable Long id) throws Exception {
+        Autor autor = null;
+        ResponseEntity<Autor> responseEntity = null;
+        try {
+            autor = iAutorImplements.findByIdAutor(id);
+            if (autor != null) {
+                iAutorImplements.deleteAutorById(id);
+                responseEntity = new ResponseEntity<Autor>(HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<Autor>(HttpStatus.NO_CONTENT);
+            }
+
+        } catch (DataAccessException dataAccessException) {
+            log.error("¡Ocurrio un erro al eliminar un Autor!" + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Autor>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+
 }
