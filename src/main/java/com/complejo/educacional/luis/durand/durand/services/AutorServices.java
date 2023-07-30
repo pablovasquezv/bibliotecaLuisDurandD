@@ -71,7 +71,7 @@ public class AutorServices implements IAutorImplements {
             autor.setPais(pais);
             autorUpdate = iAutorRepository.save(autor);
             log.info("Json de Salida =>" + utils.imprimirLogSalida(autorUpdate));
-            log.info("----Fin de método Creación Autor----");
+            log.info("----Fin de método de Actualización de un Autor----");
             return autorUpdate;
         } catch (Exception e) {
             // TODO: handle exception
