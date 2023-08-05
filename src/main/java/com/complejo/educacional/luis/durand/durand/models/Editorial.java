@@ -74,6 +74,17 @@ public class Editorial implements Serializable {
     @Column(name = "descripcion_editorial")
     private String descripcion_editorial;
 
+    @NotEmpty(message = "¡La Direccion de la Editorial no debe ser vacía!")
+    @Size(min = 4, max = 100, message = "¡La dirección de la Editorial debe contener 4 carácteres y 50 como máximo!")
+    private String direccion_editorial;
+    @NotEmpty(message = "¡EL teléfono de la Editorial no debe ser vacío!")
+    @Size(min = 4,max = 20, message = "¡El teléfono  debe contener 4 carácteres y 50 como máximo!")
+    private String telefono_editorial;
+
+    @NotEmpty(message = "¡El correo de la Editorial no debe ser vacío!")
+    @Size(min = 4,max = 50, message = "¡El teléfono  debe contener 4 carácteres y 50 como máximo!")
+    private String correoElectronico_editorial;
+
     @Column(updatable = false)
     private Date createAt;
 
