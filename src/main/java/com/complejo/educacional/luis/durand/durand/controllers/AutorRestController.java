@@ -67,9 +67,9 @@ public class AutorRestController {
         return responseEntity;
     }
 
-    @PutMapping(value = "autor/upadate/{id}")
+    @PutMapping(value = "autor/update/{id}")
     private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody Autor autor,
-                                                            BindingResult bindingResult) throws Exception {
+                                                            BindingResult bindingResult) throws Exception{
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         List<String> errores = null;
@@ -79,22 +79,23 @@ public class AutorRestController {
                 errores.add(error.getDefaultMessage());
             }
             responseAsMap.put("Errores", errores);
-            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
             return responseEntity;
         }
         try {
             Autor autorFromDB = iAutorImplements.updateAutor(id, autor);
             if (autorFromDB != null) {
-                responseAsMap.put("Editorial", autor);
-                responseAsMap.put("Mensaje:", "El Autor con ID: " + autor.getId_autor() + "¡Sé Actualizó corectamente!");
-                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+                responseAsMap.put("Autor", autor);
+                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autor.getId_autor() + "!");
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
-                responseAsMap.put("Mensajes", "El Autor ¡No sé actualizo!");
-                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor!");
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException dataAccessException) {
-            responseAsMap.put("Mensaje: ", "¡El Autor no se actualizó!" + dataAccessException.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " +
+                    dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

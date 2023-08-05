@@ -68,10 +68,11 @@ public class AutorServices implements IAutorImplements {
     @Transactional(readOnly = false)
     public Autor updateAutor(Long id, Autor autor) throws Exception {
         // TODO Auto-generated method stub
+        Autor autorUpdate= null;
         try {
             Optional<Autor> autorOptional = iAutorRepository.findById(id);
-            Autor autorUpdate = autorOptional.get();
-            log.info("---Inicio de actualización Autor----" + objectMapper.writeValueAsString(autor));
+            log.info("---Inicio de actualización Autor----" + objectMapper.writeValueAsString(autorOptional));
+            autorUpdate = autorOptional.get();
             Pais pais = iPaisRepository.findById(autor.getPais().getId_pais()).orElse(null);
             autor.setPais(pais);
             autorUpdate = iAutorRepository.save(autor);
@@ -80,8 +81,10 @@ public class AutorServices implements IAutorImplements {
             return autorUpdate;
         } catch (Exception e) {
             // TODO: handle exception
-            throw new Exception(e.getCause());
+            log.error("¡Ocurrio un error en la actualización del Autor!"+autorUpdate.getId_autor()+"El error es: "
+                    +e.getCause().toString());
         }
+        return autorUpdate;
     }
 
     @Override
