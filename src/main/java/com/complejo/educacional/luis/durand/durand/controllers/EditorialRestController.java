@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Pablo
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/biblioteca/v1/")
@@ -28,6 +31,12 @@ public class EditorialRestController {
     @Autowired
     private IEditorialImplements iEditorialImplements;
 
+    /**
+     * @param editorial
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "editorial/create")
     private ResponseEntity<Map<String, Object>> addNewEditorial(@Valid @RequestBody Editorial editorial, BindingResult bindingResult)
             throws Exception {
@@ -60,6 +69,13 @@ public class EditorialRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @param editorial
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
     @PutMapping(value = "editorial/update/{id}")
     private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody Editorial editorial,
                                                                 BindingResult bindingResult) throws Exception {
@@ -92,6 +108,11 @@ public class EditorialRestController {
         return responseEntity;
     }
 
+    /**
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping(value = "editorial/get/all")
     private ResponseEntity<List<Editorial>> findAllEditoriales(@RequestParam(required = false) Integer page,
                                                                @RequestParam(required = false) Integer size) {
@@ -120,6 +141,11 @@ public class EditorialRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping(value = "editorial/delete/{id}")
     private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception {
         Editorial editorial = null;

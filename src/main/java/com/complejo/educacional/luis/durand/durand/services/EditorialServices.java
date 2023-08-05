@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Pablo
+ *
+ */
 @Slf4j
 @Service
 public class EditorialServices implements IEditorialImplements {
@@ -24,21 +28,35 @@ public class EditorialServices implements IEditorialImplements {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     *
+     * @param editorial
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = false)
     public Editorial saveEditorial(Editorial editorial) throws Exception {
-        Editorial respuest = null;
+        Editorial editorialCreate = null;
         try {
-            respuest = new Editorial();
+            editorialCreate = new Editorial();
             log.info("¡Creación de Editorial");
-            respuest = iEditorialRepository.save(editorial);
+            editorialCreate = iEditorialRepository.save(editorial);
             log.info("¡Editorial creada!" + objectMapper.writeValueAsString(editorial));
-        } catch (Exception exception) {
-            log.error("Falló la creación de la Editorial =>", exception);
+            return editorialCreate;
+        } catch (Exception e) {
+            log.error("Falló la creación de la Editorial =>", e.getCause().toString());
         }
-        return respuest;
+        return editorialCreate;
     }
 
+    /**
+     *
+     * @param id
+     * @param editorial
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = false)
     public Editorial updateEditorial(Long id, Editorial editorial) throws Exception {
@@ -49,38 +67,65 @@ public class EditorialServices implements IEditorialImplements {
             editorialUpdate = optionalEditorial.get();
             editorialUpdate = iEditorialRepository.save(editorial);
             log.info("¡Editorial Actualizada!"+objectMapper.writeValueAsString(iEditorialRepository.save(editorial)));
+            return editorialUpdate;
         } catch (Exception e) {
-            log.error("Falló la actualización de la Editorial =>", e);
+            log.error("Falló la actualización de la Editorial =>", e.getCause().toString());
         }
 
         return editorialUpdate;
     }
 
+    /**
+     *
+     * @param sort
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Editorial> findAllEditorialSort(Sort sort) throws Exception {
         return iEditorialRepository.findAllEditorialSort(sort);
     }
 
+    /**
+     *
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<Editorial> findAllEditorialPage(Pageable pageable) throws Exception {
         return iEditorialRepository.findAllEditorialPage(pageable);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @Override
+    @Transactional(readOnly = true)
     public Editorial findByIdEditorial(long id) throws Exception {
         return iEditorialRepository.findByIdEditorial(id);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @Override
+    @Transactional(readOnly = false)
     public Object deleteEditorialById(Long id) throws Exception {
         Object respuesta= null;
         try {
             log.info("¡Eliminar Editorial!");
             iEditorialRepository.deleteById(id);
         }catch (Exception e){
-            log.error("Falló la Eliminación de la Editorial =>", e);
+            log.error("Falló la Eliminación de la Editorial =>", e.getCause().toString());
         }
         return null;
     }

@@ -26,6 +26,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Pablo
@@ -41,6 +42,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "autor")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Autor implements Serializable {
 	/**
 	 * Serializable:para hacer la persistencia del objeto y convertilo en una

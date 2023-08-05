@@ -31,34 +31,57 @@ public class PaisServices implements IPaisImplements {
 	@Autowired
 	private IPaisRepository iPaisRepository;
 
+	/**
+	 *
+	 * @param pais
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public Pais save(Pais pais) throws Exception {
 		// TODO Auto-generated method stub
+		Pais createPais= null;
 		try {
-			pais = iPaisRepository.save(pais);
-			return pais;
+			createPais = iPaisRepository.save(pais);
+			return createPais;
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new Exception(e.getCause());
+			log.error("¡Error al Crear el país!", e.getCause().toString());
 		}
+		return createPais;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param pais
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public Pais update(Long id, Pais pais) throws Exception {
 		// TODO Auto-generated method stub
+		Pais paisUpdate =null;
 		try {
 			Optional<Pais> paisOptional = iPaisRepository.findById(id);
-			Pais paisUpdate = paisOptional.get();
+			paisUpdate = paisOptional.get();
 			paisUpdate = iPaisRepository.save(pais);
 			return paisUpdate;
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new Exception(e.getCause());
+			log.error("¡Error al Actualizar el país!", e.getCause().toString());
 		}
+		return paisUpdate;
 	}
 
+	/**
+	 *
+	 * @param sort
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<Pais> findAllPaisSort(Sort sort) throws Exception {
@@ -66,6 +89,12 @@ public class PaisServices implements IPaisImplements {
 		return iPaisRepository.findAllPaisSort(sort);
 	}
 
+	/**
+	 *
+	 * @param pageable
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Pais> findAllPaisPageable(Pageable pageable) throws Exception {
@@ -73,6 +102,12 @@ public class PaisServices implements IPaisImplements {
 		return iPaisRepository.findAllPaisPage(pageable);
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public Pais findById(long id) throws Exception {
@@ -80,6 +115,11 @@ public class PaisServices implements IPaisImplements {
 		return iPaisRepository.findById(id);
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @throws Exception
+	 */
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(long id) throws Exception {

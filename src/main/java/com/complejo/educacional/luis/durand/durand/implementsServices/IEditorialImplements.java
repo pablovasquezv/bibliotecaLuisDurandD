@@ -6,6 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+/**
+ * @author Pablo
+ *
+ */
 
 public interface IEditorialImplements {
     /**
@@ -31,6 +35,7 @@ public interface IEditorialImplements {
      * @return
      * @throws Exception
      */
+
     public List<Editorial> findAllEditorialSort(Sort sort) throws Exception;
 
     /**
@@ -39,6 +44,7 @@ public interface IEditorialImplements {
      * @return
      * @throws Exception
      */
+
     public Page<Editorial> findAllEditorialPage(Pageable pageable) throws Exception;
 
     /**
@@ -47,6 +53,7 @@ public interface IEditorialImplements {
      * @return
      * @throws Exception
      */
+
     public Editorial findByIdEditorial(long id) throws Exception;
 
     /**
@@ -55,6 +62,7 @@ public interface IEditorialImplements {
      * @return
      * @throws Exception
      */
+
     public Object deleteEditorialById(Long id) throws Exception;
 
 }

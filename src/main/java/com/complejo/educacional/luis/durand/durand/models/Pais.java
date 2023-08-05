@@ -27,16 +27,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Pablo
- *
+ * @Entity: para decir a JPA Y HIBERANTE que esta será una entidad y se tiene
+ *          que guardar como tal en la BD
+ * @Table: Para indicar que está será una tabla en la BD.
+ * @Data: Para crear los gett y sett
+ * @AllArgsConstructor: Constructor con parámetros
+ * @NoArgsConstructor:Constructor sin parámetros
  */
 @Entity
 @Data
 @Table(name = "pais")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Pais implements Serializable {
 	/**
 	 * Serializable:para hacer la persistencia del objeto y convertilo en una
