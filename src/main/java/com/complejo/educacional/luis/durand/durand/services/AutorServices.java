@@ -42,6 +42,12 @@ public class AutorServices implements IAutorImplements {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     *
+     * @param autor
+     * @return
+     * @throws Exception
+     */
 
     @Override
     @Transactional(readOnly = false)
@@ -64,6 +70,13 @@ public class AutorServices implements IAutorImplements {
         return respuesta;
     }
 
+    /**
+     *
+     * @param id
+     * @param autor
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = false)
     public Autor updateAutor(Long id, Autor autor) throws Exception {
@@ -87,6 +100,12 @@ public class AutorServices implements IAutorImplements {
         return autorUpdate;
     }
 
+    /**
+     *
+     * @param sort
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Autor> findAllAutorSort(Sort sort) throws Exception {
@@ -99,6 +118,12 @@ public class AutorServices implements IAutorImplements {
         }
     }
 
+    /**
+     *
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<Autor> findAllAutorPage(Pageable pageable) throws Exception {
@@ -111,6 +136,12 @@ public class AutorServices implements IAutorImplements {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = true)
     public Autor findByIdAutor(long id) throws Exception {
@@ -123,6 +154,11 @@ public class AutorServices implements IAutorImplements {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = false)
     public void deleteAutorById(long id) throws Exception {
