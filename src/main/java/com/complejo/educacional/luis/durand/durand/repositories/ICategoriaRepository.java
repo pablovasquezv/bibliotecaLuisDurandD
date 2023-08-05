@@ -18,11 +18,11 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
     public List<Categoria> findAllCategoriaSort(Sort sort);
 
     // Contar la cantidad de Paises que vienen en la búsqueda y páginarlos
-    @Query(value = "select p from categoria c",
-    countQuery = "select count(p) from categoria p")
+    @Query(value = "select c from categoria c",
+    countQuery = "select count(c) from categoria c")
     public Page<Categoria> findAllCategoriaPage(Pageable pageable);
 
     //Buscar por id
-    @Query(value = "select c from categoria c = where id=:id")
+    @Query(value = "select c from categoria c where id=:id")
     public Categoria findByIdCategoria(long id);
 }
