@@ -2,26 +2,21 @@ package com.complejo.educacional.luis.durand.durand.models;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author Pablo
@@ -37,6 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "editorial")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Editorial implements Serializable {
     /**
      * Serializable:para hacer la persistencia del objeto y convertilo en una
