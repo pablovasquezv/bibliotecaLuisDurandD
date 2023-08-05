@@ -18,7 +18,7 @@ public class BibliotecaLuisDurandDApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:8080").allowedMethods("*")
+				registry.addMapping("/**").allowedOrigins("http://localhost:8081").allowedMethods("*")
 						.allowedHeaders("*");
 			}
 		};
