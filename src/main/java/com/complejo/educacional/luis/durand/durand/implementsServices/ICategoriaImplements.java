@@ -1,7 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.implementsServices;
 
 import com.complejo.educacional.luis.durand.durand.models.Categoria;
-import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -51,7 +50,7 @@ public interface ICategoriaImplements {
      * @return
      * @throws Exception
      */
-    public Editorial findByIdCategoria(long id) throws Exception;
+    public Categoria findByIdCategoria(long id) throws Exception;
 
     /**
      *
@@ -59,6 +58,6 @@ public interface ICategoriaImplements {
      * @return
      * @throws Exception
      */
-    public Editorial deleteEditorialById(long id) throws Exception;
+    public Categoria deleteEditorialById(long id) throws Exception;
 
 }
