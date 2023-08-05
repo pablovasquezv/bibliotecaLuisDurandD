@@ -17,13 +17,21 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-
+/**
+ * @author Pablo
+ * @Entity: para decir a JPA Y HIBERANTE que esta será una entidad y se tiene
+ *          que guardar como tal en la BD
+ * @Table: Para indicar que está será una tabla en la BD.
+ * @Data: Para crear los gett y sett
+ * @AllArgsConstructor: Constructor con parámetros
+ * @NoArgsConstructor:Constructor sin parámetros
+ */
 @Entity
 @Data
+@Table(name = "categoria")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "categoria")
 public class Categoria implements Serializable {
     /**
      * Serializable:para hacer la persistencia del objeto y convertilo en una
