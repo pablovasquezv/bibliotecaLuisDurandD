@@ -5,7 +5,6 @@ package com.complejo.educacional.luis.durand.durand.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +46,13 @@ public class PaisRestController {
 	@Autowired
 	private IPaisImplements iPaisImplements;
 
+	/**
+	 *
+	 * @param pais
+	 * @param bindingResult
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("pais/create")
 	private ResponseEntity<Map<String, Object>> addNewPais(@Valid @RequestBody Pais pais, BindingResult bindingResult)
 			throws Exception {
@@ -81,6 +87,14 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param pais
+	 * @param bindingResult
+	 * @return
+	 * @throws Exception
+	 */
 	@PutMapping("pais/update/{id}")
 	private ResponseEntity<Map<String, Object>> updatePais(@PathVariable long id, @Valid @RequestBody Pais pais,
 			BindingResult bindingResult) throws Exception {
@@ -115,6 +129,12 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
+	/**
+	 *
+	 * @param page
+	 * @param size
+	 * @return
+	 */
 	@GetMapping("pais/get/all")
 	@ResponseStatus(HttpStatus.OK)
 	private ResponseEntity<List<Pais>> findAllAlumnos(@RequestParam(required = false) Integer page,
@@ -146,6 +166,11 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
 	@GetMapping(value = "pais/{id}")
 	private ResponseEntity<Pais> findById(@PathVariable int id) {
 		Pais pais = null;
@@ -167,6 +192,11 @@ public class PaisRestController {
 		return responseEntity;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
     @DeleteMapping("pais/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
     private ResponseEntity<Pais> deleteById(@PathVariable int id) {

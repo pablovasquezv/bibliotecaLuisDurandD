@@ -34,6 +34,12 @@ public class AutorRestController {
     @Autowired
     private IAutorImplements iAutorImplements;
 
+    /**
+     * @param autor
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "autor/create")
     private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody Autor autor,
                                                             BindingResult bindingResult) throws Exception {
@@ -67,9 +73,16 @@ public class AutorRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @param autor
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
     @PutMapping(value = "autor/update/{id}")
     private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody Autor autor,
-                                                            BindingResult bindingResult) throws Exception{
+                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         List<String> errores = null;
@@ -100,6 +113,11 @@ public class AutorRestController {
         return responseEntity;
     }
 
+    /**
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping(value = "autor/get/all")
     @ResponseStatus(HttpStatus.OK)
     private ResponseEntity<List<Autor>> findAllAutor(@RequestParam(required = false) Integer page,
@@ -135,6 +153,10 @@ public class AutorRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping(value = "autor/{id}")
     private ResponseEntity<Autor> findById(@PathVariable int id) {
         Autor autor = null;
@@ -153,6 +175,11 @@ public class AutorRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping(value = "autor/delete/{id}")
     private ResponseEntity<Autor> deleteById(@PathVariable Long id) throws Exception {
         Autor autor = null;
