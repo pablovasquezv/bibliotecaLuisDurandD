@@ -1,7 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.repositories;
 
 import com.complejo.educacional.luis.durand.durand.models.Categoria;
-import com.complejo.educacional.luis.durand.durand.models.Pais;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
