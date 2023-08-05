@@ -53,7 +53,7 @@ public class EditorialServices implements IEditorialImplements {
             log.error("Falló la actualización de la Editorial =>", e);
         }
 
-        return null;
+        return editorialUpdate;
     }
 
     @Override
