@@ -24,5 +24,5 @@ public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
 
     //Buscar por id
     @Query(value = "select c from categoria c = where id=:id")
-    public Categoria findByIdCagoria(Long id);
+    public Categoria findByIdCategoria(long id);
 }
