@@ -32,19 +32,19 @@ public interface ICategoriaImplements {
 
     /**
      *
-     * @param pageable
-     * @return
-     * @throws Exception
-     */
-    public List<Categoria> findAllCategoriaPage(Pageable pageable)throws Exception;
-
-    /**
-     *
      * @param sort
      * @return
      * @throws Exception
      */
-    public Page<Categoria> findAllCategoriaSor(Sort sort) throws Exception;
+    public List<Categoria> findAllCategoriaSort(Sort sort)throws Exception;
+
+    /**
+     *
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
+    public Page<Categoria> findAllCategoriaPage(Pageable pageable) throws Exception;
     /**
      *
      * @param id
