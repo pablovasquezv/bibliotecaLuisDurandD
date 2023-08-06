@@ -168,6 +168,30 @@ public class CategoriaRestController {
         return responseEntity;
     }
 
-
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping(value = "categoria/delete/{id}")
+    private ResponseEntity<Categoria> deleteByIdCategoria(@PathVariable long id) throws Exception {
+        Categoria categoriaDelete = null;
+        ResponseEntity<Categoria> responseEntity = null;
+        try {
+            categoriaDelete = iCategoriaImplements.findByIdCategoria(id);
+            if (categoriaDelete != null) {
+                iCategoriaImplements.deleteEditorialById(id);
+                responseEntity = new ResponseEntity<Categoria>(HttpStatus.OK);
+                return responseEntity;
+            } else {
+                responseEntity = new ResponseEntity<Categoria>(HttpStatus.NO_CONTENT);
+                return responseEntity;
+            }
+        } catch (DataAccessException dataAccessException) {
+            log.error("Ocurrio un error al eliminar la Categoría: " + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Categoria>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
 
 }
