@@ -37,7 +37,7 @@ public class CategoriaServices implements ICategoriaImplements {
           categoriaSave= new Categoria();
           log.info("¡Inicio de la creación Categoría");
           categoriaSave= iCategoriaRepository.save(categoria);
-          log.info("!Categoría creada Exitosamens!", objectMapper.writeValueAsString(categoriaSave));
+          log.info("!Categoría creada Exitosamente!", objectMapper.writeValueAsString(categoriaSave));
       }catch (Exception e){
           log.error("¡Falló la creación de la Categoría!", e.getCause().toString());
       }
@@ -57,7 +57,7 @@ public class CategoriaServices implements ICategoriaImplements {
         Optional<Categoria> optionalCategoria= null;
         Categoria categoriaUpdate= null;
         try {
-            log.info("¡Incio de Proceso de Actualzizacioón de Categoría", objectMapper.writeValueAsString(categoria));
+            log.info("¡Incio de Proceso de Actualización de Categoría", objectMapper.writeValueAsString(categoria));
             optionalCategoria= iCategoriaRepository.findById(id);
             categoriaUpdate= optionalCategoria.get();
             categoriaUpdate=iCategoriaRepository.save(categoria);
