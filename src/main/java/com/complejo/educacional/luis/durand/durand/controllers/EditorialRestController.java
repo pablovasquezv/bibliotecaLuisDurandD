@@ -55,7 +55,7 @@ public class EditorialRestController {
         try {
             Editorial editorialFromDb = iEditorialImplements.saveEditorial(editorial);
             if (editorialFromDb != null) {
-                responseAsMap.put("alumno", editorial);
+                responseAsMap.put("Editorial", editorial);
                 responseAsMap.put("¡Mensaje", "La Editorial con ID: " + editorial.getId_editorial() + " se creo correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
