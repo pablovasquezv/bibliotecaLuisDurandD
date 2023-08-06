@@ -145,5 +145,29 @@ public class CategoriaRestController {
         return responseEntity;
     }
 
+    /**
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "categoria/{id}")
+    private ResponseEntity<Categoria> findByIdCategoria(@PathVariable long id) throws Exception {
+        Categoria categoriaSearch = null;
+        ResponseEntity<Categoria> responseEntity = null;
+        try {
+            categoriaSearch = iCategoriaImplements.findByIdCategoria(id);
+            responseEntity = (categoriaSearch != null) ?
+                    new ResponseEntity<Categoria>(categoriaSearch, HttpStatus.OK)
+                    :
+                    new ResponseEntity<Categoria>(categoriaSearch, HttpStatus.NO_CONTENT);
+            return responseEntity;
+        } catch (DataAccessException dataAccessException) {
+            log.error("¡Ocurrio un error al buscar la Categoría! " + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Categoria>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+
 
 }
