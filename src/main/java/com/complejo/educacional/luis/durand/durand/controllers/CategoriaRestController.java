@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
 import com.complejo.educacional.luis.durand.durand.implementsServices.ICategoriaImplements;
+import com.complejo.educacional.luis.durand.durand.models.Autor;
 import com.complejo.educacional.luis.durand.durand.models.Categoria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ public class CategoriaRestController {
     private ICategoriaImplements iCategoriaImplements;
 
     /**
-     *
      * @param categoria
      * @param bindingResult
      * @return
@@ -69,6 +69,49 @@ public class CategoriaRestController {
         }
         return responseEntity;
     }
+
+
+    /**
+     * @param id
+     * @param categoria
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
+    @PutMapping(value = "categoria/update/{id}")
+    private ResponseEntity<Map<String, Object>> updateCategoria(@PathVariable long id, @Valid @RequestBody Categoria categoria, BindingResult bindingResult) throws Exception {
+        Map<String, Object> responseAsMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        List<String> errores = null;
+        if (bindingResult.hasErrors()) {
+            errores = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("Errores", errores);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        try {
+            Categoria udateCategoriaFromDB = iCategoriaImplements.updateCategoria(id, categoria);
+            if (udateCategoriaFromDB != null) {
+                responseAsMap.put("Categoría", categoria);
+                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoria.getId_categoria() + " sé actualizó!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+                return responseEntity;
+            } else {
+                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoria.getId_categoria() + " no sé actualizó!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                return responseEntity;
+            }
+
+        } catch (DataAccessException dataAccessException) {
+            responseAsMap.put("Mensaje", "No se actulizó la Categoría " + categoria.getId_categoria() + " a causa de este:" + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
 
 
 }
