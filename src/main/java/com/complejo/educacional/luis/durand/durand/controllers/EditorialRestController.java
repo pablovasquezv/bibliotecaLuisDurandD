@@ -137,6 +137,7 @@ public class EditorialRestController {
                     new ResponseEntity<List<Editorial>>(editorialList, HttpStatus.OK)
                     :
                     new ResponseEntity<List<Editorial>>(editorialList, HttpStatus.NO_CONTENT);
+            return responseEntity;
 
         } catch (Exception e) {
             log.error("Ocurrio un error al Obtener todas las Editoriales =>", e.getCause().toString());
