@@ -58,9 +58,11 @@ public class EditorialRestController {
                 responseAsMap.put("Editorial", editorial);
                 responseAsMap.put("¡Mensaje", "La Editorial con ID: " + editorial.getId_editorial() + " se creo correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+                return responseEntity;
             } else {
                 responseAsMap.put("Mensaje", "No se creó la Editorial");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                return responseEntity;
             }
         } catch (DataAccessException dataAccessException) {
             responseAsMap.put("Mensaje", "No sé creó la Editorial" + dataAccessException.getMostSpecificCause().toString());
@@ -97,9 +99,11 @@ public class EditorialRestController {
                 responseAsMap.put("Editorial", editorial);
                 responseAsMap.put("Mensaje", "¡La Editorial con ID" + editorial.getId_editorial() + "Sé actualizo correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+                return responseEntity;
             } else {
                 responseAsMap.put("Mensaje", "¡La Editorial No se actualizo!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                return responseEntity;
             }
         } catch (DataAccessException dataAccessException) {
             responseAsMap.put("Mensaje: ", "¡No se actualizó la Editorial!" + dataAccessException.getMostSpecificCause().toString());
@@ -155,8 +159,10 @@ public class EditorialRestController {
             if (editorial != null) {
                 iEditorialImplements.deleteEditorialById(id);
                 responseEntity = new ResponseEntity<Editorial>(HttpStatus.OK);
+                return responseEntity;
             } else {
                 responseEntity = new ResponseEntity<Editorial>(HttpStatus.NO_CONTENT);
+                return responseEntity;
             }
         } catch (DataAccessException dataAccessException) {
             log.error("Ocurrio un error: " + dataAccessException.getMostSpecificCause().toString());
