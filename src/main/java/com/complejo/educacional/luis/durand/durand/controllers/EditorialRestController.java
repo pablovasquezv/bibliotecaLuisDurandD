@@ -152,12 +152,12 @@ public class EditorialRestController {
      * @throws Exception
      */
     @DeleteMapping(value = "editorial/delete/{id}")
-    private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception {
-        Editorial editorial = null;
+    private ResponseEntity<Editorial> deleteByIdEditorial(@PathVariable long id) throws Exception {
+        Editorial editorialDelete = null;
         ResponseEntity<Editorial> responseEntity = null;
         try {
-            editorial = iEditorialImplements.findByIdEditorial(id);
-            if (editorial != null) {
+            editorialDelete = iEditorialImplements.findByIdEditorial(id);
+            if (editorialDelete != null) {
                 iEditorialImplements.deleteEditorialById(id);
                 responseEntity = new ResponseEntity<Editorial>(HttpStatus.OK);
                 return responseEntity;
