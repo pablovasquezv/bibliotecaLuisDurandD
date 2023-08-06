@@ -122,21 +122,21 @@ public class EditorialRestController {
                                                                @RequestParam(required = false) Integer size) {
         Sort sortByName = Sort.by("nombre_editorial");
         ResponseEntity<List<Editorial>> responseEntity = null;
-        List<Editorial> editorials = null;
+        List<Editorial> editorialList = null;
         Pageable pageable = null;
         try {
             if (page != null & size != null) {
                 pageable = PageRequest.of(page, size, sortByName);
-                editorials = iEditorialImplements.findAllEditorialPage(pageable).getContent();
+                editorialList = iEditorialImplements.findAllEditorialPage(pageable).getContent();
             } else {
-                editorials = iEditorialImplements.findAllEditorialSort(sortByName);
+                editorialList = iEditorialImplements.findAllEditorialSort(sortByName);
             }
 
             // Validación sí tiene Editorial la lista
-            responseEntity = (editorials.size() > 0) ?
-                    new ResponseEntity<List<Editorial>>(editorials, HttpStatus.OK)
+            responseEntity = (editorialList.size() > 0) ?
+                    new ResponseEntity<List<Editorial>>(editorialList, HttpStatus.OK)
                     :
-                    new ResponseEntity<List<Editorial>>(editorials, HttpStatus.NO_CONTENT);
+                    new ResponseEntity<List<Editorial>>(editorialList, HttpStatus.NO_CONTENT);
 
         } catch (Exception e) {
             log.error("Ocurrio un error al Obtener todas las Editoriales =>", e.getCause().toString());
