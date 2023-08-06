@@ -112,6 +112,38 @@ public class CategoriaRestController {
         return responseEntity;
     }
 
+    /**
+     * @param page
+     * @param size
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "categoria/get/all")
+    private ResponseEntity<List<Categoria>> findAllCategoria(@RequestParam(required = false) Integer page,
+                                                             @RequestParam(required = false) Integer size) throws Exception {
+        Sort sortByName = Sort.by("nombre_categoria");
+        ResponseEntity<List<Categoria>> responseEntity = null;
+        List<Categoria> categoriaList = null;
+        Pageable pageable = null;
+        try {
+            if (page != null & size != null) {
+                pageable = PageRequest
+                        .of(page, size, sortByName);
+                categoriaList = iCategoriaImplements.findAllCategoriaPage(pageable).getContent();
+            } else {
+                categoriaList = iCategoriaImplements.findAllCategoriaSort(sortByName);
+            }
+            responseEntity = (categoriaList.size() > 0) ?
+                    new ResponseEntity<List<Categoria>>(categoriaList, HttpStatus.OK)
+                    :
+                    new ResponseEntity<List<Categoria>>(categoriaList, HttpStatus.NO_CONTENT);
+            return responseEntity;
+        } catch (Exception e) {
+            log.error("¡Ocurrió un error al obtener la lista de Categorías!", e.getCause().toString());
+            responseEntity = new ResponseEntity<List<Categoria>>(HttpStatus.BAD_GATEWAY);
+        }
+        return responseEntity;
+    }
 
 
 }
