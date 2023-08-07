@@ -4,7 +4,9 @@
 package com.complejo.educacional.luis.durand.durand.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -22,6 +24,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,6 +67,11 @@ public class Autor implements Serializable {
 	 * @ManyToOne: relación uni direccional. fetch = FetchType.LAZY= no carga todos
 	 *             apoderados solo trae el alumno (no carga objetos en memoría).
 	 *             cascade = CascadeType.PERSIST:
+	 * fetch = FetchType.LAZY: esto indica que la carga de la lista de libros se hará de manera "perezosa", es decir,
+	 * solo se cargarán los libros cuando se acceda a ellos explícitamente.
+	 * cascade = CascadeType.MERGE: esto indica que cuando se realice una operación de fusionar (merge) en la entidad
+	 * Autor, también se aplicará la operación a los libros asociados a ese autor. Esto permite sincronizar de
+	 * manera automática los cambios en la relación entre Autor y Libro.
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -84,6 +93,21 @@ public class Autor implements Serializable {
 	@NotNull(message = "¡El campo id_pais no debe ser vacío!")
 	@JoinColumn(name = "id_pais")
 	private Pais pais;
+
+	/**
+	 * fetch = FetchType.LAZY: esto indica que la carga de la lista de libros se hará de manera "perezosa", es decir,
+	 * solo se cargarán los libros cuando se acceda a ellos explícitamente.
+	 * cascade = CascadeType.MERGE: esto indica que cuando se realice una operación de fusionar (merge) en la entidad
+	 * Autor, también se aplicará la operación a los libros asociados a ese autor. Esto permite sincronizar de
+	 * 	manera automática los cambios en la relación entre Autor y Libro.
+	 * 	@JsonIgnore se utiliza en la serialización de objetos en Java para indicar que una propiedad o campo debe ser
+	 * 	ignorado y no se incluirá en la representación JSON del objeto. Al agregar @JsonIgnore a la relación libros en
+	 * 	la clase Autor, estás indicando que no quieres que la lista de libros se incluya en la representación JSON del
+	 * 	objeto Autor.
+	 */
+	@JsonIgnore
+	@OneToMany(mappedBy = "autor", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<Libro> libros= new ArrayList<>();
 
 	// This will not allow the createdAt column to be updated after creation
 	@Column(updatable = false)

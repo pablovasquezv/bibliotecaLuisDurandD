@@ -76,6 +76,13 @@ public class Pais implements Serializable {
 	@Column(name = "nombre_pais")
 	private String nombre_pais;
 
+	/**
+	 * fetch = FetchType.LAZY: esto indica que la carga de la lista de libros se hará de manera "perezosa", es decir,
+	 * solo se cargarán los libros cuando se acceda a ellos explícitamente.
+	 * cascade = CascadeType.MERGE: esto indica que cuando se realice una operación de fusionar (merge) en la entidad
+	 * Autor, también se aplicará la operación a los libros asociados a ese autor. Esto permite sincronizar de
+	 * 	manera automática los cambios en la relación entre Autor y Libro.
+	 */
 	@JsonIgnore
 	@OneToMany(mappedBy = "pais", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Autor> autores = new ArrayList<>();
