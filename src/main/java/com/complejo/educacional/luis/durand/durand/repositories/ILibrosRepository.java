@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author Pablo
+ */
 public interface ILibrosRepository extends JpaRepository<Libro, Long> {
     /**
      * En este ejemplo, estamos utilizando Spring Data JPA para definir un repositorio de libros (LibroRepository).
