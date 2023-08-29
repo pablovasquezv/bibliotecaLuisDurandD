@@ -62,27 +62,28 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
+     *
      * @param id
-     * @param editorial
+     * @param editorialDTOResponse
      * @return
      * @throws Exception
      */
     @Override
     @Transactional(readOnly = false)
-    public Editorial updateEditorial(Long id, Editorial editorial) throws Exception {
+    public EditorialDTOResponse updateEditorial(Long id, EditorialDTOResponse editorialDTOResponse) throws Exception {
         Optional<Editorial> optionalEditorial = null;
         Editorial editorialUpdate = null;
         try {
             optionalEditorial = iEditorialRepository.findById(id);
             editorialUpdate = optionalEditorial.get();
-            editorialUpdate = iEditorialRepository.save(editorial);
-            log.info("¡Editorial Actualizada!" + objectMapper.writeValueAsString(iEditorialRepository.save(editorial)));
-            return editorialUpdate;
+            iEditorialRepository.save(editorialUpdate);
+            log.info("¡Editorial Actualizada!" + objectMapper.writeValueAsString(iEditorialRepository.save(editorialUpdate)));
+            return editorialDTOResponse ;
         } catch (Exception e) {
             log.error("Falló la actualización de la Editorial =>", e.getCause().toString());
         }
 
-        return editorialUpdate;
+        return editorialDTOResponse;
     }
 
     /**

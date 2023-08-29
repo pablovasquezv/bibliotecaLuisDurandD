@@ -25,11 +25,11 @@ public interface IEditorialImplements {
     /**
      *
      * @param id
-     * @param editorial
+     * @param editorialDTOResponse
      * @return
      * @throws Exception
      */
-    public Editorial updateEditorial(Long id, Editorial editorial) throws Exception;
+    public EditorialDTOResponse updateEditorial(Long id, EditorialDTOResponse editorialDTOResponse) throws Exception;
 
     /**
      *

@@ -81,7 +81,7 @@ public class EditorialRestController {
      * @throws Exception
      */
     @PutMapping(value = "editorial/update/{id}")
-    private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody Editorial editorial,
+    private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody EditorialDTOResponse editorial,
                                                                 BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -96,7 +96,7 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            Editorial editorialFromDB = iEditorialImplements.updateEditorial(id, editorial);
+            EditorialDTOResponse editorialFromDB = iEditorialImplements.updateEditorial(id, editorial);
             if (editorialFromDB != null) {
                 responseAsMap.put("Editorial", editorial);
                 responseAsMap.put("Mensaje", "¡La Editorial con ID" + editorial.getId_editorial() + "Sé actualizo correctamente!");
