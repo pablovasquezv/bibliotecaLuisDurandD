@@ -50,7 +50,7 @@ public class EditorialServices implements IEditorialImplements {
                     editorialDTORequest.getUpdateAt()
             );
             log.info("¡Creación de Editorial");
-            editorialCreate = iEditorialRepository.save(editorialCreate);
+            iEditorialRepository.save(editorialCreate);
             log.info("¡Editorial creada!" + objectMapper.writeValueAsString(editorialDTORequest));
             return editorialDTORequest;
         } catch (Exception e) {
