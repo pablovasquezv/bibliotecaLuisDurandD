@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.implementsServices;
 
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface IEditorialImplements {
      * @return
      * @throws Exception
      */
-    public Editorial saveEditorial (Editorial editorial) throws Exception;
+    public EditorialDTORequest saveEditorial (EditorialDTORequest editorialDTORequest) throws Exception;
 
     /**
      *
