@@ -13,7 +13,6 @@ import lombok.ToString;
 @ToString
 public class EditorialDTORequest {
     //Atributos
-    private Long id_editorial;
     private String nombre_editorial;
     private String descripcion_editorial;
     private String direccion_editorial;
