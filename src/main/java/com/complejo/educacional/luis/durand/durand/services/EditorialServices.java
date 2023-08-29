@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.services;
 
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import com.complejo.educacional.luis.durand.durand.repositories.IEditorialRepository;
@@ -17,7 +18,6 @@ import java.util.Optional;
 
 /**
  * @author Pablo
- *
  */
 @Slf4j
 @Service
@@ -28,30 +28,38 @@ public class EditorialServices implements IEditorialImplements {
     @Autowired
     private ObjectMapper objectMapper;
 
-    /**
+    /***
      *
-     * @param editorial
+     * @param editorialDTORequest
      * @return
      * @throws Exception
      */
     @Override
     @Transactional(readOnly = false)
-    public Editorial saveEditorial(Editorial editorial) throws Exception {
-        Editorial editorialCreate = null;
+    public EditorialDTORequest saveEditorial(EditorialDTORequest editorialDTORequest) throws Exception {
+
         try {
-            editorialCreate = new Editorial();
+            Editorial editorialCreate = new Editorial(
+                    null,
+                    editorialDTORequest.getNombre_editorial(),
+                    editorialDTORequest.getDescripcion_editorial(),
+                    editorialDTORequest.getDireccion_editorial(),
+                    editorialDTORequest.getTelefono_editorial(),
+                    editorialDTORequest.getCorreoElectronico_editorial(),
+                    editorialDTORequest.getCreateAt(),
+                    editorialDTORequest.getUpdateAt()
+            );
             log.info("¡Creación de Editorial");
-            editorialCreate = iEditorialRepository.save(editorial);
-            log.info("¡Editorial creada!" + objectMapper.writeValueAsString(editorial));
-            return editorialCreate;
+            editorialCreate = iEditorialRepository.save(editorialCreate);
+            log.info("¡Editorial creada!" + objectMapper.writeValueAsString(editorialDTORequest));
+            return editorialDTORequest;
         } catch (Exception e) {
             log.error("Falló la creación de la Editorial =>", e.getCause().toString());
         }
-        return editorialCreate;
+        return editorialDTORequest;
     }
 
     /**
-     *
      * @param id
      * @param editorial
      * @return
@@ -66,7 +74,7 @@ public class EditorialServices implements IEditorialImplements {
             optionalEditorial = iEditorialRepository.findById(id);
             editorialUpdate = optionalEditorial.get();
             editorialUpdate = iEditorialRepository.save(editorial);
-            log.info("¡Editorial Actualizada!"+objectMapper.writeValueAsString(iEditorialRepository.save(editorial)));
+            log.info("¡Editorial Actualizada!" + objectMapper.writeValueAsString(iEditorialRepository.save(editorial)));
             return editorialUpdate;
         } catch (Exception e) {
             log.error("Falló la actualización de la Editorial =>", e.getCause().toString());
@@ -76,7 +84,6 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
-     *
      * @param sort
      * @return
      * @throws Exception
@@ -88,7 +95,6 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
-     *
      * @param pageable
      * @return
      * @throws Exception
@@ -100,7 +106,6 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
-     *
      * @param id
      * @return
      * @throws Exception
@@ -112,7 +117,6 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
-     *
      * @param id
      * @return
      * @throws Exception
@@ -120,11 +124,11 @@ public class EditorialServices implements IEditorialImplements {
     @Override
     @Transactional(readOnly = false)
     public Object deleteEditorialById(Long id) throws Exception {
-        Object respuesta= null;
+        Object respuesta = null;
         try {
             log.info("¡Eliminar Editorial!");
             iEditorialRepository.deleteById(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Falló la Eliminación de la Editorial =>", e.getCause().toString());
         }
         return null;
