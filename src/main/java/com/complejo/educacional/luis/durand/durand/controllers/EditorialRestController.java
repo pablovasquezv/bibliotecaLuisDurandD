@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 
@@ -32,13 +33,15 @@ public class EditorialRestController {
     private IEditorialImplements iEditorialImplements;
 
     /**
-     * @param editorial
+     *
+     * @param editorialDTORequest
      * @param bindingResult
      * @return
      * @throws Exception
      */
     @PostMapping(value = "editorial/create")
-    private ResponseEntity<Map<String, Object>> addNewEditorial(@Valid @RequestBody Editorial editorial, BindingResult bindingResult)
+    private ResponseEntity<Map<String, Object>> addNewEditorial(@Valid @RequestBody EditorialDTORequest editorialDTORequest,
+                                                                BindingResult bindingResult)
             throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -53,10 +56,10 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            Editorial editorialFromDb = iEditorialImplements.saveEditorial(editorial);
+            EditorialDTORequest editorialFromDb = iEditorialImplements.saveEditorial(editorialDTORequest);
             if (editorialFromDb != null) {
-                responseAsMap.put("alumno", editorial);
-                responseAsMap.put("¡Mensaje", "La Editorial con ID: " + editorial.getId_editorial() + " se creo correctamente!");
+                responseAsMap.put("Editorial", editorialDTORequest);
+                responseAsMap.put("¡Mensaje", "La Editorial se creo correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
                 responseAsMap.put("Mensaje", "No se creó la Editorial");
