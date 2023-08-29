@@ -147,24 +147,24 @@ public class EditorialRestController {
 
     /**
      * @param id
-     * @return
+     * @return responseEntity
      * @throws Exception
      */
     @DeleteMapping(value = "editorial/delete/{id}")
-    private ResponseEntity<Editorial> deleteById(@PathVariable long id) throws Exception {
-        Editorial editorial = null;
-        ResponseEntity<Editorial> responseEntity = null;
+    private ResponseEntity<EditorialDTOResponse> deleteById(@PathVariable long id) throws Exception {
+        EditorialDTOResponse editorial = null;
+        ResponseEntity<EditorialDTOResponse> responseEntity = null;
         try {
             editorial = iEditorialImplements.findByIdEditorial(id);
             if (editorial != null) {
                 iEditorialImplements.deleteEditorialById(id);
-                responseEntity = new ResponseEntity<Editorial>(HttpStatus.OK);
+                responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<Editorial>(HttpStatus.NO_CONTENT);
+                responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.NO_CONTENT);
             }
         } catch (DataAccessException dataAccessException) {
             log.error("Ocurrio un error: " + dataAccessException.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<Editorial>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

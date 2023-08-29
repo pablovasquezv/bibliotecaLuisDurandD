@@ -139,14 +139,28 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
+     *
      * @param id
-     * @return
+     * @return EditorialDTOResponse
      * @throws Exception
      */
     @Override
     @Transactional(readOnly = true)
-    public Editorial findByIdEditorial(long id) throws Exception {
-        return iEditorialRepository.findByIdEditorial(id);
+    public EditorialDTOResponse findByIdEditorial(long id) throws Exception {
+        Editorial editorial = iEditorialRepository.findByIdEditorial(id);
+        if (editorial == null) {
+            throw new Exception("Editorial not found!");
+        }
+        return new EditorialDTOResponse(
+                editorial.getId_editorial(),
+                editorial.getNombre_editorial(),
+                editorial.getDescripcion_editorial(),
+                editorial.getDireccion_editorial(),
+                editorial.getTelefono_editorial(),
+                editorial.getCorreoElectronico_editorial(),
+                editorial.getCreateAt(),
+                editorial.getUpdateAt()
+        );
     }
 
     /**

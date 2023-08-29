@@ -56,7 +56,7 @@ public interface IEditorialImplements {
      * @throws Exception
      */
 
-    public Editorial findByIdEditorial(long id) throws Exception;
+    public EditorialDTOResponse findByIdEditorial(long id) throws Exception;
 
     /**
      *
