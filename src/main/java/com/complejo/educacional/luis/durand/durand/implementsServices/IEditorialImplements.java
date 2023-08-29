@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.implementsServices;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface IEditorialImplements {
     /**
      *
-     * @param editorial
+     * @param editorialDTORequest
      * @return
      * @throws Exception
      */
@@ -37,7 +38,7 @@ public interface IEditorialImplements {
      * @throws Exception
      */
 
-    public List<Editorial> findAllEditorialSort(Sort sort) throws Exception;
+    public List<EditorialDTOResponse> findAllEditorialSort(Sort sort) throws Exception;
 
     /**
      *
@@ -46,7 +47,7 @@ public interface IEditorialImplements {
      * @throws Exception
      */
 
-    public Page<Editorial> findAllEditorialPage(Pageable pageable) throws Exception;
+    public Page<EditorialDTOResponse> findAllEditorialPage(Pageable pageable) throws Exception;
 
     /**
      *

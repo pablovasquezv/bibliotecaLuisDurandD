@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 
@@ -114,14 +115,14 @@ public class EditorialRestController {
     /**
      * @param page
      * @param size
-     * @return
+     * @return responseEntity
      */
     @GetMapping(value = "editorial/get/all")
-    private ResponseEntity<List<Editorial>> findAllEditoriales(@RequestParam(required = false) Integer page,
-                                                               @RequestParam(required = false) Integer size) {
+    private ResponseEntity<List<EditorialDTOResponse>> findAllEditoriales(@RequestParam(required = false) Integer page,
+                                                                          @RequestParam(required = false) Integer size) {
         Sort sortByName = Sort.by("nombre_editorial");
-        ResponseEntity<List<Editorial>> responseEntity = null;
-        List<Editorial> editorials = null;
+        ResponseEntity<List<EditorialDTOResponse>> responseEntity = null;
+        List<EditorialDTOResponse> editorials = null;
         Pageable pageable = null;
         try {
             if (page != null & size != null) {
@@ -133,13 +134,13 @@ public class EditorialRestController {
 
             // Validación sí tiene Editorial la lista
             responseEntity = (editorials.size() > 0) ?
-                    new ResponseEntity<List<Editorial>>(editorials, HttpStatus.OK)
+                    new ResponseEntity<List<EditorialDTOResponse>>(editorials, HttpStatus.OK)
                     :
-                    new ResponseEntity<List<Editorial>>(editorials, HttpStatus.NO_CONTENT);
+                    new ResponseEntity<List<EditorialDTOResponse>>(editorials, HttpStatus.NO_CONTENT);
 
         } catch (Exception e) {
             log.error("Ocurrio un error al Obtener todas las Editoriales =>", e.getCause().toString());
-            responseEntity = new ResponseEntity<List<Editorial>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<List<EditorialDTOResponse>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

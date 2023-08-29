@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.services;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import com.complejo.educacional.luis.durand.durand.repositories.IEditorialRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,8 +92,23 @@ public class EditorialServices implements IEditorialImplements {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Editorial> findAllEditorialSort(Sort sort) throws Exception {
-        return iEditorialRepository.findAllEditorialSort(sort);
+    public List<EditorialDTOResponse> findAllEditorialSort(Sort sort) throws Exception {
+        List<EditorialDTOResponse> editorialDTOResponses = new ArrayList<EditorialDTOResponse>();
+        for (Editorial editorial: iEditorialRepository.findAllEditorialSort(sort)){
+            editorialDTOResponses.add(
+                    new EditorialDTOResponse(
+                            editorial.getId_editorial(),
+                            editorial.getNombre_editorial(),
+                            editorial.getDescripcion_editorial(),
+                            editorial.getDireccion_editorial(),
+                            editorial.getTelefono_editorial(),
+                            editorial.getCorreoElectronico_editorial(),
+                            editorial.getCreateAt(),
+                            editorial.getUpdateAt()
+                    )
+            );
+        }
+        return editorialDTOResponses;
     }
 
     /**
@@ -101,8 +118,23 @@ public class EditorialServices implements IEditorialImplements {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Editorial> findAllEditorialPage(Pageable pageable) throws Exception {
-        return iEditorialRepository.findAllEditorialPage(pageable);
+    public Page<EditorialDTOResponse> findAllEditorialPage(Pageable pageable) throws Exception {
+        List<EditorialDTOResponse> editorialDTOResponses = new ArrayList<EditorialDTOResponse>();
+        for (Editorial editorial: iEditorialRepository.findAllEditorialPage(pageable)){
+            editorialDTOResponses.add(
+                    new EditorialDTOResponse(
+                            editorial.getId_editorial(),
+                            editorial.getNombre_editorial(),
+                            editorial.getDescripcion_editorial(),
+                            editorial.getDireccion_editorial(),
+                            editorial.getTelefono_editorial(),
+                            editorial.getCorreoElectronico_editorial(),
+                            editorial.getCreateAt(),
+                            editorial.getUpdateAt()
+                    )
+            );
+        }
+        return (Page<EditorialDTOResponse>) editorialDTOResponses;
     }
 
     /**
