@@ -5,11 +5,12 @@ package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import java.util.List;
 
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTOResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import com.complejo.educacional.luis.durand.durand.models.Pais;
 
 /**
  * @author Pablo
@@ -18,21 +19,21 @@ import com.complejo.educacional.luis.durand.durand.models.Pais;
 public interface IPaisServices {
 	/**
 	 *
-	 * @param pais
+	 * @param paisDTORequest
 	 * @return
 	 * @throws Exception
 	 */
-	public Pais save(Pais pais) throws Exception;
+	public PaisDTORequest save(PaisDTORequest paisDTORequest) throws Exception;
 
 	/**
 	 *
 	 * @param id
-	 * @param pais
+	 * @param paisDTORequestUpdate
 	 * @return
 	 * @throws Exception
 	 */
 
-	public Pais update(Long id, Pais pais) throws Exception;
+	public PaisDTOResponse update(Long id, PaisDTORequestUpdate paisDTORequestUpdate) throws Exception;
 
 	/**
 	 *
@@ -41,7 +42,7 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public List<Pais> findAllPaisSort(Sort sort) throws Exception;
+	public List<PaisDTOResponse> findAllPaisSort(Sort sort) throws Exception;
 
 	/**
 	 *
@@ -50,7 +51,7 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public Page<Pais> findAllPaisPageable(Pageable pageable) throws Exception;
+	public Page<PaisDTOResponse> findAllPaisPageable(Pageable pageable) throws Exception;
 
 	/**
 	 *
@@ -59,7 +60,7 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public Pais findById(long id) throws Exception;
+	public PaisDTOResponse findById(long id) throws Exception;
 
 	/**
 	 *
@@ -67,6 +68,6 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public void delete(long id) throws Exception;
+	public Object void deletePaisById(long id) throws Exception;
 
 }
