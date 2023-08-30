@@ -3,7 +3,7 @@ package com.complejo.educacional.luis.durand.durand.controllers;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
-import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IEditorialServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import java.util.Map;
 @RequestMapping(value = "/biblioteca/v1/")
 public class EditorialRestController {
     @Autowired
-    private IEditorialImplements iEditorialImplements;
+    private IEditorialServices iEditorialServices;
 
     /**
      * @param editorialDTORequest
@@ -57,7 +57,7 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            EditorialDTORequest editorialFromDb = iEditorialImplements.saveEditorial(editorialDTORequest);
+            EditorialDTORequest editorialFromDb = iEditorialServices.saveEditorial(editorialDTORequest);
             if (editorialFromDb != null) {
                 responseAsMap.put("Editorial", editorialDTORequest);
                 responseAsMap.put("¡Mensaje", "La Editorial se creo correctamente!");
@@ -98,7 +98,7 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            EditorialDTOResponse editorialFromDB = iEditorialImplements.updateEditorial(id, editorialDTORequestUpdate);
+            EditorialDTOResponse editorialFromDB = iEditorialServices.updateEditorial(id, editorialDTORequestUpdate);
             if (editorialFromDB != null) {
                 responseAsMap.put("Editorial", editorialDTORequestUpdate);
                 responseAsMap.put("Mensaje", "¡La Editorial con ID: " + editorialDTORequestUpdate.getId_editorial() + "Sé actualizo correctamente!");
@@ -129,9 +129,9 @@ public class EditorialRestController {
         try {
             if (page != null & size != null) {
                 pageable = PageRequest.of(page, size, sortByName);
-                editorials = iEditorialImplements.findAllEditorialPage(pageable).getContent();
+                editorials = iEditorialServices.findAllEditorialPage(pageable).getContent();
             } else {
-                editorials = iEditorialImplements.findAllEditorialSort(sortByName);
+                editorials = iEditorialServices.findAllEditorialSort(sortByName);
             }
 
             // Validación sí tiene Editorial la lista
@@ -156,7 +156,7 @@ public class EditorialRestController {
         EditorialDTOResponse editorialDTOResponse = null;
         ResponseEntity<EditorialDTOResponse> responseEntity = null;
         try {
-            editorialDTOResponse = iEditorialImplements.findByIdEditorial(id);
+            editorialDTOResponse = iEditorialServices.findByIdEditorial(id);
             responseEntity = (editorialDTOResponse != null) ?
                     new ResponseEntity<EditorialDTOResponse>(editorialDTOResponse, HttpStatus.OK)
                     :
@@ -180,9 +180,9 @@ public class EditorialRestController {
         EditorialDTOResponse editorial = null;
         ResponseEntity<EditorialDTOResponse> responseEntity = null;
         try {
-            editorial = iEditorialImplements.findByIdEditorial(id);
+            editorial = iEditorialServices.findByIdEditorial(id);
             if (editorial != null) {
-                iEditorialImplements.deleteEditorialById(id);
+                iEditorialServices.deleteEditorialById(id);
                 responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.OK);
             } else {
                 responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.NO_CONTENT);

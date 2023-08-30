@@ -13,8 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.complejo.educacional.luis.durand.durand.controllers.PaisRestController;
-import com.complejo.educacional.luis.durand.durand.implementsServices.IPaisImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IPaisServices;
 import com.complejo.educacional.luis.durand.durand.models.Pais;
 import com.complejo.educacional.luis.durand.durand.repositories.IPaisRepository;
 
@@ -26,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class PaisServices implements IPaisImplements {
+public class PaisServicesImpl implements IPaisServices {
 
 	@Autowired
 	private IPaisRepository iPaisRepository;

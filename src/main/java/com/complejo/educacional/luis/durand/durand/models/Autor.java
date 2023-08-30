@@ -43,7 +43,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Autor implements Serializable {
+public class Autor extends Persona implements Serializable {
 	/**
 	 * Serializable:para hacer la persistencia del objeto y convertilo en una
 	 * secuencia de Bytes para poder almacenarlo en algún medio de almacenamiento en

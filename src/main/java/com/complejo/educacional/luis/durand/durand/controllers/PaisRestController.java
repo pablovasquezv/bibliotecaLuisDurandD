@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.complejo.educacional.luis.durand.durand.implementsServices.IPaisImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IPaisServices;
 import com.complejo.educacional.luis.durand.durand.models.Pais;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/biblioteca/v1/")
 public class PaisRestController {
 	@Autowired
-	private IPaisImplements iPaisImplements;
+	private IPaisServices iPaisServices;
 
 	/**
 	 *
@@ -69,7 +69,7 @@ public class PaisRestController {
 			return responseEntity;
 		}
 		try {
-			Pais paisFromDB = iPaisImplements.save(pais);
+			Pais paisFromDB = iPaisServices.save(pais);
 			if (paisFromDB != null) {
 				responseAsMap.put("producto", pais);
 				responseAsMap.put("Mensaje: ", "El País con ID: " + pais.getId_pais() + "¡Sé creó exitosamente!");
@@ -111,7 +111,7 @@ public class PaisRestController {
 			return responseEntity;
 		}
 		try {
-			Pais paisFromDB = iPaisImplements.update(id, pais);
+			Pais paisFromDB = iPaisServices.update(id, pais);
 			if (paisFromDB != null) {
 				responseAsMap.put("producto", pais);
 				responseAsMap.put("Mensaje: ", "El País con ID: " + pais.getId_pais() + "¡Sé Actualizo exitosamente!");
@@ -146,9 +146,9 @@ public class PaisRestController {
 		try {
 			if (page != null & size != null) {
 				Pageable pageable = PageRequest.of(page, size, sortByName);
-				paises = iPaisImplements.findAllPaisPageable(pageable).getContent();
+				paises = iPaisServices.findAllPaisPageable(pageable).getContent();
 			} else {
-				paises = iPaisImplements.findAllPaisSort(sortByName);
+				paises = iPaisServices.findAllPaisSort(sortByName);
 			}
 			// Validación sí tiene Paises la lista
 			responseEntity=(paises.size() > 0)?new ResponseEntity<List<Pais>>(paises, HttpStatus.OK):
@@ -176,7 +176,7 @@ public class PaisRestController {
 		Pais pais = null;
 		ResponseEntity<Pais> responseEntity = null;
 		try {
-			pais = iPaisImplements.findById(id);
+			pais = iPaisServices.findById(id);
 			responseEntity=(pais != null) ?  
 					new ResponseEntity<Pais>(pais, HttpStatus.OK): 
 					new ResponseEntity<Pais>(pais, HttpStatus.NO_CONTENT);
@@ -205,11 +205,11 @@ public class PaisRestController {
         ResponseEntity<Pais> responseEntity = null;
         try {
 
-            paises = iPaisImplements.findById(id);
+            paises = iPaisServices.findById(id);
             // si exite
             if (paises != null) {
                 // retorna un 200
-                iPaisImplements.delete(id);
+                iPaisServices.delete(id);
                 responseEntity = new ResponseEntity<Pais>(HttpStatus.OK);
             } else {
                 // retorna un 202

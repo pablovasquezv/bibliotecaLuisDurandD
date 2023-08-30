@@ -3,7 +3,7 @@ package com.complejo.educacional.luis.durand.durand.services;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
-import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IEditorialServices;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import com.complejo.educacional.luis.durand.durand.repositories.IEditorialRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class EditorialServices implements IEditorialImplements {
+public class EditorialServicesImpl implements IEditorialServices {
     @Autowired
     private IEditorialRepository iEditorialRepository;
 

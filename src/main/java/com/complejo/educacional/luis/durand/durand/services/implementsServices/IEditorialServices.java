@@ -1,9 +1,8 @@
-package com.complejo.educacional.luis.durand.durand.implementsServices;
+package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
-import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,7 @@ import java.util.List;
  *
  */
 
-public interface IEditorialImplements {
+public interface IEditorialServices {
     /**
      *
      * @param editorialDTORequest
