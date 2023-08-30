@@ -1,8 +1,9 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
-import com.complejo.educacional.luis.durand.durand.implementsServices.ICategoriaImplements;
-import com.complejo.educacional.luis.durand.durand.models.Autor;
-import com.complejo.educacional.luis.durand.durand.models.Categoria;
+import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.CategoriaRequestUpdate;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.ICategoriaServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,16 +30,17 @@ import java.util.Map;
 @RequestMapping(value = "/biblioteca/v1/")
 public class CategoriaRestController {
     @Autowired
-    private ICategoriaImplements iCategoriaImplements;
+    private ICategoriaServices iCategoriaImplements;
 
     /**
-     * @param categoria
+     * @param categoriaDTORequest
      * @param bindingResult
-     * @return
+     * @return responseEntity
      * @throws Exception
      */
     @PostMapping(value = "categoria/create")
-    private ResponseEntity<Map<String, Object>> addNewCategoria(@Valid @RequestBody Categoria categoria, BindingResult bindingResult) throws Exception {
+    private ResponseEntity<Map<String, Object>> addNewCategoria(@Valid @RequestBody CategoriaDTORequest
+                                                                        categoriaDTORequest, BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         List<String> errores = null;
@@ -52,10 +54,10 @@ public class CategoriaRestController {
             return responseEntity;
         }
         try {
-            Categoria categoriaFromDB = iCategoriaImplements.saveCategoria(categoria);
+            CategoriaDTORequest categoriaFromDB = iCategoriaImplements.saveCategoria(categoriaDTORequest);
             if (categoriaFromDB != null) {
-                responseAsMap.put("Categoría", categoria);
-                responseAsMap.put("¡Mensaje", "La Categoría con ID: " + categoria.getId_categoria() + " se creó correctamente!");
+                responseAsMap.put("Categoría", categoriaDTORequest);
+                responseAsMap.put("¡Mensaje", "La Categoría se creó correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
                 return responseEntity;
             } else {
@@ -72,14 +74,16 @@ public class CategoriaRestController {
 
 
     /**
+     *
      * @param id
-     * @param categoria
+     * @param categoriaRequestUpdate
      * @param bindingResult
      * @return
      * @throws Exception
      */
     @PutMapping(value = "categoria/update/{id}")
-    private ResponseEntity<Map<String, Object>> updateCategoria(@PathVariable long id, @Valid @RequestBody Categoria categoria, BindingResult bindingResult) throws Exception {
+    private ResponseEntity<Map<String, Object>> updateCategoria(@PathVariable long id, @Valid @RequestBody
+    CategoriaRequestUpdate categoriaRequestUpdate, BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         List<String> errores = null;
@@ -93,37 +97,39 @@ public class CategoriaRestController {
             return responseEntity;
         }
         try {
-            Categoria udateCategoriaFromDB = iCategoriaImplements.updateCategoria(id, categoria);
+            CategoriaDTOResponse udateCategoriaFromDB = iCategoriaImplements.updateCategoria(id, categoriaRequestUpdate);
             if (udateCategoriaFromDB != null) {
-                responseAsMap.put("Categoría", categoria);
-                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoria.getId_categoria() + " sé actualizó!");
+                responseAsMap.put("Categoría", categoriaRequestUpdate);
+                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoriaRequestUpdate.getId_categoria() + " sé actualizó!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
                 return responseEntity;
             } else {
-                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoria.getId_categoria() + " no sé actualizó!");
+                responseAsMap.put("Mensaje: ", "¡La Categoría " + categoriaRequestUpdate.getId_categoria() + " no sé actualizó!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
                 return responseEntity;
             }
 
         } catch (DataAccessException dataAccessException) {
-            responseAsMap.put("Mensaje", "No se actulizó la Categoría " + categoria.getId_categoria() + " a causa de este:" + dataAccessException.getMostSpecificCause().toString());
+            responseAsMap.put("Mensaje", "No se actulizó la Categoría " + categoriaRequestUpdate.getId_categoria() +
+                    " a causa de este:" + dataAccessException.getMostSpecificCause().toString());
             responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
 
     /**
+     *
      * @param page
      * @param size
-     * @return
+     * @return responseEntity
      * @throws Exception
      */
     @GetMapping(value = "categoria/get/all")
-    private ResponseEntity<List<Categoria>> findAllCategoria(@RequestParam(required = false) Integer page,
+    private ResponseEntity<List<CategoriaDTOResponse>> findAllCategoria(@RequestParam(required = false) Integer page,
                                                              @RequestParam(required = false) Integer size) throws Exception {
         Sort sortByName = Sort.by("nombre_categoria");
-        ResponseEntity<List<Categoria>> responseEntity = null;
-        List<Categoria> categoriaList = null;
+        ResponseEntity<List<CategoriaDTOResponse>> responseEntity = null;
+        List<CategoriaDTOResponse> categoriaList = null;
         Pageable pageable = null;
         try {
             if (page != null & size != null) {
@@ -134,62 +140,62 @@ public class CategoriaRestController {
                 categoriaList = iCategoriaImplements.findAllCategoriaSort(sortByName);
             }
             responseEntity = (categoriaList.size() > 0) ?
-                    new ResponseEntity<List<Categoria>>(categoriaList, HttpStatus.OK)
+                    new ResponseEntity<List<CategoriaDTOResponse>>(categoriaList, HttpStatus.OK)
                     :
-                    new ResponseEntity<List<Categoria>>(categoriaList, HttpStatus.NO_CONTENT);
+                    new ResponseEntity<List<CategoriaDTOResponse>>(categoriaList, HttpStatus.NO_CONTENT);
             return responseEntity;
         } catch (Exception e) {
             log.error("¡Ocurrió un error al obtener la lista de Categorías!", e.getCause().toString());
-            responseEntity = new ResponseEntity<List<Categoria>>(HttpStatus.BAD_GATEWAY);
+            responseEntity = new ResponseEntity<List<CategoriaDTOResponse>>(HttpStatus.BAD_GATEWAY);
         }
         return responseEntity;
     }
 
     /**
      * @param id
-     * @return
+     * @return responseEntity
      * @throws Exception
      */
     @GetMapping(value = "categoria/{id}")
-    private ResponseEntity<Categoria> findByIdCategoria(@PathVariable long id) throws Exception {
-        Categoria categoriaSearch = null;
-        ResponseEntity<Categoria> responseEntity = null;
+    private ResponseEntity<CategoriaDTOResponse> findByIdCategoria(@PathVariable long id) throws Exception {
+        CategoriaDTOResponse categoriaSearch = null;
+        ResponseEntity<CategoriaDTOResponse> responseEntity = null;
         try {
             categoriaSearch = iCategoriaImplements.findByIdCategoria(id);
             responseEntity = (categoriaSearch != null) ?
-                    new ResponseEntity<Categoria>(categoriaSearch, HttpStatus.OK)
+                    new ResponseEntity<CategoriaDTOResponse>(categoriaSearch, HttpStatus.OK)
                     :
-                    new ResponseEntity<Categoria>(categoriaSearch, HttpStatus.NO_CONTENT);
+                    new ResponseEntity<CategoriaDTOResponse>(categoriaSearch, HttpStatus.NO_CONTENT);
             return responseEntity;
         } catch (DataAccessException dataAccessException) {
             log.error("¡Ocurrio un error al buscar la Categoría! " + dataAccessException.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<Categoria>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<CategoriaDTOResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
 
     /**
      * @param id
-     * @return
+     * @return responseEntity
      * @throws Exception
      */
     @DeleteMapping(value = "categoria/delete/{id}")
-    private ResponseEntity<Categoria> deleteByIdCategoria(@PathVariable long id) throws Exception {
-        Categoria categoriaDelete = null;
-        ResponseEntity<Categoria> responseEntity = null;
+    private ResponseEntity<CategoriaDTOResponse> deleteByIdCategoria(@PathVariable long id) throws Exception {
+        CategoriaDTOResponse categoriaDelete = null;
+        ResponseEntity<CategoriaDTOResponse> responseEntity = null;
         try {
             categoriaDelete = iCategoriaImplements.findByIdCategoria(id);
             if (categoriaDelete != null) {
-                iCategoriaImplements.deleteEditorialById(id);
-                responseEntity = new ResponseEntity<Categoria>(HttpStatus.OK);
+                iCategoriaImplements.deleteCategoriaById(id);
+                responseEntity = new ResponseEntity<CategoriaDTOResponse>(HttpStatus.OK);
                 return responseEntity;
             } else {
-                responseEntity = new ResponseEntity<Categoria>(HttpStatus.NO_CONTENT);
+                responseEntity = new ResponseEntity<CategoriaDTOResponse>(HttpStatus.NO_CONTENT);
                 return responseEntity;
             }
         } catch (DataAccessException dataAccessException) {
             log.error("Ocurrio un error al eliminar la Categoría: " + dataAccessException.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<Categoria>(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<CategoriaDTOResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
