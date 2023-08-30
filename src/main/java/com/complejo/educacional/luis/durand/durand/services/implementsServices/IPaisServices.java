@@ -23,7 +23,7 @@ public interface IPaisServices {
 	 * @return
 	 * @throws Exception
 	 */
-	public PaisDTORequest save(PaisDTORequest paisDTORequest) throws Exception;
+	public PaisDTORequest createPais(PaisDTORequest paisDTORequest) throws Exception;
 
 	/**
 	 *
@@ -33,7 +33,7 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public PaisDTOResponse update(Long id, PaisDTORequestUpdate paisDTORequestUpdate) throws Exception;
+	public PaisDTOResponse updatePais(Long id, PaisDTORequestUpdate paisDTORequestUpdate) throws Exception;
 
 	/**
 	 *
@@ -68,6 +68,6 @@ public interface IPaisServices {
 	 * @throws Exception
 	 */
 
-	public Object void deletePaisById(long id) throws Exception;
+	public void deletePaisById(long id) throws Exception;
 
 }
