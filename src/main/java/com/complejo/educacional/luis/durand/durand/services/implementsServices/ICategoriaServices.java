@@ -23,12 +23,13 @@ public interface ICategoriaServices {
 
     /**
      *
+     * @param id
      * @param categoriaRequestUpdate
      * @return
      * @throws Exception
      */
 
-    public CategoriaDTOResponse updateCategoria(CategoriaRequestUpdate categoriaRequestUpdate) throws Exception;
+    public CategoriaDTOResponse updateCategoria(Long id,CategoriaRequestUpdate categoriaRequestUpdate) throws Exception;
 
     /**
      *
