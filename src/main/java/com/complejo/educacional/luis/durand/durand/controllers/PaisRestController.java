@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.complejo.educacional.luis.durand.durand.controllers;
 
@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.PaisDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +34,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.IPaisServices;
-import com.complejo.educacional.luis.durand.durand.models.Pais;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,177 +45,180 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value = "/biblioteca/v1/")
 public class PaisRestController {
-	@Autowired
-	private IPaisServices iPaisServices;
+    @Autowired
+    private IPaisServices iPaisServices;
 
-	/**
-	 *
-	 * @param pais
-	 * @param bindingResult
-	 * @return
-	 * @throws Exception
-	 */
-	@PostMapping("pais/create")
-	private ResponseEntity<Map<String, Object>> addNewPais(@Valid @RequestBody Pais pais, BindingResult bindingResult)
-			throws Exception {
-		Map<String, Object> responseAsMap = new HashMap<String, Object>();
-		ResponseEntity<Map<String, Object>> responseEntity = null;
-		List<String> errores = null;
-		if (bindingResult.hasErrors()) {
-			errores = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				errores.add(error.getDefaultMessage());
-			}
-			responseAsMap.put("errores", errores);
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
-			return responseEntity;
-		}
-		try {
-			Pais paisFromDB = iPaisServices.save(pais);
-			if (paisFromDB != null) {
-				responseAsMap.put("producto", pais);
-				responseAsMap.put("Mensaje: ", "El País con ID: " + pais.getId_pais() + "¡Sé creó exitosamente!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
-			} else {
-				responseAsMap.put("Mensaje: ", "¡No sé creó el País!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
-						HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} catch (DataAccessException e) {
-			// TODO: handle exception}
-			responseAsMap.put("Mensaje: ", "¡No sé creo el País!" + e.getMostSpecificCause().toString());
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return responseEntity;
-	}
+    /**
+     *
+     * @param paisDTORequest
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("pais/create")
+    private ResponseEntity<Map<String, Object>> addNewPais(@Valid @RequestBody PaisDTORequest paisDTORequest,
+                                                           BindingResult bindingResult)
+            throws Exception {
+        Map<String, Object> responseAsMap = new HashMap<String, Object>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        List<String> errores = null;
+        if (bindingResult.hasErrors()) {
+            errores = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("errores", errores);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        try {
+            PaisDTORequest paisFromDB = iPaisServices.createPais(paisDTORequest);
+            if (paisFromDB != null) {
+                responseAsMap.put("producto", paisDTORequest);
+                responseAsMap.put("Mensaje: ", "El País Sé creó exitosamente!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensaje: ", "¡No sé creó el País!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException e) {
+            // TODO: handle exception}
+            responseAsMap.put("Mensaje: ", "¡No sé creo el País!" + e.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
 
-	/**
-	 *
-	 * @param id
-	 * @param pais
-	 * @param bindingResult
-	 * @return
-	 * @throws Exception
-	 */
-	@PutMapping("pais/update/{id}")
-	private ResponseEntity<Map<String, Object>> updatePais(@PathVariable long id, @Valid @RequestBody Pais pais,
-			BindingResult bindingResult) throws Exception {
-		Map<String, Object> responseAsMap = new HashMap<String, Object>();
-		ResponseEntity<Map<String, Object>> responseEntity = null;
-		List<String> errores = null;
-		if (bindingResult.hasErrors()) {
-			errores = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				errores.add(error.getDefaultMessage());
-			}
-			responseAsMap.put("errores", errores);
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
-			return responseEntity;
-		}
-		try {
-			Pais paisFromDB = iPaisServices.update(id, pais);
-			if (paisFromDB != null) {
-				responseAsMap.put("producto", pais);
-				responseAsMap.put("Mensaje: ", "El País con ID: " + pais.getId_pais() + "¡Sé Actualizo exitosamente!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
-			} else {
-				responseAsMap.put("Mensaje: ", "¡No sé actualizo el País!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
-						HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} catch (DataAccessException e) {
-			// TODO: handle exception}
-			responseAsMap.put("Mensaje: ", "¡No sé actualizo el País!" + e.getMostSpecificCause().toString());
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return responseEntity;
-	}
+    /**
+     *
+     * @param id
+     * @param paisDTORequestUpdate
+     * @param bindingResult
+     * @return
+     * @throws Exception
+     */
+    @PutMapping("pais/update/{id}")
+    private ResponseEntity<Map<String, Object>> updatePais(@PathVariable long id, @Valid @RequestBody PaisDTORequestUpdate
+            paisDTORequestUpdate, BindingResult bindingResult) throws Exception {
+        Map<String, Object> responseAsMap = new HashMap<String, Object>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        List<String> errores = null;
+        if (bindingResult.hasErrors()) {
+            errores = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errores.add(error.getDefaultMessage());
+            }
+            responseAsMap.put("errores", errores);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+        try {
+            PaisDTOResponse paisFromDB = iPaisServices.updatePais(id, paisDTORequestUpdate);
+            if (paisFromDB != null) {
+                responseAsMap.put("producto", paisDTORequestUpdate);
+                responseAsMap.put("Mensaje: ", "El País con ID: " + paisDTORequestUpdate.getId_pais() + "¡Sé Actualizo exitosamente!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensaje: ", "¡No sé actualizo el País!");
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException e) {
+            // TODO: handle exception}
+            responseAsMap.put("Mensaje: ", "¡No sé actualizo el País!" + e.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
 
-	/**
-	 *
-	 * @param page
-	 * @param size
-	 * @return
-	 */
-	@GetMapping("pais/get/all")
-	@ResponseStatus(HttpStatus.OK)
-	private ResponseEntity<List<Pais>> findAllAlumnos(@RequestParam(required = false) Integer page,
-			@RequestParam(required = false) Integer size) {
-		// Para ordenar la búsqueda
-		Sort sortByName = Sort.by("nombre_pais");
-		ResponseEntity<List<Pais>> responseEntity = null;
-		List<Pais> paises = null;
-		try {
-			if (page != null & size != null) {
-				Pageable pageable = PageRequest.of(page, size, sortByName);
-				paises = iPaisServices.findAllPaisPageable(pageable).getContent();
-			} else {
-				paises = iPaisServices.findAllPaisSort(sortByName);
-			}
-			// Validación sí tiene Paises la lista
-			responseEntity=(paises.size() > 0)?new ResponseEntity<List<Pais>>(paises, HttpStatus.OK):
-				new ResponseEntity<List<Pais>>(HttpStatus.NO_CONTENT);
-					
-			
-			/**if (paises.size() > 0) {
-				responseEntity = new ResponseEntity<List<Pais>>(paises, HttpStatus.OK);
-			} else {
-				responseEntity = new ResponseEntity<List<Pais>>(HttpStatus.NO_CONTENT);
-			}*/
-		} catch (Exception e) {
-			 log.error("Ocurrio un error a Listar los Paises => "+e);
-		}
-		return responseEntity;
-	}
+    /**
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("pais/get/all")
+    @ResponseStatus(HttpStatus.OK)
+    private ResponseEntity<List<PaisDTOResponse>> findAllAlumnos(@RequestParam(required = false) Integer page,
+                                                                 @RequestParam(required = false) Integer size) {
+        // Para ordenar la búsqueda
+        Sort sortByName = Sort.by("nombre_pais");
+        ResponseEntity<List<PaisDTOResponse>> responseEntity = null;
+        List<PaisDTOResponse> paises = null;
+        try {
+            if (page != null & size != null) {
+                Pageable pageable = PageRequest.of(page, size, sortByName);
+                paises = iPaisServices.findAllPaisPageable(pageable).getContent();
+            } else {
+                paises = iPaisServices.findAllPaisSort(sortByName);
+            }
+            // Validación sí tiene Paises la lista
+            responseEntity = (paises.size() > 0) ?
+                    new ResponseEntity<List<PaisDTOResponse>>(paises, HttpStatus.OK)
+                    :
+                    new ResponseEntity<List<PaisDTOResponse>>(HttpStatus.NO_CONTENT);
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
-	@GetMapping(value = "pais/{id}")
-	private ResponseEntity<Pais> findById(@PathVariable int id) {
-		Pais pais = null;
-		ResponseEntity<Pais> responseEntity = null;
-		try {
-			pais = iPaisServices.findById(id);
-			responseEntity=(pais != null) ?  
-					new ResponseEntity<Pais>(pais, HttpStatus.OK): 
-					new ResponseEntity<Pais>(pais, HttpStatus.NO_CONTENT);
-			/**if (pais != null) {
-				responseEntity = new ResponseEntity<Pais>(pais, HttpStatus.OK);
-			} else {
-				responseEntity = new ResponseEntity<Pais>(pais, HttpStatus.NO_CONTENT);
-			}*/
-		} catch (Exception e) {
-			// TODO: handle exception
-			log.error("Ocurrio un error =>" + e);
-		}
-		return responseEntity;
-	}
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
+            /**if (paises.size() > 0) {
+             responseEntity = new ResponseEntity<List<Pais>>(paises, HttpStatus.OK);
+             } else {
+             responseEntity = new ResponseEntity<List<Pais>>(HttpStatus.NO_CONTENT);
+             }*/
+        } catch (Exception e) {
+            log.error("Ocurrio un error a Listar los Paises => " + e);
+        }
+        return responseEntity;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "pais/{id}")
+    private ResponseEntity<PaisDTOResponse> findById(@PathVariable int id) {
+        PaisDTOResponse pais = null;
+        ResponseEntity<PaisDTOResponse> responseEntity = null;
+        try {
+            pais = iPaisServices.findById(id);
+            responseEntity = (pais != null) ?
+                    new ResponseEntity<PaisDTOResponse>(pais, HttpStatus.OK) :
+                    new ResponseEntity<PaisDTOResponse>(pais, HttpStatus.NO_CONTENT);
+            /**if (pais != null) {
+             responseEntity = new ResponseEntity<Pais>(pais, HttpStatus.OK);
+             } else {
+             responseEntity = new ResponseEntity<Pais>(pais, HttpStatus.NO_CONTENT);
+             }*/
+        } catch (Exception e) {
+            // TODO: handle exception
+            log.error("Ocurrio un error =>" + e);
+        }
+        return responseEntity;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("pais/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private ResponseEntity<Pais> deleteById(@PathVariable int id) {
+    private ResponseEntity<PaisDTOResponse> deleteById(@PathVariable long id) {
         // TODO Auto-generated method stub
-        Pais paises = null;
-        ResponseEntity<Pais> responseEntity = null;
+        PaisDTOResponse paises = null;
+        ResponseEntity<PaisDTOResponse> responseEntity = null;
         try {
 
             paises = iPaisServices.findById(id);
             // si exite
             if (paises != null) {
                 // retorna un 200
-                iPaisServices.delete(id);
-                responseEntity = new ResponseEntity<Pais>(HttpStatus.OK);
+                iPaisServices.deletePaisById(id);
+                responseEntity = new ResponseEntity<PaisDTOResponse>(HttpStatus.OK);
             } else {
                 // retorna un 202
-                responseEntity = new ResponseEntity<Pais>(HttpStatus.NO_CONTENT);
+                responseEntity = new ResponseEntity<PaisDTOResponse>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
             log.error("Ocurrio un Error =>" + e);
