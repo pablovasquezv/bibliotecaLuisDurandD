@@ -38,6 +38,7 @@ import lombok.ToString;
  * @AllArgsConstructor: Constructor con parámetros
  * @NoArgsConstructor:Constructor sin parámetros
  */
+
 @Entity
 @Data
 @Table(name = "pais")
