@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
@@ -19,56 +19,56 @@ import com.complejo.educacional.luis.durand.durand.models.Autor;
  *
  */
 public interface IAutorServices {
-	/**
-	 *
-	 * @param autor
-	 * @return
-	 * @throws Exception
-	 */
-	public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception;
+    /**
+     *
+     * @param autorDTORequest
+     * @return
+     * @throws Exception
+     */
+    public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception;
 
-	/**
-	 *
-	 * @param id
-	 * @param autor
-	 * @return
-	 * @throws Exception
-	 */
+    /**
+     *
+     * @param id
+     * @param autorDTOResponseUpdate
+     * @return
+     * @throws Exception
+     */
 
-	public AutorDTOResponse updateAutor(Long id, AutorDTOResponseUpdate autorDTOResponseUpdate) throws Exception;
+    public AutorDTOResponse updateAutor(Long id, AutorDTOResponseUpdate autorDTOResponseUpdate) throws Exception;
 
-	/**
-	 *
-	 * @param sort
-	 * @return
-	 * @throws Exception
-	 */
+    /**
+     *
+     * @param sort
+     * @return
+     * @throws Exception
+     */
 
-	public List<Autor> findAllAutorSort(Sort sort) throws Exception;
+    public List<Autor> findAllAutorSort(Sort sort) throws Exception;
 
-	/**
-	 *
-	 * @param pageable
-	 * @return
-	 * @throws Exception
-	 */
+    /**
+     *
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
 
-	public Page<AutorDTOResponse> findAllAutorPage(Pageable pageable) throws Exception;
+    public Page<AutorDTOResponse> findAllAutorPage(Pageable pageable) throws Exception;
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 * @throws Exception
-	 */
+    /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
 
-	public AutorDTOResponse findByIdAutor(long id) throws Exception;
+    public AutorDTOResponse findByIdAutor(long id) throws Exception;
 
-	/**
-	 *
-	 * @param id
-	 * @throws Exception
-	 */
+    /**
+     *
+     * @param id
+     * @throws Exception
+     */
 
-	public void deleteAutorById(long id) throws Exception;
+    public void deleteAutorById(long id) throws Exception;
 }
