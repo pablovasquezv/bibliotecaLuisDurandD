@@ -20,6 +20,7 @@ import java.util.Date;
 @ToString
 public class CategoriaRequestUpdate {
     //Atributos
+    private Long id_categoria;
     private String nombre_categoria;
     private String descripcion_categoria;
     private Date createAt;
