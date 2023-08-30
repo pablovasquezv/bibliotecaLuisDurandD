@@ -31,6 +31,6 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
 
 	//Buscar por id
 	@Query(value = "select a from Autor a left join a.pais where a.id=:id")
-	public Autor findById(long id);
+	public Autor findByIdAutor(long id);
 	
 }
