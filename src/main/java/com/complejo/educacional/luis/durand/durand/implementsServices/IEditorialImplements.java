@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.implementsServices;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import org.springframework.data.domain.Page;
@@ -25,11 +26,11 @@ public interface IEditorialImplements {
     /**
      *
      * @param id
-     * @param editorialDTOResponse
+     * @param editorialDTORequestUpdate
      * @return
      * @throws Exception
      */
-    public EditorialDTOResponse updateEditorial(Long id, EditorialDTOResponse editorialDTOResponse) throws Exception;
+    public EditorialDTOResponse updateEditorial(Long id, EditorialDTORequestUpdate editorialDTORequestUpdate) throws Exception;
 
     /**
      *

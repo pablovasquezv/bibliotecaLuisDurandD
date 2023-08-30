@@ -1,9 +1,9 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
-import com.complejo.educacional.luis.durand.durand.models.Editorial;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +34,12 @@ public class EditorialRestController {
     private IEditorialImplements iEditorialImplements;
 
     /**
-     *
      * @param editorialDTORequest
      * @param bindingResult
      * @return
      * @throws Exception
      */
+
     @PostMapping(value = "editorial/create")
     private ResponseEntity<Map<String, Object>> addNewEditorial(@Valid @RequestBody EditorialDTORequest editorialDTORequest,
                                                                 BindingResult bindingResult)
@@ -74,14 +74,16 @@ public class EditorialRestController {
     }
 
     /**
+     *
      * @param id
-     * @param editorial
+     * @param editorialDTORequestUpdate
      * @param bindingResult
      * @return
      * @throws Exception
      */
     @PutMapping(value = "editorial/update/{id}")
-    private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody EditorialDTOResponse editorial,
+    private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody
+    EditorialDTORequestUpdate editorialDTORequestUpdate,
                                                                 BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -96,10 +98,10 @@ public class EditorialRestController {
             return responseEntity;
         }
         try {
-            EditorialDTOResponse editorialFromDB = iEditorialImplements.updateEditorial(id, editorial);
+            EditorialDTOResponse editorialFromDB = iEditorialImplements.updateEditorial(id, editorialDTORequestUpdate);
             if (editorialFromDB != null) {
-                responseAsMap.put("Editorial", editorial);
-                responseAsMap.put("Mensaje", "¡La Editorial con ID" + editorial.getId_editorial() + "Sé actualizo correctamente!");
+                responseAsMap.put("Editorial", editorialDTORequestUpdate);
+                responseAsMap.put("Mensaje", "¡La Editorial con ID: " + editorialDTORequestUpdate.getId_editorial() + "Sé actualizo correctamente!");
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
                 responseAsMap.put("Mensaje", "¡La Editorial No se actualizo!");
@@ -148,6 +150,29 @@ public class EditorialRestController {
     /**
      * @param id
      * @return responseEntity
+     */
+    @GetMapping(value = "editorial/{id}")
+    private ResponseEntity<EditorialDTOResponse> findByIdEditorial(@PathVariable long id) {
+        EditorialDTOResponse editorialDTOResponse = null;
+        ResponseEntity<EditorialDTOResponse> responseEntity = null;
+        try {
+            editorialDTOResponse = iEditorialImplements.findByIdEditorial(id);
+            responseEntity = (editorialDTOResponse != null) ?
+                    new ResponseEntity<EditorialDTOResponse>(editorialDTOResponse, HttpStatus.OK)
+                    :
+                    new ResponseEntity<EditorialDTOResponse>(editorialDTOResponse, HttpStatus.NO_CONTENT);
+        } catch (DataAccessException dataAccessException) {
+            log.error("Ocurrio un error: " + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<EditorialDTOResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * @param id
+     * @return responseEntity
      * @throws Exception
      */
     @DeleteMapping(value = "editorial/delete/{id}")
@@ -168,6 +193,8 @@ public class EditorialRestController {
         }
         return responseEntity;
     }
+
+
 }
 
 

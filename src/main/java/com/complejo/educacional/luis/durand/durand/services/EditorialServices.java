@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.services;
 
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.implementsServices.IEditorialImplements;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
@@ -64,21 +65,48 @@ public class EditorialServices implements IEditorialImplements {
     /**
      *
      * @param id
-     * @param editorialDTOResponse
+     * @param editorialDTORequestUpdate
      * @return
      * @throws Exception
      */
     @Override
     @Transactional(readOnly = false)
-    public EditorialDTOResponse updateEditorial(Long id, EditorialDTOResponse editorialDTOResponse) throws Exception {
+    public EditorialDTOResponse updateEditorial(Long id, EditorialDTORequestUpdate editorialDTORequestUpdate) throws Exception {
         Optional<Editorial> optionalEditorial = null;
-        Editorial editorialUpdate = null;
+        EditorialDTOResponse editorialDTOResponse = new EditorialDTOResponse();
+        Editorial editorialUpdate = new Editorial(
+                editorialDTORequestUpdate.getId_editorial(),
+                editorialDTORequestUpdate.getNombre_editorial(),
+                editorialDTORequestUpdate.getDescripcion_editorial(),
+                editorialDTORequestUpdate.getDireccion_editorial(),
+                editorialDTORequestUpdate.getTelefono_editorial(),
+                editorialDTORequestUpdate.getCorreoElectronico_editorial(),
+                editorialDTORequestUpdate.getCreateAt(),
+                editorialDTORequestUpdate.getUpdateAt()
+        );
+
         try {
             optionalEditorial = iEditorialRepository.findById(id);
-            editorialUpdate = optionalEditorial.get();
-            iEditorialRepository.save(editorialUpdate);
-            log.info("¡Editorial Actualizada!" + objectMapper.writeValueAsString(iEditorialRepository.save(editorialUpdate)));
-            return editorialDTOResponse ;
+            if (optionalEditorial.isPresent()) {
+                log.info("¡Editorial  optionalEditorial! " + objectMapper.writeValueAsString(iEditorialRepository.findById(id)));
+                // editorialUpdate = optionalEditorial.get();
+                log.info("¡Editorial  editorialUpdate ! " + objectMapper.writeValueAsString(optionalEditorial.get()));
+                editorialUpdate = iEditorialRepository.save(editorialUpdate);
+                log.info("¡Editorial Actualizada!" + objectMapper.writeValueAsString(iEditorialRepository.save(editorialUpdate)));
+            } else {
+                log.error("Falló la actualización de la Editorial =>");
+            }
+            editorialDTOResponse = new EditorialDTOResponse(
+                    editorialUpdate.getId_editorial(),
+                    editorialUpdate.getNombre_editorial(),
+                    editorialUpdate.getDescripcion_editorial(),
+                    editorialUpdate.getDireccion_editorial(),
+                    editorialUpdate.getTelefono_editorial(),
+                    editorialUpdate.getCorreoElectronico_editorial(),
+                    editorialUpdate.getCreateAt(),
+                    editorialUpdate.getUpdateAt()
+            );
+            return editorialDTOResponse;
         } catch (Exception e) {
             log.error("Falló la actualización de la Editorial =>", e.getCause().toString());
         }
@@ -95,7 +123,7 @@ public class EditorialServices implements IEditorialImplements {
     @Transactional(readOnly = true)
     public List<EditorialDTOResponse> findAllEditorialSort(Sort sort) throws Exception {
         List<EditorialDTOResponse> editorialDTOResponses = new ArrayList<EditorialDTOResponse>();
-        for (Editorial editorial: iEditorialRepository.findAllEditorialSort(sort)){
+        for (Editorial editorial : iEditorialRepository.findAllEditorialSort(sort)) {
             editorialDTOResponses.add(
                     new EditorialDTOResponse(
                             editorial.getId_editorial(),
@@ -121,7 +149,7 @@ public class EditorialServices implements IEditorialImplements {
     @Transactional(readOnly = true)
     public Page<EditorialDTOResponse> findAllEditorialPage(Pageable pageable) throws Exception {
         List<EditorialDTOResponse> editorialDTOResponses = new ArrayList<EditorialDTOResponse>();
-        for (Editorial editorial: iEditorialRepository.findAllEditorialPage(pageable)){
+        for (Editorial editorial : iEditorialRepository.findAllEditorialPage(pageable)) {
             editorialDTOResponses.add(
                     new EditorialDTOResponse(
                             editorial.getId_editorial(),
@@ -139,7 +167,6 @@ public class EditorialServices implements IEditorialImplements {
     }
 
     /**
-     *
      * @param id
      * @return EditorialDTOResponse
      * @throws Exception
