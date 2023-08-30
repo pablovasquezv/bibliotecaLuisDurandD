@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.complejo.educacional.luis.durand.durand.implementsServices;
+package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import com.complejo.educacional.luis.durand.durand.models.Pais;
  * @author Pablo
  *
  */
-public interface IPaisImplements {
+public interface IPaisServices {
 	/**
 	 *
 	 * @param pais

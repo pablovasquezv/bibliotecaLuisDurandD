@@ -18,7 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import com.complejo.educacional.luis.durand.durand.implementsServices.IAutorImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IAutorServices;
 import com.complejo.educacional.luis.durand.durand.models.Autor;
 
 
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/biblioteca/v1/")
 public class AutorRestController {
     @Autowired
-    private IAutorImplements iAutorImplements;
+    private IAutorServices iAutorServices;
 
     /**
      * @param autor
@@ -56,7 +56,7 @@ public class AutorRestController {
             return responseEntity;
         }
         try {
-            Autor autorFromDB = iAutorImplements.saveAutor(autor);
+            Autor autorFromDB = iAutorServices.saveAutor(autor);
             if (autorFromDB != null) {
                 responseAsMap.put("Autor", autor);
                 responseAsMap.put("Mensaje:", "El Autor con ID:" + autor.getId_autor() + "¡Sé creó exitosamente!");
@@ -96,7 +96,7 @@ public class AutorRestController {
             return responseEntity;
         }
         try {
-            Autor autorFromDB = iAutorImplements.updateAutor(id, autor);
+            Autor autorFromDB = iAutorServices.updateAutor(id, autor);
             if (autorFromDB != null) {
                 responseAsMap.put("Autor", autor);
                 responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autor.getId_autor() + "!");
@@ -130,9 +130,9 @@ public class AutorRestController {
         try {
             if (page != null & size != null) {
                 pageable = PageRequest.of(page, size, sortByName);
-                autores = iAutorImplements.findAllAutorPage(pageable).getContent();
+                autores = iAutorServices.findAllAutorPage(pageable).getContent();
             } else {
-                autores = iAutorImplements.findAllAutorSort(sortByName);
+                autores = iAutorServices.findAllAutorSort(sortByName);
             }
             // Validación sí tiene Autores la lista
             responseEntity = (autores.size() > 0) ?
@@ -162,7 +162,7 @@ public class AutorRestController {
         Autor autor = null;
         ResponseEntity<Autor> responseEntity = null;
         try {
-            autor = iAutorImplements.findByIdAutor(id);
+            autor = iAutorServices.findByIdAutor(id);
             if (autor != null) {
                 responseEntity = new ResponseEntity<Autor>(autor, HttpStatus.OK);
             } else {
@@ -185,9 +185,9 @@ public class AutorRestController {
         Autor autor = null;
         ResponseEntity<Autor> responseEntity = null;
         try {
-            autor = iAutorImplements.findByIdAutor(id);
+            autor = iAutorServices.findByIdAutor(id);
             if (autor != null) {
-                iAutorImplements.deleteAutorById(id);
+                iAutorServices.deleteAutorById(id);
                 responseEntity = new ResponseEntity<Autor>(HttpStatus.OK);
             } else {
                 responseEntity = new ResponseEntity<Autor>(HttpStatus.NO_CONTENT);

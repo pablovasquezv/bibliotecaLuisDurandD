@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.complejo.educacional.luis.durand.durand.implementsServices.IAutorImplements;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IAutorServices;
 import com.complejo.educacional.luis.durand.durand.models.Autor;
 import com.complejo.educacional.luis.durand.durand.repositories.IAutorRepository;
 import com.complejo.educacional.luis.durand.durand.utils.Utils;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class AutorServices implements IAutorImplements {
+public class AutorServicesImp implements IAutorServices {
     @Autowired
     private IAutorRepository iAutorRepository;
 

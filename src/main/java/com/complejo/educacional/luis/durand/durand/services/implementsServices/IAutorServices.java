@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.complejo.educacional.luis.durand.durand.implementsServices;
+package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import com.complejo.educacional.luis.durand.durand.models.Autor;
  * @author Pablo
  *
  */
-public interface IAutorImplements {
+public interface IAutorServices {
 	/**
 	 *
 	 * @param autor
