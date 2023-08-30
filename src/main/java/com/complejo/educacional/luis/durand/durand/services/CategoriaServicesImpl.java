@@ -176,6 +176,7 @@ public class CategoriaServicesImpl implements ICategoriaServices {
         Object eliminarCategoria= null;
         try {
             log.info("¡Eliminar Categoría");
+            iCategoriaRepository.deleteById(id);
         }catch (Exception e){
             log.error("¡Falló la eliminación de la Categoría"+e.getCause().toString());
         }
