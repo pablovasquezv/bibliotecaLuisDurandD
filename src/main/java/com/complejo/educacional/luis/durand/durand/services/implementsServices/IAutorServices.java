@@ -44,7 +44,7 @@ public interface IAutorServices {
      * @throws Exception
      */
 
-    public List<Autor> findAllAutorSort(Sort sort) throws Exception;
+    public List<AutorDTOResponse> findAllAutorSort(Sort sort) throws Exception;
 
     /**
      *
