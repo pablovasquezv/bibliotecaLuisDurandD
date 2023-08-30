@@ -5,6 +5,9 @@ package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import java.util.List;
 
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponseUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +25,7 @@ public interface IAutorServices {
 	 * @return
 	 * @throws Exception
 	 */
-	public Autor saveAutor(Autor autor) throws Exception;
+	public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception;
 
 	/**
 	 *
@@ -32,7 +35,7 @@ public interface IAutorServices {
 	 * @throws Exception
 	 */
 
-	public Autor updateAutor(Long id, Autor autor) throws Exception;
+	public AutorDTOResponse updateAutor(Long id, AutorDTOResponseUpdate autorDTOResponseUpdate) throws Exception;
 
 	/**
 	 *
@@ -50,7 +53,7 @@ public interface IAutorServices {
 	 * @throws Exception
 	 */
 
-	public Page<Autor> findAllAutorPage(Pageable pageable) throws Exception;
+	public Page<AutorDTOResponse> findAllAutorPage(Pageable pageable) throws Exception;
 
 	/**
 	 *
@@ -59,7 +62,7 @@ public interface IAutorServices {
 	 * @throws Exception
 	 */
 
-	public Autor findByIdAutor(long id) throws Exception;
+	public AutorDTOResponse findByIdAutor(long id) throws Exception;
 
 	/**
 	 *
