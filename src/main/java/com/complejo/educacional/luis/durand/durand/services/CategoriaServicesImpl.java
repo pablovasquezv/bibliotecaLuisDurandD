@@ -3,7 +3,6 @@ package com.complejo.educacional.luis.durand.durand.services;
 import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTOResponse;
 import com.complejo.educacional.luis.durand.durand.dto.CategoriaRequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.models.Categoria;
 import com.complejo.educacional.luis.durand.durand.repositories.ICategoriaRepository;
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.ICategoriaServices;
