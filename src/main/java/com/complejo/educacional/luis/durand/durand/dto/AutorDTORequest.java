@@ -20,7 +20,6 @@ import java.util.Date;
 @ToString
 public class AutorDTORequest {
     //Atributos
-    private Long id_autor;
     private String nombres_autor;
     private String apellidos_autor;
     private Long id_pais;

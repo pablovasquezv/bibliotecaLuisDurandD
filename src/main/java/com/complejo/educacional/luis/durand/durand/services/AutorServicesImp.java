@@ -3,9 +3,13 @@
  */
 package com.complejo.educacional.luis.durand.durand.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponseUpdate;
 import com.complejo.educacional.luis.durand.durand.models.Pais;
 import com.complejo.educacional.luis.durand.durand.repositories.IPaisRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,60 +48,79 @@ public class AutorServicesImp implements IAutorServices {
 
     /**
      *
-     * @param autor
+     * @param autorDTORequest
      * @return
      * @throws Exception
      */
 
     @Override
     @Transactional(readOnly = false)
-    public Autor saveAutor(Autor autor) throws Exception {
-        Autor respuesta = null;
+    public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception {
+        Autor createAutor = null;
         try {
-            respuesta = new Autor();
-			Pais pais=iPaisRepository.findById(autor.getPais().getId_pais()).orElse(null);
-			autor.setPais(pais);
-            log.info("---Inicio de creción Autor----" + objectMapper.writeValueAsString(autor));
-            respuesta = iAutorRepository.save(autor);
-            log.info("Json de Salida =>" + objectMapper.writeValueAsString(autor));
+
+			Pais pais=iPaisRepository.getReferenceById(autorDTORequest.getId_pais());
+            log.info("---Autor paisID----" + autorDTORequest.getId_pais());
+            createAutor = new Autor(
+                    null,
+                    autorDTORequest.getNombres_autor(),
+                    autorDTORequest.getApellidos_autor(),
+                    pais,
+                    autorDTORequest.getCreatedAt(),
+                    autorDTORequest.getUpdatedAt()
+            );
+            log.info("---Inicio de creción Autor----" + objectMapper.writeValueAsString(autorDTORequest));
+            iAutorRepository.save(createAutor);
+            log.info("Json de Salida =>" + objectMapper.writeValueAsString(createAutor));
             log.info("----Fin de método Creación Autor----");
 
         } catch (Exception e) {
             // TODO: handle exception
-            log.error("Ocurrio un error =>" + e.getCause());
-            throw new Exception(e.getCause());
+            log.error("Ocurrio un error =>" + e.getCause().toString());
+            throw new Exception(e.getCause().toString());
         }
-        return respuesta;
+        return autorDTORequest;
     }
 
     /**
      *
      * @param id
-     * @param autor
+     * @param autorDTOResponseUpdate
      * @return
      * @throws Exception
      */
     @Override
     @Transactional(readOnly = false)
-    public Autor updateAutor(Long id, Autor autor) throws Exception {
+    public AutorDTOResponse updateAutor(Long id, AutorDTOResponseUpdate autorDTOResponseUpdate) throws Exception {
         // TODO Auto-generated method stub
-        Autor autorUpdate= null;
+        AutorDTOResponse autorDTOResponse= null;
+        Pais pais=iPaisRepository.getReferenceById(autorDTOResponseUpdate.getId_pais());
+        Autor autorUpdate= new Autor(
+                autorDTOResponseUpdate.getId_autor(),
+                autorDTOResponseUpdate.getNombres_autor(),
+                autorDTOResponseUpdate.getApellidos_autor(),
+                pais,
+                autorDTOResponseUpdate.getCreatedAt(),
+                autorDTOResponseUpdate.getUpdatedAt()
+        );
         try {
             Optional<Autor> autorOptional = iAutorRepository.findById(id);
             log.info("---Inicio de actualización Autor----" + objectMapper.writeValueAsString(autorOptional));
-            autorUpdate = autorOptional.get();
-            Pais pais = iPaisRepository.findById(autor.getPais().getId_pais()).orElse(null);
-            autor.setPais(pais);
-            autorUpdate = iAutorRepository.save(autor);
-            log.info("Json de Salida =>" + utils.imprimirLogSalida(autorUpdate));
+          if (autorOptional.isPresent()){
+              autorUpdate= iAutorRepository.save(autorUpdate);
+              log.info("Json de Salida =>" + utils.imprimirLogSalida(autorUpdate));
+          }else {
+              log.error("¡Ocurrio un error en la actualización del Autor!");
+          }
+
             log.info("----Fin de método de Actualización de un Autor----");
-            return autorUpdate;
+            return autorDTOResponse;
         } catch (Exception e) {
             // TODO: handle exception
             log.error("¡Ocurrio un error en la actualización del Autor!"+autorUpdate.getId_autor()+"El error es: "
                     +e.getCause().toString());
         }
-        return autorUpdate;
+        return autorDTOResponse;
     }
 
     /**
@@ -108,10 +131,23 @@ public class AutorServicesImp implements IAutorServices {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Autor> findAllAutorSort(Sort sort) throws Exception {
+    public List<AutorDTOResponse> findAllAutorSort(Sort sort) throws Exception {
         // TODO Auto-generated method stub
         try {
-            return iAutorRepository.findAllAutorSort(sort);
+            List<AutorDTOResponse>autorDTOResponses= new ArrayList<AutorDTOResponse>();
+            for (Autor autor:iAutorRepository.findAllAutorSort(sort)) {
+                autorDTOResponses.add(
+                        new AutorDTOResponse(
+                                autor.getId_autor(),
+                                autor.getNombres_autor(),
+                                autor.getApellidos_autor(),
+                                autor.getPais().getId_pais(),
+                                autor.getCreatedAt(),
+                                autor.getUpdatedAt()
+                        )
+                );
+            }
+            return autorDTOResponses;
         } catch (Exception e) {
             // TODO: handle exception
             throw new Exception(e.getCause());
@@ -126,10 +162,23 @@ public class AutorServicesImp implements IAutorServices {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<Autor> findAllAutorPage(Pageable pageable) throws Exception {
+    public Page<AutorDTOResponse> findAllAutorPage(Pageable pageable) throws Exception {
         // TODO Auto-generated method stub
         try {
-            return iAutorRepository.findAllAutorPage(pageable);
+            List<AutorDTOResponse>autorDTOResponses= new ArrayList<AutorDTOResponse>();
+            for (Autor autor: iAutorRepository.findAllAutorPage(pageable)) {
+                autorDTOResponses.add(
+                        new AutorDTOResponse(
+                                autor.getId_autor(),
+                                autor.getNombres_autor(),
+                                autor.getApellidos_autor(),
+                                autor.getPais().getId_pais(),
+                                autor.getCreatedAt(),
+                                autor.getUpdatedAt()
+                        )
+                );
+            }
+            return (Page<AutorDTOResponse>) autorDTOResponses;
         } catch (Exception e) {
             // TODO: handle exception
             throw new Exception(e.getCause());
@@ -144,10 +193,21 @@ public class AutorServicesImp implements IAutorServices {
      */
     @Override
     @Transactional(readOnly = true)
-    public Autor findByIdAutor(long id) throws Exception {
+    public AutorDTOResponse findByIdAutor(long id) throws Exception {
         // TODO Auto-generated method stub
         try {
-            return iAutorRepository.findById(id);
+           Autor autorId= iAutorRepository.findByIdAutor(id);
+           if (autorId== null){
+               throw new Exception("¡Categoría not found!");
+           }
+            return new AutorDTOResponse(
+                    autorId.getId_autor(),
+                    autorId.getNombres_autor(),
+                    autorId.getApellidos_autor(),
+                    autorId.getPais().getId_pais(),
+                    autorId.getCreatedAt(),
+                    autorId.getUpdatedAt()
+            );
         } catch (Exception e) {
             // TODO: handle exception
             throw new Exception(e.getCause());
@@ -165,6 +225,7 @@ public class AutorServicesImp implements IAutorServices {
         // TODO Auto-generated method stub
         try {
             if (iAutorRepository.existsById(id)) {
+                log.info("¡Eliminar Autor");
                 iAutorRepository.deleteById(id);
             } else {
                 log.error("¡No exite el Id del Autor!");
