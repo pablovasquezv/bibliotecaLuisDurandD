@@ -4,6 +4,7 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -86,37 +87,36 @@ public class AutorRestController {
      * @throws Exception
      */
     @PutMapping(value = "autor/update/{id}")
-    private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody AutorDTOResponseUpdate
-                                                            autorDTOResponseUpdate, BindingResult bindingResult)
-                                                            throws Exception {
+    private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody AutorDTOResponseUpdate autorDTOResponseUpdate, BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
-        ResponseEntity<Map<String, Object>> responseEntity = null;
-        List<String> errores = null;
+        ResponseEntity<Map<String, Object>> responseEntity;
+
         if (bindingResult.hasErrors()) {
-            errores = new ArrayList<>();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                errores.add(error.getDefaultMessage());
-            }
+            List<String> errores = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+
             responseAsMap.put("Errores", errores);
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
             return responseEntity;
         }
+
         try {
             AutorDTOResponse autorFromDB = iAutorServices.updateAutor(id, autorDTOResponseUpdate);
-            if (autorFromDB != null) {
+
+            if (autorFromDB != null && autorFromDB.getId_autor() != null) {
                 responseAsMap.put("Autor", autorDTOResponseUpdate);
-                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autorDTOResponseUpdate
-                        .getId_autor() + "!");
+                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autorDTOResponseUpdate.getId_autor() + "!");
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
                 responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor!");
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException dataAccessException) {
-            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " +
-                    dataAccessException.getMostSpecificCause().toString());
+            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " + dataAccessException.getMostSpecificCause().toString());
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
         return responseEntity;
     }
 

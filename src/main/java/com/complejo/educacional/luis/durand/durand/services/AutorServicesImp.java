@@ -92,10 +92,9 @@ public class AutorServicesImp implements IAutorServices {
     @Override
     @Transactional(readOnly = false)
     public AutorDTOResponse updateAutor(Long id, AutorDTOResponseUpdate autorDTOResponseUpdate) throws Exception {
-        // TODO Auto-generated method stub
-        AutorDTOResponse autorDTOResponse= null;
-        Pais pais=iPaisRepository.getReferenceById(autorDTOResponseUpdate.getId_pais());
-        Autor autorUpdate= new Autor(
+        AutorDTOResponse autorDTOResponse = null;
+        Pais pais = iPaisRepository.getReferenceById(autorDTOResponseUpdate.getId_pais());
+        Autor autorUpdate = new Autor(
                 autorDTOResponseUpdate.getId_autor(),
                 autorDTOResponseUpdate.getNombres_autor(),
                 autorDTOResponseUpdate.getApellidos_autor(),
@@ -106,19 +105,27 @@ public class AutorServicesImp implements IAutorServices {
         try {
             Optional<Autor> autorOptional = iAutorRepository.findById(id);
             log.info("---Inicio de actualización Autor----" + objectMapper.writeValueAsString(autorOptional));
-          if (autorOptional.isPresent()){
-              autorUpdate= iAutorRepository.save(autorUpdate);
-              log.info("Json de Salida =>" + utils.imprimirLogSalida(autorUpdate));
-          }else {
-              log.error("¡Ocurrio un error en la actualización del Autor!");
-          }
+            if (autorOptional.isPresent()) {
+                autorUpdate = iAutorRepository.save(autorUpdate);
+                log.info("Json de Salida =>" + utils.imprimirLogSalida(autorUpdate));
+                // Asignar los datos actualizados al objeto autorDTOResponse
+                autorDTOResponse = new AutorDTOResponse(
+                        autorUpdate.getId_autor(),
+                        autorUpdate.getNombres_autor(),
+                        autorUpdate.getApellidos_autor(),
+                        autorUpdate.getPais().getId_pais(),
+                        autorUpdate.getCreatedAt(),
+                        autorUpdate.getUpdatedAt()
+                );
+            } else {
+                log.error("¡Ocurrió un error en la actualización del Autor!");
+            }
 
             log.info("----Fin de método de Actualización de un Autor----");
             return autorDTOResponse;
         } catch (Exception e) {
-            // TODO: handle exception
-            log.error("¡Ocurrio un error en la actualización del Autor!"+autorUpdate.getId_autor()+"El error es: "
-                    +e.getCause().toString());
+            log.error("¡Ocurrió un error en la actualización del Autor!" + autorUpdate.getId_autor() + "El error es: "
+                    + e.getCause().toString());
         }
         return autorDTOResponse;
     }
