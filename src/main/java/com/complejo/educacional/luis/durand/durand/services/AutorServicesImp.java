@@ -30,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Pablo
- *
  */
 @Slf4j
 @Service
@@ -38,8 +37,8 @@ public class AutorServicesImp implements IAutorServices {
     @Autowired
     private IAutorRepository iAutorRepository;
 
-	@Autowired
-	private IPaisRepository iPaisRepository;
+    @Autowired
+    private IPaisRepository iPaisRepository;
 
     @Autowired
     private Utils utils;
@@ -48,7 +47,6 @@ public class AutorServicesImp implements IAutorServices {
     private ObjectMapper objectMapper;
 
     /**
-     *
      * @param autorDTORequest
      * @return
      * @throws Exception
@@ -86,7 +84,6 @@ public class AutorServicesImp implements IAutorServices {
 
 
     /**
-     *
      * @param id
      * @param autorDTOResponseUpdate
      * @return
@@ -126,7 +123,6 @@ public class AutorServicesImp implements IAutorServices {
     }
 
     /**
-     *
      * @param sort
      * @return
      * @throws Exception
@@ -162,7 +158,6 @@ public class AutorServicesImp implements IAutorServices {
 
 
     /**
-     *
      * @param pageable
      * @return
      * @throws Exception
@@ -203,7 +198,6 @@ public class AutorServicesImp implements IAutorServices {
 
 
     /**
-     *
      * @param id
      * @return
      * @throws Exception
@@ -232,7 +226,6 @@ public class AutorServicesImp implements IAutorServices {
 
 
     /**
-     *
      * @param id
      * @throws Exception
      */
