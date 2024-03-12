@@ -4,7 +4,6 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -50,7 +49,6 @@ public class AutorRestController {
     private IAutorServices iAutorServices;
 
     /**
-     *
      * @param autorDTORequest
      * @param bindingResult
      * @return responseEntity
@@ -59,38 +57,35 @@ public class AutorRestController {
     @PostMapping(value = "autor/create")
     private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody AutorDTORequest autorDTORequest,
                                                             BindingResult bindingResult) throws Exception {
-        Map<String, Object> responseAsMap = new HashMap<String, Object>();
-        ResponseEntity<Map<String, Object>> responseEntity = null;
-        List<String> errores = null;
+        Map<String, Object> responseAsMap = new HashMap<>();
+        List<String> errores;
+
         if (bindingResult.hasErrors()) {
-            errores = new ArrayList<String>();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                errores.add(error.getDefaultMessage());
-            }
+            errores = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+
             responseAsMap.put("errores", errores);
-            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
-            return responseEntity;
+            return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
         }
+
         try {
             AutorDTORequest autorFromDB = iAutorServices.saveAutor(autorDTORequest);
             if (autorFromDB != null) {
                 responseAsMap.put("Autor", autorDTORequest);
-                responseAsMap.put("Mensaje:", "El Autor ¡Sé creó exitosamente!");
-                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+                responseAsMap.put("Mensaje:", "El Autor ¡Se creó exitosamente!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
-                responseAsMap.put("Mensaje: ", "¡No sé creó el País!");
-                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
-                        HttpStatus.INTERNAL_SERVER_ERROR);
+                responseAsMap.put("Mensaje: ", "¡No se creó el Autor!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException e) {
-            responseAsMap.put("Mensaje: ", "¡No sé creo el País!" + e.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseAsMap.put("Mensaje: ", "¡No se creó el Autor!" + e.getMostSpecificCause().toString());
+            return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return responseEntity;
     }
 
     /**
-     *
      * @param id
      * @param autorDTOResponseUpdate
      * @param bindingResult
@@ -139,37 +134,27 @@ public class AutorRestController {
     @GetMapping(value = "autor/get/all")
     @ResponseStatus(HttpStatus.OK)
     private ResponseEntity<List<AutorDTOResponse>> findAllAutor(@RequestParam(required = false) Integer page,
-                                                     @RequestParam(required = false) Integer size) {
-        // Para ordenar la búsqueda
+                                                                @RequestParam(required = false) Integer size) {
         Sort sortByName = Sort.by("nombres_autor");
-        ResponseEntity<List<AutorDTOResponse>> responseEntity = null;
-        List<AutorDTOResponse> autores = null;
+        List<AutorDTOResponse> autores;
         Pageable pageable = null;
+
         try {
-            if (page != null & size != null) {
+            if (page != null && size != null) {
                 pageable = PageRequest.of(page, size, sortByName);
                 autores = iAutorServices.findAllAutorPage(pageable).getContent();
             } else {
                 autores = iAutorServices.findAllAutorSort(sortByName);
             }
-            // Validación sí tiene Autores la lista
-            responseEntity = (autores.size() > 0) ?
-                    new ResponseEntity<List<AutorDTOResponse>>(autores, HttpStatus.OK)
-                    :
-                    new ResponseEntity<List<AutorDTOResponse>>(autores, HttpStatus.NO_CONTENT);
-            /**
-             if (autores.size() > 0) {
-             responseEntity = new ResponseEntity<List<Autor>>(autores,HttpStatus.OK);
-             } else {
-             responseEntity = new ResponseEntity<List<Autor>>(autores,HttpStatus.NO_CONTENT);
-             }*/
-        } catch (Exception e) {
-            // TODO: handle exception
-            log.error("Ocurrio un error =>" + e);
-        }
 
-        return responseEntity;
+            HttpStatus responseStatus = autores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+            return new ResponseEntity<>(autores, responseStatus);
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Autores! " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     /**
      * @param id
@@ -177,21 +162,17 @@ public class AutorRestController {
      */
     @GetMapping(value = "autor/{id}")
     private ResponseEntity<AutorDTOResponse> findById(@PathVariable int id) {
-        AutorDTOResponse autor = null;
-        ResponseEntity<AutorDTOResponse> responseEntity = null;
+        AutorDTOResponse autor;
         try {
             autor = iAutorServices.findByIdAutor(id);
-            if (autor != null) {
-                responseEntity = new ResponseEntity<AutorDTOResponse>(autor, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<AutorDTOResponse>(autor, HttpStatus.NO_CONTENT);
-            }
+            HttpStatus responseStatus = (autor != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+            return new ResponseEntity<>(autor, responseStatus);
         } catch (Exception e) {
-            // TODO: handle exception
-            log.error("Ocurrio un error =>" + e);
+            log.error("Ocurrió un error: " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return responseEntity;
     }
+
 
     /**
      * @param id
@@ -199,23 +180,19 @@ public class AutorRestController {
      * @throws Exception
      */
     @DeleteMapping(value = "autor/delete/{id}")
-    private ResponseEntity<AutorDTOResponse> deleteById(@PathVariable Long id) throws Exception {
-        AutorDTOResponse autor = null;
-        ResponseEntity<AutorDTOResponse> responseEntity = null;
+    private ResponseEntity<Void> deleteById(@PathVariable Long id) {
         try {
-            autor = iAutorServices.findByIdAutor(id);
+            AutorDTOResponse autor = iAutorServices.findByIdAutor(id);
             if (autor != null) {
                 iAutorServices.deleteAutorById(id);
-                responseEntity = new ResponseEntity<AutorDTOResponse>(HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                responseEntity = new ResponseEntity<AutorDTOResponse>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
-        } catch (DataAccessException dataAccessException) {
-            log.error("¡Ocurrio un erro al eliminar un Autor!" + dataAccessException.getMostSpecificCause().toString());
-            responseEntity = new ResponseEntity<AutorDTOResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            log.error("Ocurrió un error al eliminar un Autor: " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return responseEntity;
     }
 
 
