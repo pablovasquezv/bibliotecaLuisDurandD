@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import com.complejo.educacional.luis.durand.durand.models.Autor;
 
 /**
  * @author Pablo
