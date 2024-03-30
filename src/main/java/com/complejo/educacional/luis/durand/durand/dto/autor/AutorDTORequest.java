@@ -1,32 +1,29 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.autor;
 
-import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 /**
  * @author Pablo
  * @Data: Para crear los gett y sett
  * @AllArgsConstructor: Constructor con parámetros
  * @NoArgsConstructor:Constructor sin parámetros
- * @ToString: para obtener todos los datos
+ * @ToString para obtener los datos
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class PaisDTORequestUpdate {
+public class AutorDTORequest {
     //Atributos
+    private String nombres_autor;
+    private String apellidos_autor;
     private Long id_pais;
-    private String nombre_pais;
-    private List<Autor> autores = new ArrayList<>();
     private Date createdAt;
     private Date updatedAt;
+
 }

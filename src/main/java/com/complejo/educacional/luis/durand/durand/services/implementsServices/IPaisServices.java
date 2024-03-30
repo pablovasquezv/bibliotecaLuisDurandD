@@ -5,9 +5,9 @@ package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
 import java.util.List;
 
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTOResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

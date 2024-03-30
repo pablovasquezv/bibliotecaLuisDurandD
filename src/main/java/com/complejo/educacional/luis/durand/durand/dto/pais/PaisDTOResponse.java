@@ -1,4 +1,4 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.pais;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,25 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * @author Pablo
  * @Data: Para crear los gett y sett
  * @AllArgsConstructor: Constructor con parámetros
  * @NoArgsConstructor:Constructor sin parámetros
- * @ToString para obtener los datos
+ * @ToString: para obtener todos los datos
  */
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class AutorDTOResponseUpdate {
+public class PaisDTOResponse {
     //Atributos
-    private Long id_autor;
-    private String nombres_autor;
-    private String apellidos_autor;
     private Long id_pais;
+    private String nombre_pais;
     private Date createdAt;
     private Date updatedAt;
-
 }

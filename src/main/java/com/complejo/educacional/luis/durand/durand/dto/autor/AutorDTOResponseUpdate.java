@@ -1,4 +1,4 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.autor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,8 +18,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AutorDTORequest {
+public class AutorDTOResponseUpdate {
     //Atributos
+    private Long id_autor;
     private String nombres_autor;
     private String apellidos_autor;
     private Long id_pais;
