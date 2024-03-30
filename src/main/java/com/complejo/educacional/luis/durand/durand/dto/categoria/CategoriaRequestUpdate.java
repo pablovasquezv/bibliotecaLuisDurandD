@@ -1,4 +1,4 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.categoria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
