@@ -10,9 +10,9 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;

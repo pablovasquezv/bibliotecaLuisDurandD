@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTORequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.PaisDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTOResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
