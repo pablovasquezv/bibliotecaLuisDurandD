@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponse;
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponseUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponseUpdate;
 import com.complejo.educacional.luis.durand.durand.models.Pais;
 import com.complejo.educacional.luis.durand.durand.repositories.IPaisRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;

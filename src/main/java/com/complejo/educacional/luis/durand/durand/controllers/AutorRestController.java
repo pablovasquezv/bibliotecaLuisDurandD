@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponse;
-import com.complejo.educacional.luis.durand.durand.dto.AutorDTOResponseUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponseUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
