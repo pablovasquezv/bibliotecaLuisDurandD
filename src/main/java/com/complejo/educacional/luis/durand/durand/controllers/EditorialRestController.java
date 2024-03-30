@@ -1,8 +1,8 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
 
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.IEditorialServices;
 
 import lombok.extern.slf4j.Slf4j;

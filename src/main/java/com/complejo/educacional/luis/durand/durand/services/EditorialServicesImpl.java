@@ -1,8 +1,8 @@
 package com.complejo.educacional.luis.durand.durand.services;
 
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTORequestUpdate;
-import com.complejo.educacional.luis.durand.durand.dto.EditorialDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTOResponse;
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.IEditorialServices;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import com.complejo.educacional.luis.durand.durand.repositories.IEditorialRepository;

@@ -1,4 +1,5 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.editorial;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class EditorialDTORequest {
+public class EditorialDTOResponse {
     //Atributos
+    private Long id_editorial;
     private String nombre_editorial;
     private String descripcion_editorial;
     private String direccion_editorial;
