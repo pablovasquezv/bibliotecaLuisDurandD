@@ -70,8 +70,8 @@ public class Genero implements Serializable {
 
     @NotEmpty(message = "¡El nombre del género no debe ser vacío!")
     @Size(min = 4, max = 50, message = "¡El campo género debe tener 4 carácteres minimo y 50 máximo !")
-    @Column(name = "nombres_genero")
-    private String nombres_genero;
+    @Column(name = "nombre_genero")
+    private String nombre_genero;
 
     @NotEmpty(message = "¡El campo descripción del género no debe ser vacío!")
     @Size(min = 4, max = 50, message = "¡El campo descripcion_genero debe tener 4 carácteres y 50 máximo !")
