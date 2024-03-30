@@ -1,4 +1,4 @@
-package com.complejo.educacional.luis.durand.durand.dto;
+package com.complejo.educacional.luis.durand.durand.dto.categoria;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +19,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CategoriaDTORequest {
+
+public class CategoriaDTOResponse {
     //Atributos
+    private Long id_categoria;
     private String nombre_categoria;
     private String descripcion_categoria;
     private Date createAt;

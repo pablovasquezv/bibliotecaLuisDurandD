@@ -1,8 +1,8 @@
 package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 
-import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTORequest;
-import com.complejo.educacional.luis.durand.durand.dto.CategoriaDTOResponse;
-import com.complejo.educacional.luis.durand.durand.dto.CategoriaRequestUpdate;
+import com.complejo.educacional.luis.durand.durand.dto.categoria.CategoriaDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.categoria.CategoriaDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.categoria.CategoriaRequestUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
