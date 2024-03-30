@@ -1,5 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.repositories;
-
+//Import necesarias para la clase.
 import com.complejo.educacional.luis.durand.durand.models.Genero;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

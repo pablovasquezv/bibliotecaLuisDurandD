@@ -1,5 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.models;
-
+//Import necesarias para la clase.
 import java.io.Serializable;
 import java.util.Date;
 
