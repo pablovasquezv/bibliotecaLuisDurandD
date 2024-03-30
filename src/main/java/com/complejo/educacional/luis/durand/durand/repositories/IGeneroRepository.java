@@ -18,7 +18,7 @@ import java.util.List;
 public interface IGeneroRepository extends JpaRepository<Genero, Long> {
 
     //Seleccionar todas la instancias desde Genero la BD.
-    @Query(value = "select g from Genero c")
+    @Query(value = "select g from Genero g")
     public List<Genero> findAllGeneroSort(Sort sort);
 
     //Contar la cantidad Géneros que vienen en la búsqueda y páginarlos.
