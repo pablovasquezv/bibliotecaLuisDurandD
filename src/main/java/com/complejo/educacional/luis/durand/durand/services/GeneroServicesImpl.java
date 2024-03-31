@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 public class GeneroServicesImpl implements IGeneroServices {
     @Autowired
-    git add src/main/java/com/complejo/educacional/luis/durand/durand/services/GeneroServicesImpl.java    private  IGeneroRepository iGeneroRepository;
+    private  IGeneroRepository iGeneroRepository;
 
     @Autowired
     private  ObjectMapper objectMapper;
