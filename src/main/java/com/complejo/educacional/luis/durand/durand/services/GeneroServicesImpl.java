@@ -55,8 +55,8 @@ public class GeneroServicesImpl implements IGeneroServices {
                     creatGenero.getUpdatedAt()
             );
         }catch (Exception e){
-            log.error("Ocurrió un error al guardar el Autor: " + e.getCause().toString());
-            throw new Exception("Ocurrió un error al guardar el Autor");
+            log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al guardar el Género!");
         }
 
     }
