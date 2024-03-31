@@ -28,13 +28,13 @@ import java.util.List;
 @Service
 public class GeneroServicesImpl implements IGeneroServices {
     @Autowired
-    private static IGeneroRepository iGeneroRepository;
+    git add src/main/java/com/complejo/educacional/luis/durand/durand/services/GeneroServicesImpl.java    private  IGeneroRepository iGeneroRepository;
 
     @Autowired
-    private static ObjectMapper objectMapper;
+    private  ObjectMapper objectMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = false)
     public GeneroDTORequest saveGenero(GeneroDTORequest generoDTORequest) throws Exception {
         try {
             Genero creatGenero = new Genero(
@@ -44,7 +44,7 @@ public class GeneroServicesImpl implements IGeneroServices {
                     generoDTORequest.getCreatedAt(),
                     generoDTORequest.getUpdatedAt()
             );
-            log.info("---Incio de la Creación del Género---");
+            log.info("---Incio de la Creación del Género---"+objectMapper.writeValueAsString(creatGenero));
             creatGenero= iGeneroRepository.save(creatGenero);
             log.info("Json de Salida ==>"+objectMapper.writeValueAsString(creatGenero));
             log.info("---Incio de la Creación del Género---");
