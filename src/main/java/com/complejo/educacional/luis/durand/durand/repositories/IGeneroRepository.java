@@ -28,7 +28,7 @@ public interface IGeneroRepository extends JpaRepository<Genero, Long> {
 
     //Buscar por ID.
     @Query(value = "select g from Genero g where id=:id")
-    public Genero findByIdCategoria(long id );
+    public Genero findByIdGenero(long id );
 
     //Seleccionar todas la instancias desde Genero la BD y buscar el nombre .
     @Query("SELECT CASE WHEN COUNT(g) > 0 THEN true ELSE false END FROM Genero g WHERE g.nombre_genero = :nombreGenero")
