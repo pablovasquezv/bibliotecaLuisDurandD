@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -31,16 +32,15 @@ import java.util.stream.Collectors;
 @Service
 public class GeneroServicesImpl implements IGeneroServices {
     @Autowired
-    private  IGeneroRepository iGeneroRepository;
+    private IGeneroRepository iGeneroRepository;
 
     @Autowired
-    private  ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private Utils utils;
 
     /**
-     *
      * @param generoDTORequest
      * @return GeneroDTORequest
      * @throws Exception
@@ -56,17 +56,17 @@ public class GeneroServicesImpl implements IGeneroServices {
                     generoDTORequest.getCreatedAt(),
                     generoDTORequest.getUpdatedAt()
             );
-            log.info("---Incio de la Creación del Género---"+objectMapper.writeValueAsString(creatGenero));
-            creatGenero= iGeneroRepository.save(creatGenero);
-            log.info("Json de Salida ==>"+objectMapper.writeValueAsString(creatGenero));
+            log.info("---Incio de la Creación del Género---" + objectMapper.writeValueAsString(creatGenero));
+            creatGenero = iGeneroRepository.save(creatGenero);
+            log.info("Json de Salida ==>" + objectMapper.writeValueAsString(creatGenero));
             log.info("---Fin de la Creación del Género---");
-            return  new GeneroDTORequest(
+            return new GeneroDTORequest(
                     creatGenero.getNombre_genero(),
                     creatGenero.getDescripcion_genero(),
                     creatGenero.getCreatedAt(),
                     creatGenero.getUpdatedAt()
             );
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
             throw new Exception("¡Ocurrió un error al guardar el Género!");
         }
@@ -87,10 +87,10 @@ public class GeneroServicesImpl implements IGeneroServices {
             Optional<Genero> generoOptional;
             Genero genero;
             Genero updateGenero;
-            generoOptional= iGeneroRepository.findById(id);
+            generoOptional = iGeneroRepository.findById(id);
             log.info("---Inicio de la Actualización del Género---" + objectMapper.writeValueAsString(generoOptional));
 
-             genero = generoOptional.orElseThrow(() -> {
+            genero = generoOptional.orElseThrow(() -> {
                 log.error("Ocurrió un error en la actualización del Género: ");
                 return new Exception("¡Ocurrió un error en la actualización del Género!");
             });
@@ -119,12 +119,12 @@ public class GeneroServicesImpl implements IGeneroServices {
 
     @Override
     public List<GeneroDTOResponse> findAllGeneroSort(Sort sort) throws Exception {
-        try{
+        try {
             /**
              * Utilicé el método stream() y map() para convertir la lista de allGeneroSort en una lista de
              * GeneroDTOResponse de forma más concisa.
              */
-            List<Genero> allGeneroSort= iGeneroRepository.findAllGeneroSort(sort);
+            List<Genero> allGeneroSort = iGeneroRepository.findAllGeneroSort(sort);
             return allGeneroSort.stream().map(
                     genero -> new GeneroDTOResponse(
                             genero.getId_genero(),
@@ -134,7 +134,7 @@ public class GeneroServicesImpl implements IGeneroServices {
                             genero.getUpdatedAt()
                     )
             ).collect(Collectors.toList());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Ocurrió un error al listar todos los Géneros " + e.getCause().toString());
             throw new Exception("¡Ocurrió un error al listar todos los Géneros!");
         }
@@ -142,12 +142,41 @@ public class GeneroServicesImpl implements IGeneroServices {
 
     @Override
     public Page<GeneroDTOResponse> findAllGeneroPage(Pageable pageable) throws Exception {
-        return null;
+        try {
+            Page<Genero> generos = iGeneroRepository.findAllGeneroPage(pageable);
+            /**
+             * Utilicé el método stream() y map() para convertir la lista de Autor en una lista
+             * de AutorDTOResponse de forma más concisa.
+             */
+            List<GeneroDTOResponse> generoDTOResponseList = generos.stream().
+                    map(genero -> new GeneroDTOResponse(
+                                    genero.getId_genero(),
+                                    genero.getNombre_genero(),
+                                    genero.getDescripcion_genero(),
+                                    genero.getCreatedAt(),
+                                    genero.getUpdatedAt()
+                            )
+
+                    ).collect(Collectors.toList());
+            /**
+             * Utilicé el método collect() junto con Collectors.toList() para recopilar los elementos mapeados
+             * en una lista.
+             */
+            return new PageImpl<>(generoDTOResponseList,pageable,generos.getTotalElements());
+            /**
+             * Creé un nuevo objeto PageImpl para devolver una página de resultados con la lista de AutorDTOResponse,
+             * el objeto Pageable original y el número total de elementos.
+             */
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Géneros " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al listar todos los Géneros!");
+        }
+
     }
 
     @Override
     public GeneroDTOResponse findByIdGenero(long id) throws Exception {
-        return null;
+
     }
 
     @Override
