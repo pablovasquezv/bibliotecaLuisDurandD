@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -28,6 +29,10 @@ public interface IGeneroRepository extends JpaRepository<Genero, Long> {
     //Buscar por ID.
     @Query(value = "select g from Genero g where id=:id")
     public Genero findByIdCategoria(long id );
+
+    //Seleccionar todas la instancias desde Genero la BD y buscar el nombre .
+    @Query("SELECT CASE WHEN COUNT(g) > 0 THEN true ELSE false END FROM Genero g WHERE g.nombre_genero = :nombreGenero")
+    boolean nombreGeneroYaExisteEnBaseDeDatos(@Param("nombreGenero") String nombreGenero);
 
 
 }
