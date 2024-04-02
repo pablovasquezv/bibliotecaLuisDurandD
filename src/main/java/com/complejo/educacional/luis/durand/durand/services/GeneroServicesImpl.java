@@ -140,6 +140,11 @@ public class GeneroServicesImpl implements IGeneroServices {
         }
     }
 
+    /**
+     * @param pageable
+     * @return
+     * @throws Exception
+     */
     @Override
     public Page<GeneroDTOResponse> findAllGeneroPage(Pageable pageable) throws Exception {
         try {
@@ -162,7 +167,7 @@ public class GeneroServicesImpl implements IGeneroServices {
              * Utilicé el método collect() junto con Collectors.toList() para recopilar los elementos mapeados
              * en una lista.
              */
-            return new PageImpl<>(generoDTOResponseList,pageable,generos.getTotalElements());
+            return new PageImpl<>(generoDTOResponseList, pageable, generos.getTotalElements());
             /**
              * Creé un nuevo objeto PageImpl para devolver una página de resultados con la lista de AutorDTOResponse,
              * el objeto Pageable original y el número total de elementos.
@@ -174,9 +179,29 @@ public class GeneroServicesImpl implements IGeneroServices {
 
     }
 
+    /**
+     * @param id
+     * @return GeneroDTOResponse
+     * @throws Exception
+     */
     @Override
     public GeneroDTOResponse findByIdGenero(long id) throws Exception {
-
+        try {
+            Genero genero = iGeneroRepository.findByIdGenero(id);
+            if (genero == null) {
+                throw new Exception("¡Género no encontrado!");
+            }
+            return new GeneroDTOResponse(
+                    genero.getId_genero(),
+                    genero.getNombre_genero(),
+                    genero.getDescripcion_genero(),
+                    genero.getCreatedAt(),
+                    genero.getUpdatedAt()
+            );
+        } catch (Exception e) {
+            log.error("Ocurrió un error al buscar el Género con ID " + id + ": " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al buscar el Género!");
+        }
     }
 
     @Override
