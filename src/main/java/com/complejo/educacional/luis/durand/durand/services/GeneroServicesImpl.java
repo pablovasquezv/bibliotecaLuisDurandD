@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Pablo
@@ -38,6 +39,12 @@ public class GeneroServicesImpl implements IGeneroServices {
     @Autowired
     private Utils utils;
 
+    /**
+     *
+     * @param generoDTORequest
+     * @return GeneroDTORequest
+     * @throws Exception
+     */
     @Override
     @Transactional(readOnly = false)
     public GeneroDTORequest saveGenero(GeneroDTORequest generoDTORequest) throws Exception {
@@ -70,7 +77,7 @@ public class GeneroServicesImpl implements IGeneroServices {
      *
      * @param id
      * @param generoDTOResponseUpdate
-     * @return
+     * @return GeneroDTOResponseUpdate
      * @throws Exception
      */
     @Transactional(readOnly = false)
@@ -112,7 +119,25 @@ public class GeneroServicesImpl implements IGeneroServices {
 
     @Override
     public List<GeneroDTOResponse> findAllGeneroSort(Sort sort) throws Exception {
-        return null;
+        try{
+            /**
+             * Utilicé el método stream() y map() para convertir la lista de allGeneroSort en una lista de
+             * GeneroDTOResponse de forma más concisa.
+             */
+            List<Genero> allGeneroSort= iGeneroRepository.findAllGeneroSort(sort);
+            return allGeneroSort.stream().map(
+                    genero -> new GeneroDTOResponse(
+                            genero.getId_genero(),
+                            genero.getNombre_genero(),
+                            genero.getDescripcion_genero(),
+                            genero.getCreatedAt(),
+                            genero.getUpdatedAt()
+                    )
+            ).collect(Collectors.toList());
+        }catch (Exception e){
+            log.error("Ocurrió un error al listar todos los Géneros " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al listar todos los Géneros!");
+        }
     }
 
     @Override
