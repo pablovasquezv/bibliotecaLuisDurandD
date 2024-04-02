@@ -52,7 +52,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             log.info("---Incio de la Creación del Género---"+objectMapper.writeValueAsString(creatGenero));
             creatGenero= iGeneroRepository.save(creatGenero);
             log.info("Json de Salida ==>"+objectMapper.writeValueAsString(creatGenero));
-            log.info("---Incio de la Creación del Género---");
+            log.info("---Fin de la Creación del Género---");
             return  new GeneroDTORequest(
                     creatGenero.getNombre_genero(),
                     creatGenero.getDescripcion_genero(),
