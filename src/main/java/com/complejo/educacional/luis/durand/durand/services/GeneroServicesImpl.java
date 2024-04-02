@@ -10,6 +10,7 @@ import com.complejo.educacional.luis.durand.durand.services.implementsServices.I
 import com.complejo.educacional.luis.durand.durand.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.text.MessageFormat;
 
 /**
  * @author Pablo
@@ -29,41 +31,59 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class GeneroServicesImpl implements IGeneroServices {
-    @Autowired
-    private  IGeneroRepository iGeneroRepository;
+    @Value ("${constantes.mensajeCreatGenero}")
+    private String mensajeCreatGenero;
+
+    @Value ("${constantes.mensajeNoCreatGenero}")
+    private String mensajeNoCreatGenero;
+
+    private IGeneroRepository iGeneroRepository;
 
     @Autowired
-    private  ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private Utils utils;
-
+    @Autowired
+    public GeneroServicesImpl(IGeneroRepository iGeneroRepository) {
+        this.iGeneroRepository = iGeneroRepository;
+    }
     @Override
     @Transactional(readOnly = false)
     public GeneroDTORequest saveGenero(GeneroDTORequest generoDTORequest) throws Exception {
-        try {
-            Genero creatGenero = new Genero(
-                    null,
-                    generoDTORequest.getNombre_genero().toUpperCase(),
-                    generoDTORequest.getDescripcion_genero(),
-                    generoDTORequest.getCreatedAt(),
-                    generoDTORequest.getUpdatedAt()
-            );
-            log.info("---Incio de la Creación del Género---"+objectMapper.writeValueAsString(creatGenero));
-            creatGenero= iGeneroRepository.save(creatGenero);
-            log.info("Json de Salida ==>"+objectMapper.writeValueAsString(creatGenero));
-            log.info("---Incio de la Creación del Género---");
-            return  new GeneroDTORequest(
-                    creatGenero.getNombre_genero(),
-                    creatGenero.getDescripcion_genero(),
-                    creatGenero.getCreatedAt(),
-                    creatGenero.getUpdatedAt()
-            );
-        }catch (Exception e){
-            log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
-            throw new Exception("¡Ocurrió un error al guardar el Género!");
-        }
+        // Verificar si el nombre de género ya existe en la base de datos
+        Genero nombreExiste2 = new Genero();
+        boolean nombreExiste = nombreExiste2.nombreGeneroYaExisteEnBaseDeDatos(generoDTORequest.getNombre_genero());
 
+        if (nombreExiste) {
+            // Manejar la lógica correspondiente si el nombre ya existe
+            System.out.println("¡El nombre del género ya existe en la base de datos!");
+        };
+        try {
+                Genero creatGenero = new Genero(
+                        null,
+                        generoDTORequest.getNombre_genero().toUpperCase(),
+                        generoDTORequest.getDescripcion_genero(),
+                        generoDTORequest.getCreatedAt(),
+                        generoDTORequest.getUpdatedAt()
+                );
+                creatGenero.nombreGeneroYaExisteEnBaseDeDatos(generoDTORequest.getNombre_genero());
+                log.info("---Incio de la Creación del Género---" + objectMapper.writeValueAsString(creatGenero));
+                creatGenero = iGeneroRepository.save(creatGenero);
+                log.info("Json de Salida ==>" + objectMapper.writeValueAsString(creatGenero));
+                log.info("---Incio de la Creación del Género---");
+                return new GeneroDTORequest(
+                        creatGenero.getNombre_genero(),
+                        creatGenero.getDescripcion_genero(),
+                        creatGenero.getCreatedAt(),
+                        creatGenero.getUpdatedAt()
+                );
+
+        } catch (Exception e) {
+            log.error("Ocurrió un error al guardar el Género: " +e.getCause(),MessageFormat.format(mensajeCreatGenero,mensajeNoCreatGenero), e.getCause().getMessage());
+
+            throw new Exception("¡Ocurrió un error al guardar el Género!"+e.getCause().getMessage());
+        }
     }
 
     /***
@@ -80,10 +100,10 @@ public class GeneroServicesImpl implements IGeneroServices {
             Optional<Genero> generoOptional;
             Genero genero;
             Genero updateGenero;
-            generoOptional= iGeneroRepository.findById(id);
+            generoOptional = iGeneroRepository.findById(id);
             log.info("---Inicio de la Actualización del Género---" + objectMapper.writeValueAsString(generoOptional));
 
-             genero = generoOptional.orElseThrow(() -> {
+            genero = generoOptional.orElseThrow(() -> {
                 log.error("Ocurrió un error en la actualización del Género: ");
                 return new Exception("¡Ocurrió un error en la actualización del Género!");
             });
