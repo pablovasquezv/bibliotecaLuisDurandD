@@ -44,7 +44,7 @@ public class GeneroServicesImpl implements IGeneroServices {
         try {
             Genero creatGenero = new Genero(
                     null,
-                    generoDTORequest.getNombre_genero(),
+                    generoDTORequest.getNombre_genero().toUpperCase(),
                     generoDTORequest.getDescripcion_genero(),
                     generoDTORequest.getCreatedAt(),
                     generoDTORequest.getUpdatedAt()
