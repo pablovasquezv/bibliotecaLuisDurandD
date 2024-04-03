@@ -41,9 +41,11 @@ public class GeneroServicesImpl implements IGeneroServices {
     private Utils utils;
 
     /**
-     * @param generoDTORequest
-     * @return GeneroDTORequest
-     * @throws Exception
+     * Método que guarda un nuevo género con la información proporcionada en generoDTORequest.
+     *
+     * @param generoDTORequest La información del nuevo género a guardar.
+     * @return Un objeto GeneroDTORequest con la información del género guardado.
+     * @throws Exception Si ocurre un error durante el proceso de guardado del género.
      */
     @Override
     @Transactional(readOnly = false)
@@ -70,15 +72,15 @@ public class GeneroServicesImpl implements IGeneroServices {
             log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
             throw new Exception("¡Ocurrió un error al guardar el Género!");
         }
-
     }
 
-    /***
+    /**
+     * Método que actualiza un género según su ID con la información proporcionada en generoDTOResponseUpdate.
      *
-     * @param id
-     * @param generoDTOResponseUpdate
-     * @return GeneroDTOResponseUpdate
-     * @throws Exception
+     * @param id                      El ID del género a actualizar.
+     * @param generoDTOResponseUpdate La información actualizada del género.
+     * @return Un objeto GeneroDTOResponseUpdate con la información actualizada del género.
+     * @throws Exception Si ocurre un error durante el proceso de actualización del género.
      */
     @Transactional(readOnly = false)
     @Override
@@ -116,8 +118,15 @@ public class GeneroServicesImpl implements IGeneroServices {
         }
     }
 
-
+    /**
+     * Método que recupera una lista de objetos GeneroDTOResponse ordenados según el criterio especificado.
+     *
+     * @param sort El criterio de ordenación.
+     * @return Una lista de objetos GeneroDTOResponse ordenados según el criterio especificado.
+     * @throws Exception Si ocurre un error al recuperar la lista de géneros ordenados.
+     */
     @Override
+    @Transactional(readOnly = true)
     public List<GeneroDTOResponse> findAllGeneroSort(Sort sort) throws Exception {
         try {
             /**
@@ -141,11 +150,14 @@ public class GeneroServicesImpl implements IGeneroServices {
     }
 
     /**
-     * @param pageable
-     * @return
-     * @throws Exception
+     * Método que recupera una página de objetos GeneroDTOResponse utilizando paginación y ordenación.
+     *
+     * @param pageable La información de paginación y ordenación.
+     * @return Una página de objetos GeneroDTOResponse.
+     * @throws Exception Si ocurre un error al recuperar la página de géneros.
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<GeneroDTOResponse> findAllGeneroPage(Pageable pageable) throws Exception {
         try {
             Page<Genero> generos = iGeneroRepository.findAllGeneroPage(pageable);
@@ -176,15 +188,17 @@ public class GeneroServicesImpl implements IGeneroServices {
             log.error("Ocurrió un error al listar todos los Géneros " + e.getCause().toString());
             throw new Exception("¡Ocurrió un error al listar todos los Géneros!");
         }
-
     }
 
     /**
-     * @param id
-     * @return GeneroDTOResponse
-     * @throws Exception
+     * Método que qusca un género por su ID y devuelve su información en un objeto GeneroDTOResponse.
+     *
+     * @param id El ID del género a buscar.
+     * @return Un objeto GeneroDTOResponse con la información del género.
+     * @throws Exception Si el género no se encuentra o si ocurre un error durante la búsqueda.
      */
     @Override
+    @Transactional(readOnly = true)
     public GeneroDTOResponse findByIdGenero(long id) throws Exception {
         try {
             Genero genero = iGeneroRepository.findByIdGenero(id);
@@ -204,22 +218,29 @@ public class GeneroServicesImpl implements IGeneroServices {
         }
     }
 
+    /**
+     * Método para eliminar un género según su ID.
+     *
+     * @param id El ID del género a eliminar.
+     * @return true si se elimina el género con éxito.
+     * @throws Exception Si ocurre un error durante el proceso de eliminación del género.
+     */
     @Override
+    @Transactional(readOnly = false)
     public boolean deleteGeneroById(Long id) throws Exception {
         try {
-            if (iGeneroRepository.existsById(id)){
-                log.info("Elimininado Género con ID: " +id);
+            if (iGeneroRepository.existsById(id)) {
+                log.info("Elimininado Género con ID: " + id);
                 iGeneroRepository.deleteById(id);
                 return true;
-            }else {
+            } else {
                 log.error("No existe el ID del Género!");
                 throw new Exception("¡No existe el ID del Género!");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Ocurrió un error al eliminar el Género con ID " + id + ": " + e.getCause().toString());
             throw new Exception("Ocurrió un error al eliminar el Género!");
         }
     }
-
 
 }
