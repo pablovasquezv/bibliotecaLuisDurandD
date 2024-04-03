@@ -83,6 +83,42 @@ public class GeneroRestController {
         }
     }
 
+    /**
+     * Actualiza un género según su ID.
+     *
+     * @param id                    El ID del género a actualizar.
+     * @param generoDTOResponseUpdate   La información actualizada del género.
+     * @param bindingResult         El resultado del proceso de validación.
+     * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
+     */
+    @PutMapping(value = "genero/update/{id}")
+    public ResponseEntity<Map<String, Object>> updateGenero(@PathVariable long id, @Valid @RequestBody GeneroDTOResponseUpdate generoDTOResponseUpdate,
+                                                            BindingResult bindingResult) throws Exception{
+        Map<String, Object> responseAsMap = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            List<String> errores = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            responseAsMap.put("errores", errores);
+            return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            GeneroDTOResponseUpdate updatedGenero = iGeneroServices.updateGenero(id, generoDTOResponseUpdate);
+            if (updatedGenero != null && updatedGenero.getId_genero() != null) {
+                responseAsMap.put("Genero", updatedGenero);
+                responseAsMap.put("Mensaje", "¡Se actualizó correctamente el género con ID: " + updatedGenero.getId_genero() + "!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensaje", "¡No se pudo actualizar el género!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException dataAccessException) {
+            responseAsMap.put("Mensaje", "¡No se pudo actualizar el género! " + dataAccessException.getMostSpecificCause().toString());
+            return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     /**
