@@ -2,19 +2,20 @@ package com.complejo.educacional.luis.durand.durand.controllers;
 //Import necesarias para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponse;
 import com.complejo.educacional.luis.durand.durand.repositories.IAutorRepository;
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.IGeneroServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -38,7 +39,6 @@ public class GeneroRestController {
 
 
     /**
-     *
      * @param generoDTORequest
      * @param bindingResult
      * @return
@@ -57,20 +57,49 @@ public class GeneroRestController {
         }
         try {
             GeneroDTORequest generoFromDB;
-            generoFromDB= iGeneroServices.saveGenero(generoDTORequest);
-            if (generoFromDB!=null){
-                responseAsMap.put("Género",generoDTORequest);
-                responseAsMap.put("Mensaje","¡El Género se creó exitosamente!");
-                return new ResponseEntity<>(responseAsMap,HttpStatus.OK);
-            }else {
+            generoFromDB = iGeneroServices.saveGenero(generoDTORequest);
+            if (generoFromDB != null) {
+                responseAsMap.put("Género", generoDTORequest);
+                responseAsMap.put("Mensaje", "¡El Género se creó exitosamente!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } else {
                 responseAsMap.put("Mensaje", "¡No se pudo crea el Género!");
-                return new  ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
         } catch (DataAccessException e) {
             responseAsMap.put("Mensaje", "¡No sé creo el Género!" + e.getMostSpecificCause().toString());
             return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    /**
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping(value = "genero/get/all")
+    public ResponseEntity<List<GeneroDTOResponse>> findAllGenero(@RequestParam(required = false) Integer page,
+                                                                 @RequestParam(required = false) Integer size) {
+        Sort sortByname = Sort.by("nombre_genero");
+        List<GeneroDTOResponse> generoDTOResponseList;
+        Pageable pageable = null;
+        HttpStatus responseStatus;
+        try {
+            pageable = (page != null && size != null) ?
+                    PageRequest.of(page, size, sortByname)
+                    :
+                    null;
+            generoDTOResponseList = (page != null) ?
+                    iGeneroServices.findAllGeneroPage(pageable).getContent() :
+                    iGeneroServices.findAllGeneroSort(sortByname);
+            responseStatus = generoDTOResponseList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+            return new ResponseEntity<>(generoDTOResponseList, responseStatus);
+
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Géneros! " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
