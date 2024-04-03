@@ -30,7 +30,7 @@ public interface IGeneroServices {
      * @return
      * @throws Exception
      */
-    public GeneroDTOResponseUpdate updatGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception;
+    public GeneroDTOResponseUpdate updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception;
 
     /**
      * @param sort

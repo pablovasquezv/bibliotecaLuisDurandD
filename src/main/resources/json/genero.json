@@ -1,0 +1,59 @@
+
+[
+  {
+    "id_genero": 1,
+    "nombre_genero": "AVENTURAS",
+    "descripcion_genero": "Emocionantes historias que llevan al lector a vivir experiencias extraordinarias y peligrosas.",
+    "createdAt": "2024-04-03T03:27:08.109+00:00",
+    "updatedAt": "2024-03-31T03:34:22.134+00:00"
+  },
+  {
+    "id_genero": 2,
+    "nombre_genero": "CIENCIA FICCIÓN",
+    "descripcion_genero": "Explora mundos imaginarios, futuristas y tecnológicos, a menudo con elementos científicos especulativos.",
+    "createdAt": "2024-04-03T03:33:07.807+00:00",
+    "updatedAt": "2024-04-03T03:29:52.605+00:00"
+  },
+  {
+    "id_genero": 3,
+    "nombre_genero": "NO FICCIÓN",
+    "descripcion_genero": "Libros que tratan temas reales, como filosofía, historia, biografías, ensayos, divulgación científica, entre otros.",
+    "createdAt": "2024-04-03T03:33:47.405+00:00",
+    "updatedAt": "2024-04-03T03:29:52.605+00:00"
+  },
+  {
+    "id_genero": 4,
+    "nombre_genero": "poesía",
+    "descripcion_genero": "La poesía expresa sentimientos, tratando que el lector se sienta atraídas por ellas.",
+    "createdAt": "2024-03-31T05:46:55.089+00:00",
+    "updatedAt": "2024-03-31T03:34:22.134+00:00"
+  },
+  {
+    "id_genero": 5,
+    "nombre_genero": "Poesía",
+    "descripcion_genero": "La poesía expresa sentimientos, tratando que el lector se sienta atraídas por ellas.",
+    "createdAt": "2024-03-31T05:38:57.155+00:00",
+    "updatedAt": "2024-03-31T03:34:22.134+00:00"
+  },
+  {
+    "id_genero": 6,
+    "nombre_genero": "POESÍA",
+    "descripcion_genero": "La poesía expresa sentimientos, tratando que el lector se sienta atraídas por ellas.",
+    "createdAt": "2024-03-31T05:48:21.912+00:00",
+    "updatedAt": "2024-03-31T03:34:22.134+00:00"
+  },
+  {
+    "id_genero": 7,
+    "nombre_genero": "Suspenso psicológico",
+    "descripcion_genero": "Un género literario que mantiene al lector en vilo con giros inesperados y una atmósfera intensa.",
+    "createdAt": "2024-04-03T03:07:07.450+00:00",
+    "updatedAt": "2024-04-03T03:22:58.706+00:00"
+  },
+  {
+    "id_genero": 8,
+    "nombre_genero": "TERROR",
+    "descripcion_genero": "Este género busca desafiar los miedos más profundos del ser humano, explorando temas como la muerte, el mal, la locura y lo paranormal.",
+    "createdAt": "2024-04-02T23:06:37.128+00:00",
+    "updatedAt": "2024-04-02T22:27:49.966+00:00"
+  }
+]
