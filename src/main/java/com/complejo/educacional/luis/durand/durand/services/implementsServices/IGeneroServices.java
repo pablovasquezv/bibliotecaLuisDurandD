@@ -58,6 +58,6 @@ public interface IGeneroServices {
      * @return
      * @throws Exception
      */
-    public void deleteGeneroById(Long id) throws Exception;
+    public boolean deleteGeneroById(Long id) throws Exception;
 
 }
