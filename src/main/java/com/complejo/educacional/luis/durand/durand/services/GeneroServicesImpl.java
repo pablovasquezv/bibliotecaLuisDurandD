@@ -84,7 +84,7 @@ public class GeneroServicesImpl implements IGeneroServices {
      */
     @Transactional(readOnly = false)
     @Override
-    public GeneroDTOResponseUpdate updatGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception {
+    public GeneroDTOResponseUpdate updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception {
         try {
             Optional<Genero> generoOptional;
             Genero genero;
@@ -97,7 +97,7 @@ public class GeneroServicesImpl implements IGeneroServices {
                 return new Exception("¡Ocurrió un error en la actualización del Género!");
             });
 
-            genero.setNombre_genero(generoDTOResponseUpdate.getNombre_genero());
+            genero.setNombre_genero(generoDTOResponseUpdate.getNombre_genero().toUpperCase());
             genero.setDescripcion_genero(generoDTOResponseUpdate.getDescripcion_genero());
             genero.setCreatedAt(generoDTOResponseUpdate.getCreatedAt());
             genero.setUpdatedAt(generoDTOResponseUpdate.getUpdatedAt());
