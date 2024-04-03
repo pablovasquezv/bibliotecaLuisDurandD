@@ -210,6 +210,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             if (iGeneroRepository.existsById(id)){
                 log.info("Elimininado Género con ID: " +id);
                 iGeneroRepository.deleteById(id);
+                return true;
             }else {
                 log.error("No existe el ID del Género!");
                 throw new Exception("¡No existe el ID del Género!");
@@ -218,8 +219,6 @@ public class GeneroServicesImpl implements IGeneroServices {
             log.error("Ocurrió un error al eliminar el Género con ID " + id + ": " + e.getCause().toString());
             throw new Exception("Ocurrió un error al eliminar el Género!");
         }
-
-        return false;
     }
 
 
