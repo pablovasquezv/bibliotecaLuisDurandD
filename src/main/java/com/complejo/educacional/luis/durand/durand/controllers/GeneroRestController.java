@@ -83,7 +83,7 @@ public class GeneroRestController {
     public ResponseEntity<List<GeneroDTOResponse>> findAllGenero(@RequestParam(required = false) Integer page,
                                                                  @RequestParam(required = false) Integer size) {
         Sort sortByname = Sort.by("nombre_genero");
-        List<GeneroDTOResponse> generoDTOResponseList;
+        List<GeneroDTOResponse> generoDTOResponseList = null;
         Pageable pageable = null;
         HttpStatus responseStatus;
         try {
@@ -98,7 +98,8 @@ public class GeneroRestController {
             return new ResponseEntity<>(generoDTOResponseList, responseStatus);
 
         } catch (Exception e) {
-            log.error("Ocurrió un error al listar todos los Géneros! " + e.getCause().toString());
+            String errorMessage = (e.getCause() != null) ? e.getCause().getMessage().toString() : "Error desconocido";
+            log.error("Un error a occurrido en la listar todos los Géneros por ID " + generoDTOResponseList + ": " + errorMessage);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -113,7 +114,7 @@ public class GeneroRestController {
             responseStatus = (generoDTOResponse != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
             return new ResponseEntity<>(generoDTOResponse, responseStatus);
         } catch (Exception e) {
-            String errorMessage = (e.getCause() != null) ? e.getCause().getMessage() : "Error desconocido";
+            String errorMessage = (e.getCause() != null) ? e.getCause().getMessage().toString() : "Error desconocido";
             log.error("Un error a occurrido en la listar todos los Géneros por ID " + id + ": " + errorMessage);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
