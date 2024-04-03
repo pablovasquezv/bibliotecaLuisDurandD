@@ -205,10 +205,10 @@ public class GeneroServicesImpl implements IGeneroServices {
     }
 
     @Override
-    public void deleteGeneroById(Long id) throws Exception {
+    public boolean deleteGeneroById(Long id) throws Exception {
         try {
             if (iGeneroRepository.existsById(id)){
-                log.info("Elimininado Género con ID:" +id);
+                log.info("Elimininado Género con ID: " +id);
                 iGeneroRepository.deleteById(id);
             }else {
                 log.error("No existe el ID del Género!");
@@ -219,6 +219,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             throw new Exception("Ocurrió un error al eliminar el Género!");
         }
 
+        return false;
     }
 
 
