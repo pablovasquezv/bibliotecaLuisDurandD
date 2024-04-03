@@ -7,7 +7,13 @@ package com.complejo.educacional.luis.durand.durand.interfaces;
  * @project bibliotecaLuisDurandD
  */
 public interface IGestionGeneros {
-    public void agregarNombreGeneroPorConsola(String nuevoNombreGenero);
+
+    /**
+     * Método que verifica si el nombre de género ya existe en la base de datos.
+     *
+     * @param nombreGenero El nombre del género a verificar.
+     * @return true si el nombre de género ya existe en la base de datos, de lo contrario false.
+     */
     public boolean nombreGeneroYaExisteEnBaseDeDatos(String nombreGenero);
 
 }

@@ -87,18 +87,6 @@ public class Genero implements Serializable, IGestionGeneros {
     private Date createdAt;
     private Date updatedAt;
 
-    // Método para validar y agregar el campo por consola
-    public void agregarNombreGeneroPorConsola(String nuevoNombreGenero) {
-        // Realizar la validación personalizada para verificar si el nombre ya existe
-        if (nombreGeneroYaExisteEnBaseDeDatos(nuevoNombreGenero)) {
-            System.out.println("¡El nombre del género ya existe en la base de datos!");
-        } else {
-            // Si el nombre no existe, se puede proceder con la inserción
-            this.nombre_genero = nuevoNombreGenero;
-            // Lógica para guardar el nombre en la base de datos
-        }
-    }
-
     // Método para verificar si el nombre ya existe en la base de datos
     public boolean nombreGeneroYaExisteEnBaseDeDatos(String nombreGenero) {
         IGeneroRepository iGeneroRepository = null; // Asigna el repositorio correspondiente
