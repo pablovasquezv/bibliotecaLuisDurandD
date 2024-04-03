@@ -39,10 +39,12 @@ public class GeneroRestController {
 
 
     /**
-     * @param generoDTORequest
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * Método que crea un nuevo género basado en los datos proporcionados..
+     *
+     * @param generoDTORequest generoDTORequest El objeto DTO que contiene los detalles del género que se creará.
+     * @param bindingResult    El resultado del proceso de validación para el objeto DTO.
+     * @return Una ResponseEntity que contiene el resultado de la creación del género y el estado HTTP correspondiente.
+     * @throws Exception Excepción si ocurre un error durante el proceso de creación del género.
      */
     @PostMapping(value = "genero/create")
     public ResponseEntity<Map<String, Object>> addNewGenero(@Valid @RequestBody GeneroDTORequest generoDTORequest, BindingResult bindingResult) throws Exception {
@@ -74,10 +76,11 @@ public class GeneroRestController {
     }
 
     /**
+     * Método que recupera una lista de géneros con paginación opcional.
      *
-     * @param page
-     * @param size
-     * @return
+     * @param page El número de página para la paginación (opcional).
+     * @param size El tamaño de página para la paginación (opcional).
+     * @return Una ResponseEntity que contiene la lista de géneros y el estado HTTP correspondiente.
      */
     @GetMapping(value = "genero/get/all")
     public ResponseEntity<List<GeneroDTOResponse>> findAllGenero(@RequestParam(required = false) Integer page,
@@ -104,9 +107,14 @@ public class GeneroRestController {
         }
     }
 
+    /**
+     * Método que recupera un Género por su ID.
+     * @param id El ID del género a recuperar.
+     * @return Una ResponseEntity que contiene la información del género y el estado HTTP correspondiente.
+     */
 
     @GetMapping(value = "genero/{id}")
-    public ResponseEntity<GeneroDTOResponse> findByIdGenero(@PathVariable long id){
+    public ResponseEntity<GeneroDTOResponse> findByIdGenero(@PathVariable long id) {
         GeneroDTOResponse generoDTOResponse;
         HttpStatus responseStatus;
         try {
