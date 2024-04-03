@@ -102,4 +102,22 @@ public class GeneroRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @GetMapping(value = "genero/{id}")
+    public ResponseEntity<GeneroDTOResponse> findByIdGenero(@PathVariable long id){
+        GeneroDTOResponse generoDTOResponse;
+        HttpStatus responseStatus;
+        try {
+            generoDTOResponse = iGeneroServices.findByIdGenero(id);
+            responseStatus = (generoDTOResponse != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+            return new ResponseEntity<>(generoDTOResponse, responseStatus);
+        } catch (Exception e) {
+            String errorMessage = (e.getCause() != null) ? e.getCause().getMessage() : "Error desconocido";
+            log.error("Un error a occurrido en la listar todos los Géneros por ID " + id + ": " + errorMessage);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
