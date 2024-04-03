@@ -3,7 +3,7 @@ package com.complejo.educacional.luis.durand.durand.controllers;
 
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponse;
-import com.complejo.educacional.luis.durand.durand.repositories.IAutorRepository;
+import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponseUpdate;
 import com.complejo.educacional.luis.durand.durand.services.implementsServices.IGeneroServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -47,7 +55,8 @@ public class GeneroRestController {
      * @throws Exception Excepción si ocurre un error durante el proceso de creación del género.
      */
     @PostMapping(value = "genero/create")
-    public ResponseEntity<Map<String, Object>> addNewGenero(@Valid @RequestBody GeneroDTORequest generoDTORequest, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<Map<String, Object>> addNewGenero(@Valid @RequestBody GeneroDTORequest generoDTORequest,
+                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         List<String> errores;
         if (bindingResult.hasErrors()) {
@@ -68,12 +77,13 @@ public class GeneroRestController {
                 responseAsMap.put("Mensaje", "¡No se pudo crea el Género!");
                 return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
         } catch (DataAccessException e) {
             responseAsMap.put("Mensaje", "¡No sé creo el Género!" + e.getMostSpecificCause().toString());
             return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     /**
      * Método que recupera una lista de géneros con paginación opcional.
@@ -109,6 +119,7 @@ public class GeneroRestController {
 
     /**
      * Método que recupera un Género por su ID.
+     *
      * @param id El ID del género a recuperar.
      * @return Una ResponseEntity que contiene la información del género y el estado HTTP correspondiente.
      */
@@ -128,5 +139,26 @@ public class GeneroRestController {
         }
     }
 
+    /**
+     * Méetodo que elimina un género según su ID.
+     *
+     * @param id El ID del género a eliminar.
+     * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
+     */
+    @DeleteMapping(value = "genero/delete/{id}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
+        try {
+            GeneroDTOResponse generoDTOResponse = iGeneroServices.findByIdGenero(id);
+            return (generoDTOResponse != null) ?
+                    (iGeneroServices.deleteGeneroById(id) ?
+                            new ResponseEntity<>(HttpStatus.OK) :
+                            new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)) :
+                    new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            String errorMessage = (e.getCause() != null) ? e.getCause().getMessage().toString() : "Error desconocido";
+            log.error("Un error a occurrido en la eliminar un Géneros por ID " + id + ": " + errorMessage);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
