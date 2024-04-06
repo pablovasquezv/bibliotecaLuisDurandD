@@ -26,9 +26,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -42,7 +43,8 @@ import lombok.ToString;
  * @NoArgsConstructor:Constructor sin parámetros
  */
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "libro")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -72,9 +74,18 @@ public class Libro implements Serializable{
      * @PreUpdate: Ejecuta el método cuando el objeto es modificado.
      * @NotNull: que nunca debe ser null.
      * @JoinColumn: el campo que unirá las tablas
-     * @ManyToOne: relación uni direccional. fetch = FetchType.LAZY= no carga todos
-     *             apoderados solo trae el alumno (no carga objetos en memoría).
-     *             cascade = CascadeType.PERSIST:
+     * @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY): Esta anotación establece una relación de
+     * muchos a uno con la entidad asociada. El parámetro cascade = CascadeType.PERSIST indica que las operaciones de
+     * persistencia, como guardar, se propagarán a la entidad asociada. El parámetro fetch = FetchType.LAZY indica que
+     * la recuperación de la entidad asociada se realizará de forma diferida, es decir, no se cargará automáticamente a
+     * menos que se acceda explícitamente.
+     *
+     * @NotNull(message = "¡El campo autor_id no debe ser vacío!"): Esta anotación asegura que el campo asociado no sea
+     * nulo. En este caso, se está validando que el campo autor (o categoria, editorial, genero, según corresponda) no
+     * sea nulo al persistir la entidad.
+     *
+     * @JoinColumn(name = "autor_id"): Esta anotación se utiliza para especificar el nombre de la columna en la tabla de
+     * la base de datos que se utilizará para mapear la relación.
      */
     private static final long serialVersionUID = 1L;
     @Id
@@ -129,15 +140,22 @@ public class Libro implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date updatedAt;
-    // other getters and setters removed for brevitycopy
+
+    /**
+     * Método de callback para establecer la fecha de creación antes de la persistencia.
+     */
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
     }
 
+    /**
+     * Método de callback para actualizar la fecha de modificación antes de una actualización.
+     */
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
 }
+
 
