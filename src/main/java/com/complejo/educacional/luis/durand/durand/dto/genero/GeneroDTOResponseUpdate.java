@@ -34,6 +34,4 @@ public class GeneroDTOResponseUpdate {
     private Long id_genero;
     private String nombre_genero;
     private String descripcion_genero;
-    private Date createdAt;
-    private Date updatedAt;
 }

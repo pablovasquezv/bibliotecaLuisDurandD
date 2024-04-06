@@ -1,31 +1,35 @@
 package com.complejo.educacional.luis.durand.durand.dto.pais;
+//Import necesarias para la clase.
 
-import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+/**
+ * @Setter: Para crear los métodos sett.
+ * @Getter: Para crear los métodos gett.
+ * @AllArgsConstructor: Constructor con parámetros.
+ * @NoArgsConstructor:Constructor sin parámetros.
+ * @ToString para obtener los datos.
+ */
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 
 /**
  * @author Pablo
- * @Data: Para crear los gett y sett
- * @AllArgsConstructor: Constructor con parámetros
- * @NoArgsConstructor:Constructor sin parámetros
- * @ToString: para obtener todos los datos
+ * @version 1.0
+ * @create 30-03-2024 0:42
+ * @project bibliotecaLuisDurandD
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class PaisDTORequest {
     //Atributos
     private String nombre_pais;
-    private List<Autor> autores = new ArrayList<>();
-    private Date createdAt;
-    private Date updatedAt;
 }

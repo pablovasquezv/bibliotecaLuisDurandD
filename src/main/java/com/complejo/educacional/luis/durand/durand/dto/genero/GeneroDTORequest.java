@@ -1,12 +1,12 @@
 package com.complejo.educacional.luis.durand.durand.dto.genero;
 //Import necesarias para la clase.
+
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
 
 /**
  * @Setter: Para crear los métodos sett.
@@ -33,6 +33,4 @@ public class GeneroDTORequest {
     //Atributos
     private String nombre_genero;
     private String descripcion_genero;
-    private Date createdAt;
-    private Date updatedAt;
 }
