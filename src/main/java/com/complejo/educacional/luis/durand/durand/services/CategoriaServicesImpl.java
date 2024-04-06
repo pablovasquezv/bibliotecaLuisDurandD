@@ -181,6 +181,7 @@ public class CategoriaServicesImpl implements ICategoriaServices {
             }
         } catch (Exception e) {
             log.error("¡Falló la eliminación de la Categoría" + e.getCause().toString());
+            throw new Exception("¡No existe el ID del Categoría!");
         }
     }
 }

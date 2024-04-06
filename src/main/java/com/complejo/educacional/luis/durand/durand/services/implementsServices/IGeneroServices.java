@@ -36,7 +36,7 @@ public interface IGeneroServices {
      * @return el objeto DTO del género actualizado.
      * @throws Exception si ocurre algún error durante el proceso de actualización.
      */
-    public GeneroDTOResponseUpdate updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception;
+    public GeneroDTOResponse updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception;
 
     /**
      * Método que encuentra y devuelve una lista de géneros ordenada según el criterio especificado.
