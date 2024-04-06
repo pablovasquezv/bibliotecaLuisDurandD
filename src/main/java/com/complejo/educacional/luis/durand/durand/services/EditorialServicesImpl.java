@@ -1,4 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.services;
+//Import necesarios para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequestUpdate;
@@ -31,11 +32,12 @@ public class EditorialServicesImpl implements IEditorialServices {
     @Autowired
     private ObjectMapper objectMapper;
 
-    /***
+    /**
+     * Método que guarda una nueva editorial con la información proporcionada en editorialDTORequest.
      *
-     * @param editorialDTORequest
-     * @return
-     * @throws Exception
+     * @param editorialDTORequest La información de la nueva editorial a guardar.
+     * @return Un objeto editorialDTORequest con la información de la editorial guardado.
+     * @throws Exception Si ocurre un error durante el proceso de guardado de la editorial.
      */
     @Override
     @Transactional(readOnly = false)
@@ -48,9 +50,7 @@ public class EditorialServicesImpl implements IEditorialServices {
                     editorialDTORequest.getDescripcion_editorial(),
                     editorialDTORequest.getDireccion_editorial(),
                     editorialDTORequest.getTelefono_editorial(),
-                    editorialDTORequest.getCorreoElectronico_editorial(),
-                    editorialDTORequest.getCreateAt(),
-                    editorialDTORequest.getUpdateAt()
+                    editorialDTORequest.getCorreoElectronico_editorial()
             );
             log.info("¡Creación de Editorial");
             iEditorialRepository.save(editorialCreate);
@@ -63,11 +63,12 @@ public class EditorialServicesImpl implements IEditorialServices {
     }
 
     /**
+     * Método que actualiza una editorial según su ID con la información proporcionada en editorialDTORequestUpdate.
      *
-     * @param id
-     * @param editorialDTORequestUpdate
-     * @return
-     * @throws Exception
+     * @param id                     El ID de la editorial a actualizar.
+     * @param editorialDTORequestUpdate La información actualizada de la editorial.
+     * @return Un objeto EditorialDTOResponse con la información actualizada de la editorial.
+     * @throws Exception Si ocurre un error durante el proceso de actualización de la editorial.
      */
     @Override
     @Transactional(readOnly = false)
@@ -80,9 +81,7 @@ public class EditorialServicesImpl implements IEditorialServices {
                 editorialDTORequestUpdate.getDescripcion_editorial(),
                 editorialDTORequestUpdate.getDireccion_editorial(),
                 editorialDTORequestUpdate.getTelefono_editorial(),
-                editorialDTORequestUpdate.getCorreoElectronico_editorial(),
-                editorialDTORequestUpdate.getCreateAt(),
-                editorialDTORequestUpdate.getUpdateAt()
+                editorialDTORequestUpdate.getCorreoElectronico_editorial()
         );
 
         try {
@@ -102,9 +101,7 @@ public class EditorialServicesImpl implements IEditorialServices {
                     editorialUpdate.getDescripcion_editorial(),
                     editorialUpdate.getDireccion_editorial(),
                     editorialUpdate.getTelefono_editorial(),
-                    editorialUpdate.getCorreoElectronico_editorial(),
-                    editorialUpdate.getCreateAt(),
-                    editorialUpdate.getUpdateAt()
+                    editorialUpdate.getCorreoElectronico_editorial()
             );
             return editorialDTOResponse;
         } catch (Exception e) {
@@ -115,9 +112,11 @@ public class EditorialServicesImpl implements IEditorialServices {
     }
 
     /**
-     * @param sort
-     * @return
-     * @throws Exception
+     * Método que recupera una lista de objetos EditorialDTOResponse ordenados según el criterio especificado.
+     *
+     * @param sort El criterio de ordenación.
+     * @return Una lista de objetos EditorialDTOResponse ordenados según el criterio especificado.
+     * @throws Exception Si ocurre un error al recuperar la lista de las editoriales ordenados.
      */
     @Override
     @Transactional(readOnly = true)
@@ -131,9 +130,7 @@ public class EditorialServicesImpl implements IEditorialServices {
                             editorial.getDescripcion_editorial(),
                             editorial.getDireccion_editorial(),
                             editorial.getTelefono_editorial(),
-                            editorial.getCorreoElectronico_editorial(),
-                            editorial.getCreateAt(),
-                            editorial.getUpdateAt()
+                            editorial.getCorreoElectronico_editorial()
                     )
             );
         }
@@ -141,9 +138,11 @@ public class EditorialServicesImpl implements IEditorialServices {
     }
 
     /**
-     * @param pageable
-     * @return
-     * @throws Exception
+     * Método que recupera una página de objetos EditorialDTOResponse utilizando paginación y ordenación.
+     *
+     * @param pageable La información de paginación y ordenación.
+     * @return Una página de objetos EditorialDTOResponse.
+     * @throws Exception Si ocurre un error al recuperar la página de las editoriales.
      */
     @Override
     @Transactional(readOnly = true)
@@ -157,9 +156,7 @@ public class EditorialServicesImpl implements IEditorialServices {
                             editorial.getDescripcion_editorial(),
                             editorial.getDireccion_editorial(),
                             editorial.getTelefono_editorial(),
-                            editorial.getCorreoElectronico_editorial(),
-                            editorial.getCreateAt(),
-                            editorial.getUpdateAt()
+                            editorial.getCorreoElectronico_editorial()
                     )
             );
         }
@@ -167,9 +164,11 @@ public class EditorialServicesImpl implements IEditorialServices {
     }
 
     /**
-     * @param id
-     * @return EditorialDTOResponse
-     * @throws Exception
+     * Método que busca un editorial por su ID y devuelve su información en un objeto CategoriaDTOResponse.
+     *
+     * @param id El ID de la editorial a buscar.
+     * @return Un objeto EditorialDTOResponse con la información de la editorial.
+     * @throws Exception Si la editorial no se encuentra o si ocurre un error durante la búsqueda.
      */
     @Override
     @Transactional(readOnly = true)
@@ -184,27 +183,33 @@ public class EditorialServicesImpl implements IEditorialServices {
                 editorial.getDescripcion_editorial(),
                 editorial.getDireccion_editorial(),
                 editorial.getTelefono_editorial(),
-                editorial.getCorreoElectronico_editorial(),
-                editorial.getCreateAt(),
-                editorial.getUpdateAt()
+                editorial.getCorreoElectronico_editorial()
         );
     }
 
     /**
-     * @param id
-     * @return
-     * @throws Exception
+     * Método para eliminar una editorial según su ID.
+     *
+     * @param id El ID del editorial a eliminar.
+     * @return true si se elimina la editorial con éxito.
+     * @throws Exception Si ocurre un error durante el proceso de eliminación de la editorial.
      */
     @Override
     @Transactional(readOnly = false)
-    public Object deleteEditorialById(Long id) throws Exception {
-        Object respuesta = null;
+    public boolean deleteEditorialById(Long id) throws Exception {
         try {
-            log.info("¡Eliminar Editorial!");
-            iEditorialRepository.deleteById(id);
+            if (iEditorialRepository.existsById(id)) {
+                log.info("Eliminar Editorial con ID: " + id);
+                iEditorialRepository.deleteById(id);
+                return true;
+            }else {
+                log.error("¡No existe el ID de la Editorial!");
+                throw new Exception("¡No existe el ID de la Editorial!");
+
+            }
         } catch (Exception e) {
             log.error("Falló la Eliminación de la Editorial =>", e.getCause().toString());
+            throw new Exception("¡No existe el ID de la Editorial!");
         }
-        return null;
     }
 }

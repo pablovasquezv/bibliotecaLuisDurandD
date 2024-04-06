@@ -1,7 +1,5 @@
-/**
- *
- */
 package com.complejo.educacional.luis.durand.durand.services;
+//Import necesarios para la clase.
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +35,11 @@ public class PaisServicesImpl implements IPaisServices {
     private ObjectMapper objectMapper;
 
     /**
-     * @param paisDTORequest
-     * @return paisDTORequest
-     * @throws Exception
+     * Método que guarda un nuevo país con la información proporcionada en paisDTORequest.
+     *
+     * @param paisDTORequest La información del nuevo país a guardar.
+     * @return Un objeto paisDTORequest con la información del país guardado.
+     * @throws Exception Si ocurre un error durante el proceso de guardado del país.
      */
     @Override
     @Transactional(readOnly = false)
@@ -48,10 +48,7 @@ public class PaisServicesImpl implements IPaisServices {
         try {
             Pais createPais = new Pais(
                     null,
-                    paisDTORequest.getNombre_pais(),
-                    paisDTORequest.getAutores(),
-                    paisDTORequest.getCreatedAt(),
-                    paisDTORequest.getUpdatedAt()
+                    paisDTORequest.getNombre_pais()
             );
             log.info("¡Creación del País");
             iPaisRepository.save(createPais);
@@ -65,10 +62,12 @@ public class PaisServicesImpl implements IPaisServices {
     }
 
     /**
-     * @param id
-     * @param paisDTORequestUpdate
-     * @return paisDTORequestUpdate
-     * @throws Exception
+     * Método que actualiza un país según su ID con la información proporcionada en paisDTORequestUpdate.
+     *
+     * @param id El ID del país a actualizar.
+     * @param paisDTORequestUpdate La información actualizada del país.
+     * @return Un objeto PaisDTOResponse con la información actualizada del país.
+     * @throws Exception Si ocurre un error durante el proceso de actualización del país.
      */
     @Override
     @Transactional(readOnly = false)
@@ -78,10 +77,7 @@ public class PaisServicesImpl implements IPaisServices {
         PaisDTOResponse paisDTOResponse = null;
         Pais paisUpdate = new Pais(
                 paisDTORequestUpdate.getId_pais(),
-                paisDTORequestUpdate.getNombre_pais(),
-                paisDTORequestUpdate.getAutores(),
-                paisDTORequestUpdate.getCreatedAt(),
-                paisDTORequestUpdate.getUpdatedAt()
+                paisDTORequestUpdate.getNombre_pais()
         );
         try {
             paisOptional = iPaisRepository.findById(id);
@@ -93,9 +89,7 @@ public class PaisServicesImpl implements IPaisServices {
             }
             paisDTOResponse = new PaisDTOResponse(
                     paisUpdate.getId_pais(),
-                    paisUpdate.getNombre_pais(),
-                    paisUpdate.getCreatedAt(),
-                    paisUpdate.getUpdatedAt()
+                    paisUpdate.getNombre_pais()
             );
 
             return paisDTOResponse;
@@ -107,9 +101,11 @@ public class PaisServicesImpl implements IPaisServices {
     }
 
     /**
-     * @param sort
-     * @return
-     * @throws Exception
+     * Método que recupera una lista de objetos PaisDTOResponse ordenados según el criterio especificado.
+     *
+     * @param sort El criterio de ordenación.
+     * @return Una lista de objetos PaisDTOResponse ordenados según el criterio especificado.
+     * @throws Exception Si ocurre un error al recuperar la lista de país ordenados.
      */
     @Override
     @Transactional(readOnly = true)
@@ -120,9 +116,7 @@ public class PaisServicesImpl implements IPaisServices {
             paisDTOResponses.add(
                     new PaisDTOResponse(
                             pais.getId_pais(),
-                            pais.getNombre_pais(),
-                            pais.getCreatedAt(),
-                            pais.getUpdatedAt()
+                            pais.getNombre_pais()
                     )
             );
         }
@@ -130,9 +124,11 @@ public class PaisServicesImpl implements IPaisServices {
     }
 
     /**
-     * @param pageable
-     * @return
-     * @throws Exception
+     * Método que recupera una página de objetos PaisDTOResponse utilizando paginación y ordenación.
+     *
+     * @param pageable La información de paginación y ordenación.
+     * @return Una página de objetos PaisDTOResponse.
+     * @throws Exception Si ocurre un error al recuperar la página de países.
      */
     @Override
     @Transactional(readOnly = true)
@@ -143,9 +139,7 @@ public class PaisServicesImpl implements IPaisServices {
             paisDTOResponses.add(
                     new PaisDTOResponse(
                             pais.getId_pais(),
-                            pais.getNombre_pais(),
-                            pais.getCreatedAt(),
-                            pais.getUpdatedAt()
+                            pais.getNombre_pais()
                     )
             );
         }
@@ -153,9 +147,11 @@ public class PaisServicesImpl implements IPaisServices {
     }
 
     /**
-     * @param id
-     * @return PaisDTOResponse
-     * @throws Exception
+     * Método que qusca un país por su ID y devuelve su información en un objeto PaisDTOResponse.
+     *
+     * @param id El ID del país a buscar.
+     * @return Un objeto PaisDTOResponse con la información del género.
+     * @throws Exception Si el país no se encuentra o si ocurre un error durante la búsqueda.
      */
     @Override
     @Transactional(readOnly = true)
@@ -168,30 +164,33 @@ public class PaisServicesImpl implements IPaisServices {
 
         return new PaisDTOResponse(
                 pais.getId_pais(),
-                pais.getNombre_pais(),
-                pais.getCreatedAt(),
-                pais.getUpdatedAt()
+                pais.getNombre_pais()
         );
     }
 
     /**
+     * Método para eliminar un país según su ID.
      *
-     * @param id
-     * @throws Exception
+     * @param id El ID del país a eliminar.
+     * @return true si se elimina el país con éxito.
+     * @throws Exception Si ocurre un error durante el proceso de eliminación del país.
      */
     @Override
     @Transactional(readOnly = false)
-    public void deletePaisById(long id) throws Exception {
+    public boolean deletePaisById(long id) throws Exception {
         // TODO Auto-generated method stub
         try {
             if (iPaisRepository.existsById(id)) {
+                log.info("Elimininado País con ID: " + id);
                 iPaisRepository.deleteById(id);
+                return true;
             } else {
                 log.error("¡No exite el Id del País!");
+                throw new Exception("¡No existe el ID del País!");
             }
         } catch (Exception e) {
-            // TODO: handle exception
-            throw new Exception(e.getCause());
+            log.error("Ocurrió un error al eliminar el País con ID " + id + ": " + e.getCause().toString());
+            throw new Exception("Ocurrió un error al eliminar el País!");
         }
     }
 

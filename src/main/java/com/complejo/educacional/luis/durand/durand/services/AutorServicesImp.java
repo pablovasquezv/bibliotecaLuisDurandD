@@ -1,7 +1,5 @@
-/**
- *
- */
 package com.complejo.educacional.luis.durand.durand.services;
+//Import necesarios para la clase.
 
 import java.util.List;
 import java.util.Optional;
@@ -47,11 +45,12 @@ public class AutorServicesImp implements IAutorServices {
     private ObjectMapper objectMapper;
 
     /**
-     * @param autorDTORequest
-     * @return
-     * @throws Exception
+     * Método que guarda un nuevo guardado con la información proporcionada en autorDTORequest.
+     *
+     * @param autorDTORequest La información del nuevo autor a guardar.
+     * @return Un objeto AutorDTORequest con la información del autor guardado.
+     * @throws Exception Si ocurre un error durante el proceso de guardado del autor.
      */
-
     @Override
     @Transactional(readOnly = false)
     public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception {
@@ -61,9 +60,7 @@ public class AutorServicesImp implements IAutorServices {
                     null,
                     autorDTORequest.getNombres_autor(),
                     autorDTORequest.getApellidos_autor(),
-                    pais,
-                    autorDTORequest.getCreatedAt(),
-                    autorDTORequest.getUpdatedAt()
+                    pais
             );
             log.info("---Inicio de creción Autor----" + objectMapper.writeValueAsString(autorDTORequest));
             createAutor = iAutorRepository.save(createAutor);
@@ -72,9 +69,7 @@ public class AutorServicesImp implements IAutorServices {
             return new AutorDTORequest(
                     createAutor.getNombres_autor(),
                     createAutor.getApellidos_autor(),
-                    createAutor.getPais().getId_pais(),
-                    createAutor.getCreatedAt(),
-                    createAutor.getUpdatedAt()
+                    createAutor.getPais().getId_pais()
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al guardar el Autor: " + e.getCause().toString());
@@ -82,12 +77,13 @@ public class AutorServicesImp implements IAutorServices {
         }
     }
 
-
     /**
-     * @param id
-     * @param autorDTOResponseUpdate
-     * @return
-     * @throws Exception
+     * Método que actualiza un autor según su ID con la información proporcionada en autorDTOResponseUpdate.
+     *
+     * @param id                     El ID del autor a actualizar.
+     * @param autorDTOResponseUpdate La información actualizada del autor.
+     * @return Un objeto AutorDTOResponseUpdate con la información actualizada del autor.
+     * @throws Exception Si ocurre un error durante el proceso de actualización del autor.
      */
     @Override
     @Transactional(readOnly = false)
@@ -101,16 +97,13 @@ public class AutorServicesImp implements IAutorServices {
                 autor.setNombres_autor(autorDTOResponseUpdate.getNombres_autor());
                 autor.setApellidos_autor(autorDTOResponseUpdate.getApellidos_autor());
                 autor.setPais(pais);
-                autor.setUpdatedAt(autorDTOResponseUpdate.getUpdatedAt());
                 Autor updatedAutor = iAutorRepository.save(autor);
                 log.info("Json de Salida =>" + utils.imprimirLogSalida(updatedAutor));
                 return new AutorDTOResponse(
                         updatedAutor.getId_autor(),
                         updatedAutor.getNombres_autor(),
                         updatedAutor.getApellidos_autor(),
-                        updatedAutor.getPais().getId_pais(),
-                        updatedAutor.getCreatedAt(),
-                        updatedAutor.getUpdatedAt()
+                        updatedAutor.getPais().getId_pais()
                 );
             } else {
                 log.error("¡Ocurrió un error en la actualización del Autor!");
@@ -123,9 +116,11 @@ public class AutorServicesImp implements IAutorServices {
     }
 
     /**
-     * @param sort
-     * @return
-     * @throws Exception
+     * Método que recupera una lista de objetos AutorDTOResponse ordenados según el criterio especificado.
+     *
+     * @param sort El criterio de ordenación.
+     * @return Una lista de objetos AutorDTOResponse ordenados según el criterio especificado.
+     * @throws Exception Si ocurre un error al recuperar la lista de autores ordenados.
      */
     @Override
     @Transactional(readOnly = true)
@@ -141,9 +136,7 @@ public class AutorServicesImp implements IAutorServices {
                             autor.getId_autor(),
                             autor.getNombres_autor(),
                             autor.getApellidos_autor(),
-                            autor.getPais().getId_pais(),
-                            autor.getCreatedAt(),
-                            autor.getUpdatedAt()
+                            autor.getPais().getId_pais()
                     ))
                     .collect(Collectors.toList());
             /**
@@ -156,11 +149,12 @@ public class AutorServicesImp implements IAutorServices {
         }
     }
 
-
     /**
-     * @param pageable
-     * @return
-     * @throws Exception
+     * Método que recupera una página de objetos AutorDTOResponse utilizando paginación y ordenación.
+     *
+     * @param pageable La información de paginación y ordenación.
+     * @return Una página de objetos AutorDTOResponse.
+     * @throws Exception Si ocurre un error al recuperar la página de autores.
      */
     @Override
     @Transactional(readOnly = true)
@@ -168,7 +162,7 @@ public class AutorServicesImp implements IAutorServices {
         try {
             Page<Autor> autores = iAutorRepository.findAllAutorPage(pageable);
             /**
-             * Utilicé el método stream() y map() para convertir la lista de Autor en una lista
+             * Utilicé el método stream() y map() para convertir la lista de autor en una lista
              * de AutorDTOResponse de forma más concisa.
              */
             List<AutorDTOResponse> autorDTOResponses = autores.stream()
@@ -176,9 +170,7 @@ public class AutorServicesImp implements IAutorServices {
                             autor.getId_autor(),
                             autor.getNombres_autor(),
                             autor.getApellidos_autor(),
-                            autor.getPais().getId_pais(),
-                            autor.getCreatedAt(),
-                            autor.getUpdatedAt()
+                            autor.getPais().getId_pais()
                     ))
                     .collect(Collectors.toList());
             /**
@@ -196,11 +188,12 @@ public class AutorServicesImp implements IAutorServices {
         }
     }
 
-
     /**
-     * @param id
-     * @return
-     * @throws Exception
+     * Método que qusca un autor por su ID y devuelve su información en un objeto AutorDTOResponse.
+     *
+     * @param id El ID del autor a buscar.
+     * @return Un objeto AutorDTOResponse con la información del autor.
+     * @throws Exception Si el género no se encuentra o si ocurre un error durante la búsqueda.
      */
     @Override
     @Transactional(readOnly = true)
@@ -214,9 +207,7 @@ public class AutorServicesImp implements IAutorServices {
                     autor.getId_autor(),
                     autor.getNombres_autor(),
                     autor.getApellidos_autor(),
-                    autor.getPais().getId_pais(),
-                    autor.getCreatedAt(),
-                    autor.getUpdatedAt()
+                    autor.getPais().getId_pais()
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al buscar el Autor con ID " + id + ": " + e.getCause().toString());
@@ -224,20 +215,23 @@ public class AutorServicesImp implements IAutorServices {
         }
     }
 
-
     /**
-     * @param id
-     * @throws Exception
+     * Método para eliminar un autor según su ID.
+     *
+     * @param id El ID del autor a eliminar.
+     * @return true si se elimina el autor con éxito.
+     * @throws Exception Si ocurre un error durante el proceso de eliminación del autor.
      */
     @Override
     @Transactional(readOnly = false)
-    public void deleteAutorById(long id) throws Exception {
+    public boolean deleteAutorById(long id) throws Exception {
         try {
             if (iAutorRepository.existsById(id)) {
-                log.info("¡Eliminar Autor con ID: " + id);
+                log.info("Eliminar Autor con ID: " + id);
                 iAutorRepository.deleteById(id);
+                return true;
             } else {
-                log.error("No existe el ID del Autor!");
+                log.error("¡No existe el ID del Autor!");
                 throw new Exception("No existe el ID del Autor");
             }
         } catch (Exception e) {
@@ -245,6 +239,4 @@ public class AutorServicesImp implements IAutorServices {
             throw new Exception("Ocurrió un error al eliminar el Autor!");
         }
     }
-
-
 }

@@ -1,5 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.services;
-//Import necesarias para la clase.
+//Import necesarios para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponse;
@@ -54,9 +54,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             Genero creatGenero = new Genero(
                     null,
                     generoDTORequest.getNombre_genero().toUpperCase(),
-                    generoDTORequest.getDescripcion_genero(),
-                    generoDTORequest.getCreatedAt(),
-                    generoDTORequest.getUpdatedAt()
+                    generoDTORequest.getDescripcion_genero()
             );
             log.info("---Incio de la Creación del Género---" + objectMapper.writeValueAsString(creatGenero));
             creatGenero = iGeneroRepository.save(creatGenero);
@@ -64,9 +62,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             log.info("---Fin de la Creación del Género---");
             return new GeneroDTORequest(
                     creatGenero.getNombre_genero(),
-                    creatGenero.getDescripcion_genero(),
-                    creatGenero.getCreatedAt(),
-                    creatGenero.getUpdatedAt()
+                    creatGenero.getDescripcion_genero()
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
@@ -77,14 +73,14 @@ public class GeneroServicesImpl implements IGeneroServices {
     /**
      * Método que actualiza un género según su ID con la información proporcionada en generoDTOResponseUpdate.
      *
-     * @param id                      El ID del género a actualizar.
+     * @param id El ID del género a actualizar.
      * @param generoDTOResponseUpdate La información actualizada del género.
      * @return Un objeto GeneroDTOResponseUpdate con la información actualizada del género.
      * @throws Exception Si ocurre un error durante el proceso de actualización del género.
      */
     @Transactional(readOnly = false)
     @Override
-    public GeneroDTOResponseUpdate updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception {
+    public GeneroDTOResponse updateGenero(Long id, GeneroDTOResponseUpdate generoDTOResponseUpdate) throws Exception {
         try {
             Optional<Genero> generoOptional;
             Genero genero;
@@ -99,18 +95,14 @@ public class GeneroServicesImpl implements IGeneroServices {
 
             genero.setNombre_genero(generoDTOResponseUpdate.getNombre_genero().toUpperCase());
             genero.setDescripcion_genero(generoDTOResponseUpdate.getDescripcion_genero());
-            genero.setCreatedAt(generoDTOResponseUpdate.getCreatedAt());
-            genero.setUpdatedAt(generoDTOResponseUpdate.getUpdatedAt());
             updateGenero = iGeneroRepository.save(genero);
 
             log.info("Json de Salida ==>" + objectMapper.writeValueAsString(updateGenero));
 
-            return new GeneroDTOResponseUpdate(
+            return new GeneroDTOResponse(
                     updateGenero.getId_genero(),
                     updateGenero.getNombre_genero(),
-                    updateGenero.getDescripcion_genero(),
-                    updateGenero.getCreatedAt(),
-                    updateGenero.getUpdatedAt()
+                    updateGenero.getDescripcion_genero()
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al guardar el Género: " + e.getCause().toString());
@@ -138,9 +130,7 @@ public class GeneroServicesImpl implements IGeneroServices {
                     genero -> new GeneroDTOResponse(
                             genero.getId_genero(),
                             genero.getNombre_genero(),
-                            genero.getDescripcion_genero(),
-                            genero.getCreatedAt(),
-                            genero.getUpdatedAt()
+                            genero.getDescripcion_genero()
                     )
             ).collect(Collectors.toList());
         } catch (Exception e) {
@@ -169,9 +159,7 @@ public class GeneroServicesImpl implements IGeneroServices {
                     map(genero -> new GeneroDTOResponse(
                                     genero.getId_genero(),
                                     genero.getNombre_genero(),
-                                    genero.getDescripcion_genero(),
-                                    genero.getCreatedAt(),
-                                    genero.getUpdatedAt()
+                                    genero.getDescripcion_genero()
                             )
 
                     ).collect(Collectors.toList());
@@ -208,9 +196,7 @@ public class GeneroServicesImpl implements IGeneroServices {
             return new GeneroDTOResponse(
                     genero.getId_genero(),
                     genero.getNombre_genero(),
-                    genero.getDescripcion_genero(),
-                    genero.getCreatedAt(),
-                    genero.getUpdatedAt()
+                    genero.getDescripcion_genero()
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al buscar el Género con ID " + id + ": " + e.getCause().toString());
