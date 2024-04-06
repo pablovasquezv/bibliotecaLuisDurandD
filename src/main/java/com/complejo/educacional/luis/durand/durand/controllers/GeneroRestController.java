@@ -86,14 +86,14 @@ public class GeneroRestController {
     /**
      * Actualiza un género según su ID.
      *
-     * @param id                    El ID del género a actualizar.
-     * @param generoDTOResponseUpdate   La información actualizada del género.
-     * @param bindingResult         El resultado del proceso de validación.
+     * @param id                      El ID del género a actualizar.
+     * @param generoDTOResponseUpdate La información actualizada del género.
+     * @param bindingResult           El resultado del proceso de validación.
      * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
      */
     @PutMapping(value = "genero/update/{id}")
     public ResponseEntity<Map<String, Object>> updateGenero(@PathVariable long id, @Valid @RequestBody GeneroDTOResponseUpdate generoDTOResponseUpdate,
-                                                            BindingResult bindingResult) throws Exception{
+                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
 
         if (bindingResult.hasErrors()) {
@@ -105,7 +105,7 @@ public class GeneroRestController {
         }
 
         try {
-            GeneroDTOResponseUpdate updatedGenero = iGeneroServices.updateGenero(id, generoDTOResponseUpdate);
+            GeneroDTOResponse updatedGenero = iGeneroServices.updateGenero(id, generoDTOResponseUpdate);
             if (updatedGenero != null && updatedGenero.getId_genero() != null) {
                 responseAsMap.put("Genero", updatedGenero);
                 responseAsMap.put("Mensaje", "¡Se actualizó correctamente el género con ID: " + updatedGenero.getId_genero() + "!");
