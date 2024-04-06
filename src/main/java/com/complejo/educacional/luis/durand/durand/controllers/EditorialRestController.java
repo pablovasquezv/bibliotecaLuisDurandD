@@ -1,4 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
+//Import necesarias para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.editorial.EditorialDTORequestUpdate;
@@ -34,10 +35,12 @@ public class EditorialRestController {
     private IEditorialServices iEditorialServices;
 
     /**
-     * @param editorialDTORequest
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * Método que crea una nueva editorial basado en los datos proporcionados..
+     *
+     * @param editorialDTORequest El objeto DTO que contiene los detalles de la editorial que se creará.
+     * @param bindingResult       El resultado del proceso de validación para el objeto DTO.
+     * @return Una ResponseEntity que contiene el resultado de la creación de la editorial y el estado HTTP correspondiente.
+     * @throws Exception Excepción si ocurre un error durante el proceso de creación de la categoría.
      */
 
     @PostMapping(value = "editorial/create")
@@ -74,16 +77,16 @@ public class EditorialRestController {
     }
 
     /**
+     * Actualiza una categoría según su ID.
      *
-     * @param id
-     * @param editorialDTORequestUpdate
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * @param id                     El ID de la editorial a actualizar.
+     * @param editorialDTORequestUpdate La información actualizada de la editorial.
+     * @param bindingResult          El resultado del proceso de validación.
+     * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
      */
     @PutMapping(value = "editorial/update/{id}")
     private ResponseEntity<Map<String, Object>> updateEditorial(@PathVariable long id, @Valid @RequestBody
-    EditorialDTORequestUpdate editorialDTORequestUpdate,
+                                                                EditorialDTORequestUpdate editorialDTORequestUpdate,
                                                                 BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
@@ -115,9 +118,11 @@ public class EditorialRestController {
     }
 
     /**
-     * @param page
-     * @param size
-     * @return responseEntity
+     * Método que recupera una lista de editorial con paginación opcional.
+     *
+     * @param page El número de página para la paginación (opcional).
+     * @param size El tamaño de página para la paginación (opcional).
+     * @return Una ResponseEntity que contiene la lista de editorial y el estado HTTP correspondiente.
      */
     @GetMapping(value = "editorial/get/all")
     private ResponseEntity<List<EditorialDTOResponse>> findAllEditoriales(@RequestParam(required = false) Integer page,
@@ -148,9 +153,12 @@ public class EditorialRestController {
     }
 
     /**
-     * @param id
-     * @return responseEntity
+     * Método que recupera una Editorial por su ID.
+     *
+     * @param id El ID de la editorial a recuperar.
+     * @return Una ResponseEntity que contiene la información de la editorial y el estado HTTP correspondiente.
      */
+
     @GetMapping(value = "editorial/{id}")
     private ResponseEntity<EditorialDTOResponse> findByIdEditorial(@PathVariable long id) {
         EditorialDTOResponse editorialDTOResponse = null;
@@ -171,9 +179,10 @@ public class EditorialRestController {
     }
 
     /**
-     * @param id
-     * @return responseEntity
-     * @throws Exception
+     * Método que elimina una editorial según su ID.
+     *
+     * @param id El ID de la editorial a eliminar.
+     * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
      */
     @DeleteMapping(value = "editorial/delete/{id}")
     private ResponseEntity<EditorialDTOResponse> deleteById(@PathVariable long id) throws Exception {

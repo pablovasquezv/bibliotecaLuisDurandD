@@ -1,7 +1,5 @@
-/**
- *
- */
 package com.complejo.educacional.luis.durand.durand.controllers;
+//Import necesarias para la clase.
 
 import java.util.List;
 import java.util.Map;
@@ -49,10 +47,12 @@ public class AutorRestController {
     private IAutorServices iAutorServices;
 
     /**
-     * @param autorDTORequest
-     * @param bindingResult
-     * @return responseEntity
-     * @throws Exception
+     * Método que crea un nuevo autor basado en los datos proporcionados..
+     *
+     * @param autorDTORequest El objeto DTO que contiene los detalles del autor que se creará.
+     * @param bindingResult   El resultado del proceso de validación para el objeto DTO.
+     * @return Una ResponseEntity que contiene el resultado de la creación del autor y el estado HTTP correspondiente.
+     * @throws Exception Excepción si ocurre un error durante el proceso de creación del autor.
      */
     @PostMapping(value = "autor/create")
     private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody AutorDTORequest autorDTORequest,
@@ -86,14 +86,17 @@ public class AutorRestController {
     }
 
     /**
-     * @param id
-     * @param autorDTOResponseUpdate
-     * @param bindingResult
-     * @return responseEntity
-     * @throws Exception
+     * Método que actualiza un autor según su ID.
+     *
+     * @param id                     El ID del autor a actualizar.
+     * @param autorDTOResponseUpdate La información actualizada del autor.
+     * @param bindingResult          El resultado del proceso de validación.
+     * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
      */
     @PutMapping(value = "autor/update/{id}")
-    private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody AutorDTOResponseUpdate autorDTOResponseUpdate, BindingResult bindingResult) throws Exception {
+    private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid
+    @RequestBody AutorDTOResponseUpdate autorDTOResponseUpdate,
+                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity;
 
@@ -122,14 +125,15 @@ public class AutorRestController {
             responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " + dataAccessException.getMostSpecificCause().toString());
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         return responseEntity;
     }
 
     /**
-     * @param page
-     * @param size
-     * @return responseEntity
+     * Método que recupera una lista de autores con paginación opcional.
+     *
+     * @param page El número de página para la paginación (opcional).
+     * @param size El tamaño de página para la paginación (opcional).
+     * @return Una ResponseEntity que contiene la lista de autores y el estado HTTP correspondiente.
      */
     @GetMapping(value = "autor/get/all")
     @ResponseStatus(HttpStatus.OK)
@@ -155,11 +159,13 @@ public class AutorRestController {
         }
     }
 
-
     /**
-     * @param id
-     * @return
+     * Método que recupera un autor por su ID.
+     *
+     * @param id El ID del autor a recuperar.
+     * @return Una ResponseEntity que contiene la información del autor y el estado HTTP correspondiente.
      */
+
     @GetMapping(value = "autor/{id}")
     private ResponseEntity<AutorDTOResponse> findById(@PathVariable int id) {
         AutorDTOResponse autor;
@@ -175,9 +181,10 @@ public class AutorRestController {
 
 
     /**
-     * @param id
-     * @return responseEntity
-     * @throws Exception
+     * Méetodo que elimina un autor según su ID.
+     *
+     * @param id El ID del autor a eliminar.
+     * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
      */
     @DeleteMapping(value = "autor/delete/{id}")
     private ResponseEntity<Void> deleteById(@PathVariable Long id) {

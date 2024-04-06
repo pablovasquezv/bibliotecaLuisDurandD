@@ -1,4 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.controllers;
+//Import necesarias para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.categoria.CategoriaDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.categoria.CategoriaDTOResponse;
@@ -33,10 +34,12 @@ public class CategoriaRestController {
     private ICategoriaServices iCategoriaImplements;
 
     /**
-     * @param categoriaDTORequest
-     * @param bindingResult
-     * @return responseEntity
-     * @throws Exception
+     * Método que crea una nueva categoría basado en los datos proporcionados..
+     *
+     * @param categoriaDTORequest El objeto DTO que contiene los detalles de la categoría que se creará.
+     * @param bindingResult       El resultado del proceso de validación para el objeto DTO.
+     * @return Una ResponseEntity que contiene el resultado de la creación de la categoría y el estado HTTP correspondiente.
+     * @throws Exception Excepción si ocurre un error durante el proceso de creación de la categoría.
      */
     @PostMapping(value = "categoria/create")
     private ResponseEntity<Map<String, Object>> addNewCategoria(@Valid @RequestBody CategoriaDTORequest
@@ -74,12 +77,12 @@ public class CategoriaRestController {
 
 
     /**
+     * Actualiza una categoría según su ID.
      *
-     * @param id
-     * @param categoriaRequestUpdate
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * @param id                     El ID de la categoría a actualizar.
+     * @param categoriaRequestUpdate La información actualizada de la categoría.
+     * @param bindingResult          El resultado del proceso de validación.
+     * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
      */
     @PutMapping(value = "categoria/update/{id}")
     private ResponseEntity<Map<String, Object>> updateCategoria(@PathVariable long id, @Valid @RequestBody
@@ -118,15 +121,15 @@ public class CategoriaRestController {
     }
 
     /**
+     * Método que recupera una lista de categorías con paginación opcional.
      *
-     * @param page
-     * @param size
-     * @return responseEntity
-     * @throws Exception
+     * @param page El número de página para la paginación (opcional).
+     * @param size El tamaño de página para la paginación (opcional).
+     * @return Una ResponseEntity que contiene la lista de categorías y el estado HTTP correspondiente.
      */
     @GetMapping(value = "categoria/get/all")
     private ResponseEntity<List<CategoriaDTOResponse>> findAllCategoria(@RequestParam(required = false) Integer page,
-                                                             @RequestParam(required = false) Integer size) throws Exception {
+                                                                        @RequestParam(required = false) Integer size) throws Exception {
         Sort sortByName = Sort.by("nombre_categoria");
         ResponseEntity<List<CategoriaDTOResponse>> responseEntity = null;
         List<CategoriaDTOResponse> categoriaList = null;
@@ -152,10 +155,12 @@ public class CategoriaRestController {
     }
 
     /**
-     * @param id
-     * @return responseEntity
-     * @throws Exception
+     * Método que recupera una Categoría por su ID.
+     *
+     * @param id El ID de la categoría a recuperar.
+     * @return Una ResponseEntity que contiene la información de la categoría y el estado HTTP correspondiente.
      */
+
     @GetMapping(value = "categoria/{id}")
     private ResponseEntity<CategoriaDTOResponse> findByIdCategoria(@PathVariable long id) throws Exception {
         CategoriaDTOResponse categoriaSearch = null;
@@ -175,9 +180,10 @@ public class CategoriaRestController {
     }
 
     /**
-     * @param id
-     * @return responseEntity
-     * @throws Exception
+     * Método que elimina una categoría según su ID.
+     *
+     * @param id El ID de la categoría a eliminar.
+     * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
      */
     @DeleteMapping(value = "categoria/delete/{id}")
     private ResponseEntity<CategoriaDTOResponse> deleteByIdCategoria(@PathVariable long id) throws Exception {
@@ -199,5 +205,4 @@ public class CategoriaRestController {
         }
         return responseEntity;
     }
-
 }

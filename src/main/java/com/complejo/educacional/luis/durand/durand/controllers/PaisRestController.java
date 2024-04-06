@@ -2,6 +2,7 @@
  *
  */
 package com.complejo.educacional.luis.durand.durand.controllers;
+//Import necesarias para la clase.
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,11 +50,12 @@ public class PaisRestController {
     private IPaisServices iPaisServices;
 
     /**
+     * Método que crea un nuevo país basado en los datos proporcionados..
      *
-     * @param paisDTORequest
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * @param paisDTORequest El objeto DTO que contiene los detalles del país que se creará.
+     * @param bindingResult   El resultado del proceso de validación para el objeto DTO.
+     * @return Una ResponseEntity que contiene el resultado de la creación del país y el estado HTTP correspondiente.
+     * @throws Exception Excepción si ocurre un error durante el proceso de creación del país.
      */
     @PostMapping("pais/create")
     private ResponseEntity<Map<String, Object>> addNewPais(@Valid @RequestBody PaisDTORequest paisDTORequest,
@@ -91,12 +93,12 @@ public class PaisRestController {
     }
 
     /**
+     * Método que actualiza un país según su ID.
      *
-     * @param id
-     * @param paisDTORequestUpdate
-     * @param bindingResult
-     * @return
-     * @throws Exception
+     * @param id                     El ID del país a actualizar.
+     * @param paisDTORequestUpdate La información actualizada del país.
+     * @param bindingResult          El resultado del proceso de validación.
+     * @return ResponseEntity con el resultado de la actualización y mensajes descriptivos.
      */
     @PutMapping("pais/update/{id}")
     private ResponseEntity<Map<String, Object>> updatePais(@PathVariable long id, @Valid @RequestBody PaisDTORequestUpdate
@@ -133,10 +135,11 @@ public class PaisRestController {
     }
 
     /**
+     * Método que recupera una lista de países con paginación opcional.
      *
-     * @param page
-     * @param size
-     * @return
+     * @param page El número de página para la paginación (opcional).
+     * @param size El tamaño de página para la paginación (opcional).
+     * @return Una ResponseEntity que contiene la lista de países y el estado HTTP correspondiente.
      */
     @GetMapping("pais/get/all")
     @ResponseStatus(HttpStatus.OK)
@@ -172,10 +175,12 @@ public class PaisRestController {
     }
 
     /**
+     * Método que recupera un país por su ID.
      *
-     * @param id
-     * @return
+     * @param id El ID del autor a recuperar.
+     * @return Una ResponseEntity que contiene la información del país y el estado HTTP correspondiente.
      */
+
     @GetMapping(value = "pais/{id}")
     private ResponseEntity<PaisDTOResponse> findById(@PathVariable int id) {
         PaisDTOResponse pais = null;
@@ -198,9 +203,10 @@ public class PaisRestController {
     }
 
     /**
+     * Méetodo que elimina un país según su ID.
      *
-     * @param id
-     * @return
+     * @param id El ID del país a eliminar.
+     * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
      */
     @DeleteMapping("pais/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -223,7 +229,6 @@ public class PaisRestController {
         } catch (Exception e) {
             log.error("Ocurrio un Error =>" + e);
         }
-
         return responseEntity;
     }
 }
