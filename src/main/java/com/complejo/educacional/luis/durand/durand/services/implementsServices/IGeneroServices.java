@@ -1,5 +1,8 @@
 package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 //Import necesarios para la clase.
+
+import java.util.List;
+
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponse;
 import com.complejo.educacional.luis.durand.durand.dto.genero.GeneroDTOResponseUpdate;
@@ -7,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
 
 /**
  * @author Pablo
@@ -29,7 +31,7 @@ public interface IGeneroServices {
     /**
      * Método que actualiza la información de un género en la base de datos.
      *
-     * @param id el identificador del género a actualizar.
+     * @param id                      el identificador del género a actualizar.
      * @param generoDTOResponseUpdate el objeto DTO que contiene la información actualizada del género.
      * @return el objeto DTO del género actualizado.
      * @throws Exception si ocurre algún error durante el proceso de actualización.
