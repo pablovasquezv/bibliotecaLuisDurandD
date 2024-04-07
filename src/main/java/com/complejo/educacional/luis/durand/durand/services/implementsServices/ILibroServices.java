@@ -1,4 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.services.implementsServices;
+//Import necesarias para la interface.
 
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponse;
@@ -77,6 +78,4 @@ public interface ILibroServices {
      * @throws Exception Si ocurre un error durante el proceso de eliminación.
      */
     public boolean deleteLibroById(long id) throws Exception;
-
-
 }
