@@ -4,7 +4,11 @@ package com.complejo.educacional.luis.durand.durand.services;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponse;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponseUpdate;
-import com.complejo.educacional.luis.durand.durand.models.*;
+import com.complejo.educacional.luis.durand.durand.models.Autor;
+import com.complejo.educacional.luis.durand.durand.models.Categoria;
+import com.complejo.educacional.luis.durand.durand.models.Editorial;
+import com.complejo.educacional.luis.durand.durand.models.Genero;
+import com.complejo.educacional.luis.durand.durand.models.Libro;
 import com.complejo.educacional.luis.durand.durand.repositories.IAutorRepository;
 import com.complejo.educacional.luis.durand.durand.repositories.ICategoriaRepository;
 import com.complejo.educacional.luis.durand.durand.repositories.IEditorialRepository;
@@ -60,9 +64,9 @@ public class LibroServicesImpl implements ILibroServices {
     public LibroDTORequest saveLibro(LibroDTORequest libroDTORequest) throws Exception {
         try {
             Autor autor = iAutorRepository.getReferenceById(libroDTORequest.getId_autor());
-            Categoria categoria= iCategoriaRepository.getReferenceById(libroDTORequest.getId_categoria());
-            Editorial editorial= iEditorialRepository.getReferenceById(libroDTORequest.getId_editorial());
-            Genero genero= iGeneroRepository.getReferenceById(libroDTORequest.getId_genero());
+            Categoria categoria = iCategoriaRepository.getReferenceById(libroDTORequest.getId_categoria());
+            Editorial editorial = iEditorialRepository.getReferenceById(libroDTORequest.getId_editorial());
+            Genero genero = iGeneroRepository.getReferenceById(libroDTORequest.getId_genero());
             Libro createLibro = new Libro(
                     null,
                     libroDTORequest.getTitulo_libro(),
@@ -75,8 +79,8 @@ public class LibroServicesImpl implements ILibroServices {
             );
 
             log.info("---Inicio de creción Libro----" + objectMapper.writeValueAsString(libroDTORequest));
-            createLibro= iLibroRepository.save(createLibro);
-            log.info("Json de Salida =>",objectMapper.writeValueAsString(createLibro));
+            createLibro = iLibroRepository.save(createLibro);
+            log.info("Json de Salida =>", objectMapper.writeValueAsString(createLibro));
             log.info("----Fin de método Creación Libro----");
 
             return new LibroDTORequest(

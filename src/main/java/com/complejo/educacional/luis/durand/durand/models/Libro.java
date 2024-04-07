@@ -100,7 +100,7 @@ public class Libro implements Serializable{
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo autor_id no debe ser vacío!")
-    @JoinColumn(name = "autor_id_")
+    @JoinColumn(name = "autor_id")
     private Autor autor;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
@@ -118,13 +118,11 @@ public class Libro implements Serializable{
     @JoinColumn(name = "genero_id")
     private Genero genero;
 
-    @NotEmpty(message = "¡La edición del libro no debe ser vacío!")
     @Min(value = 0, message = "¡La edición deber se mayor a 0 !")
     @Max(value = 120, message = "¡La edición no deber mayor a 120!")
     @Column(name = "edicion_libro")
     private Integer edicion_libro;
 
-    @NotEmpty(message = "¡El número de páginas del libro no debe ser vacío!")
     @Min(value = 0, message = "¡El número de páginas debe ser mayor a 0 años!")
     @Max(value = 100000, message = "¡El número de páginas no deber mayor a 10000!")
     @Column(name = "paginas_libro")

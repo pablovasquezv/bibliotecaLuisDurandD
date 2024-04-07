@@ -113,7 +113,7 @@ public class AutorRestController {
         try {
             AutorDTOResponse autorFromDB = iAutorServices.updateAutor(id, autorDTOResponseUpdate);
 
-            if (autorFromDB != null && autorFromDB.getId_autor() != null) {
+            if (autorFromDB != null && autorFromDB.getId_autor()  != null) {
                 responseAsMap.put("Autor", autorDTOResponseUpdate);
                 responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autorDTOResponseUpdate.getId_autor() + "!");
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
