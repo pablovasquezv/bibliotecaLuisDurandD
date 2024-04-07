@@ -1,10 +1,10 @@
 package com.complejo.educacional.luis.durand.durand.dto.libro;
+//Import necesarias para la clase.
 
 import com.complejo.educacional.luis.durand.durand.models.Autor;
 import com.complejo.educacional.luis.durand.durand.models.Categoria;
 import com.complejo.educacional.luis.durand.durand.models.Editorial;
 import com.complejo.educacional.luis.durand.durand.models.Genero;
-//Import necesarias para la clase.
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -34,10 +34,10 @@ import lombok.ToString;
  */
 public class LibroDTORequest {
     private String titulo_libro;
-    private Autor autor;
-    private Categoria categoria;
-    private Editorial editorial;
-    private Genero genero;
-    private Integer edicion_libro;
+    private Long id_autor;
+    private Long id_categoria;
+    private Long id_editorial;
+    private Long id_genero;
+    private Long edicion_libro;
     private int paginas_libro;
 }

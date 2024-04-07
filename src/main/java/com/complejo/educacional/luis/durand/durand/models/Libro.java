@@ -100,7 +100,7 @@ public class Libro implements Serializable{
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo autor_id no debe ser vacío!")
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "autor_id_")
     private Autor autor;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
