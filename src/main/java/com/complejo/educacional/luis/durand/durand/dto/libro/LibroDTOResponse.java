@@ -38,6 +38,6 @@ public class LibroDTOResponse {
     private Long id_categoria;
     private Long id_editorial;
     private Long id_genero;
-    private Long edicion_libro;
-    private int paginas_libro;
+    private Integer edicion_libro;
+    private Integer paginas_libro;
 }

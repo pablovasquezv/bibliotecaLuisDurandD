@@ -128,7 +128,7 @@ public class Libro implements Serializable{
     @Min(value = 0, message = "¡El número de páginas debe ser mayor a 0 años!")
     @Max(value = 100000, message = "¡El número de páginas no deber mayor a 10000!")
     @Column(name = "paginas_libro")
-    private int paginas_libro;
+    private Integer paginas_libro;
 
     // This will not allow the createdAt column to be updated after creation
     @Column(name = "createdAt",updatable = false)
@@ -140,6 +140,30 @@ public class Libro implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date updatedAt;
+
+    /**
+     * Constructor con parámetros.
+     *
+     * @param id_libro
+     * @param titulo_libro
+     * @param autor
+     * @param categoria
+     * @param editorial
+     * @param genero
+     * @param edicion_libro
+     * @param paginas_libro
+     */
+    public Libro(Long id_libro, String titulo_libro, Autor autor, Categoria categoria, Editorial editorial,
+                 Genero genero, Integer edicion_libro, Integer paginas_libro) {
+        this.id_libro = id_libro;
+        this.titulo_libro = titulo_libro;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.editorial = editorial;
+        this.genero = genero;
+        this.edicion_libro = edicion_libro;
+        this.paginas_libro = paginas_libro;
+    }
 
     /**
      * Método de callback para establecer la fecha de creación antes de la persistencia.
