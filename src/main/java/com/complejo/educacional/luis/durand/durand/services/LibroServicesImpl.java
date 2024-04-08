@@ -49,11 +49,15 @@ public class LibroServicesImpl implements ILibroServices {
     private ObjectMapper objectMapper;
 
     /**
-     * Este método guarda una nueva entrada de libro en la base de datos, utilizando la información proporcionada en el objeto LibroDTORequest.
-     * Comienza obteniendo referencias a las entidades relacionadas (Autor, Categoría, Editorial y Género) basadas en los IDs proporcionados.
+     * Este método guarda una nueva entrada de libro en la base de datos, utilizando la información proporcionada en el
+     * objeto LibroDTORequest.
+     * Comienza obteniendo referencias a las entidades relacionadas (Autor, Categoría, Editorial y Género) basadas en
+     * los IDs proporcionados.
      * Luego, se crea y guarda un nuevo objeto Libro utilizando la instancia iLibroRepository.
-     * Después de guardar el libro, se construye y retorna un nuevo objeto LibroDTORequest con la información de la entrada de libro guardada.
-     * En caso de que ocurran excepciones durante el proceso, se registra un error y se lanza una excepción con un mensaje de error.
+     * Después de guardar el libro, se construye y retorna un nuevo objeto LibroDTORequest con la información de la
+     * entrada de libro guardada.
+     * En caso de que ocurran excepciones durante el proceso, se registra un error y se lanza una excepción con un
+     * mensaje de error.
      *
      * @param libroDTORequest El objeto LibroDTORequest que contiene la información para la nueva entrada de libro.
      * @return Un objeto LibroDTORequest que contiene la información de la entrada de libro guardada.
