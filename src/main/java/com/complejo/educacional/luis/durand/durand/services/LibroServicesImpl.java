@@ -19,12 +19,16 @@ import com.complejo.educacional.luis.durand.durand.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Pablo
@@ -65,8 +69,9 @@ public class LibroServicesImpl implements ILibroServices {
      * @return Un objeto LibroDTORequest que contiene la información de la entrada de libro guardada.
      * @throws Exception Si ocurre un error durante el proceso de guardar la entrada de libro.
      */
-    @Transactional(readOnly = false)
+
     @Override
+    @Transactional(readOnly = false)
     public LibroDTORequest saveLibro(LibroDTORequest libroDTORequest) throws Exception {
         try {
             Autor autor = iAutorRepository.getReferenceById(libroDTORequest.getId_autor());
@@ -119,6 +124,7 @@ public class LibroServicesImpl implements ILibroServices {
      * @throws Exception Si ocurre un error durante el proceso de actualización del libro.
      */
     @Override
+    @Transactional(readOnly = false)
     public LibroDTOResponse updateLibro(Long id, LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception {
         try {
             Optional<Libro> libroOptional = iLibroRepository.findById(id);
@@ -160,22 +166,137 @@ public class LibroServicesImpl implements ILibroServices {
 
 
     @Override
-    public LibroDTOResponse findAllLibroSort(Sort sort) throws Exception {
-        return null;
+    @Transactional(readOnly = true)
+    public List<LibroDTOResponse> findAllLibroSort(Sort sort) throws Exception {
+        try {
+            /**
+             * Utilicé el método stream() y map() para convertir la lista de Libros en una lista de LibroDTOResponse
+             * de forma más concisa.
+             */
+            List<Libro> libroList = iLibroRepository.findAllLibroSort(sort);
+            return libroList.stream().
+                    map(libro -> new LibroDTOResponse(
+                                    libro.getId_libro(),
+                                    libro.getTitulo_libro(),
+                                    libro.getAutor().getId_autor(),
+                                    libro.getCategoria().getId_categoria(),
+                                    libro.getEditorial().getId_editorial(),
+                                    libro.getGenero().getId_genero(),
+                                    libro.getEdicion_libro(),
+                                    libro.getPaginas_libro()
+                            )
+                    ).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Libros: " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al listar todos los Libros!");
+        }
     }
 
+    /**
+     * Este método busca y devuelve una página de objetos LibroDTOResponse de acuerdo con el criterio de paginación
+     * especificado en el parámetro 'pageable'.
+     * Si la operación es exitosa, se devuelve la página de libros.
+     * En caso de que ocurra una excepción durante la búsqueda, se lanza una excepción con un mensaje descriptivo.
+     *
+     * @param pageable El objeto Pageable que especifica el criterio de paginación a aplicar a la búsqueda de libros.
+     * @return Una página de objetos LibroDTOResponse de acuerdo con el criterio de paginación especificado.
+     * @throws Exception Si ocurre un error durante la búsqueda de la página de libros.
+     */
     @Override
-    public LibroDTOResponse findAllLibroPage(Pageable pageable) throws Exception {
-        return null;
+    @Transactional(readOnly = true)
+    public Page<LibroDTOResponse> findAllLibroPage(Pageable pageable) throws Exception {
+        try {
+            Page<Libro> libroPage = iLibroRepository.findAllAutorPage(pageable);
+            /**
+             * Utilicé el método stream() y map() para convertir la lista de autor en una lista
+             * de AutorDTOResponse de forma más concisa.
+             */
+            List<LibroDTOResponse> libroDTOResponses = libroPage.stream().
+                    map(libro -> new LibroDTOResponse(
+                            libro.getId_libro(),
+                            libro.getTitulo_libro(),
+                            libro.getAutor().getId_autor(),
+                            libro.getCategoria().getId_categoria(),
+                            libro.getEditorial().getId_editorial(),
+                            libro.getGenero().getId_genero(),
+                            libro.getEdicion_libro(),
+                            libro.getPaginas_libro()
+                    )).collect(Collectors.toList());
+            /**
+             * Utilicé el método collect() junto con Collectors.toList() para recopilar los elementos mapeados
+             * en una lista.
+             */
+            return new PageImpl<>(libroDTOResponses, pageable, libroPage.getTotalElements());
+            /**
+             * Utilicé el método collect() junto con Collectors.toList() para recopilar los elementos mapeados
+             * en una lista.
+             */
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Libros: " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al listar todos los Libros!");
+        }
     }
 
+
+    /**
+     * Este método busca y devuelve un objeto LibroDTOResponse correspondiente al ID proporcionado.
+     * Si el libro se encuentra, se devuelve un objeto LibroDTOResponse con la información del libro.
+     * En caso de que el libro no se encuentre, se lanza una excepción con un mensaje descriptivo.
+     * Si ocurre una excepción durante la búsqueda, se lanza una excepción con un mensaje descriptivo.
+     *
+     * @param id El ID del libro que se va a buscar.
+     * @return Un objeto LibroDTOResponse con la información del libro correspondiente al ID proporcionado.
+     * @throws Exception Si el libro no se encuentra o si ocurre un error durante la búsqueda.
+     */
     @Override
+    @Transactional(readOnly = true)
     public LibroDTOResponse findByIdLibro(long id) throws Exception {
-        return null;
+        try {
+            Libro libro = iLibroRepository.findByLibroAndAutorAndCategoriaAndEditorialAndGenero(id);
+            if (libro.getId_libro() != null) throw new Exception("¡Libro no encontrado!");
+            return new LibroDTOResponse(
+                    libro.getId_libro(),
+                    libro.getTitulo_libro(),
+                    libro.getAutor().getId_autor(),
+                    libro.getCategoria().getId_categoria(),
+                    libro.getEditorial().getId_editorial(),
+                    libro.getGenero().getId_genero(),
+                    libro.getEdicion_libro(),
+                    libro.getPaginas_libro()
+            );
+        } catch (Exception e) {
+            log.error("Ocurrió un error al buscar el Libro con ID " + id + ": " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error al buscar el Libro!");
+        }
     }
 
+    /**
+     * Este método intenta eliminar un libro según el ID proporcionado.
+     * Si el libro se elimina con éxito, devuelve true. Si el ID del libro no existe, lanza una excepción con un
+     * mensaje descriptivo.
+     * En caso de que ocurra una excepción durante el proceso de eliminación, se lanza una excepción con un mensaje
+     * descriptivo.
+     *
+     * @param id El ID del libro que se va a eliminar.
+     * @return true si el libro se elimina con éxito.
+     * @throws Exception Si el ID del libro no existe o si ocurre un error durante el proceso de eliminación.
+     */
     @Override
+    @Transactional(readOnly = false)
     public boolean deleteLibroById(long id) throws Exception {
-        return false;
+        try {
+            if (iLibroRepository.existsById(id)) {
+                log.info("Eliminar Libro con ID: " + id);
+                iLibroRepository.deleteById(id);
+                return true;
+            } else {
+                log.error("¡No existe el ID del Autor: " + id);
+                throw new Exception("No existe el ID del Autor");
+            }
+        } catch (Exception e) {
+            log.error("Ocurrió un error al eliminar el Libro con ID " + id + ": " + e.getCause().toString());
+            throw new Exception("Ocurrió un error al eliminar el Libro!");
+        }
     }
+
 }

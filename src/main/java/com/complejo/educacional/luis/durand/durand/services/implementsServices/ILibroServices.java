@@ -4,8 +4,11 @@ package com.complejo.educacional.luis.durand.durand.services.implementsServices;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponse;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponseUpdate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 /**
  * @author Pablo
@@ -34,34 +37,39 @@ public interface ILibroServices {
      * En caso de que ocurra una excepción durante el proceso de actualización, se lanza una excepción con un mensaje
      * descriptivo.
      *
-     * @param id El ID del libro que se va a actualizar.
+     * @param id                     El ID del libro que se va a actualizar.
      * @param libroDTOResponseUpdate El objeto LibroDTOResponseUpdate que contiene la información actualizada del libro.
      * @return Un objeto LibroDTOResponse que contiene la información actualizada del libro.
      * @throws Exception Si ocurre un error durante el proceso de actualización del libro.
      */
-    public LibroDTOResponse updateLibro(Long id,LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception;
+    public LibroDTOResponse updateLibro(Long id, LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception;
+
 
     /**
-     * Método para recuperar una lista de todos los libros con ordenación personalizada.
-     * Este método devuelve una lista de libros, con la posibilidad de aplicar una ordenación específica.
-     * En caso de que ocurra una excepción durante el proceso, se lanzará una excepción del tipo Exception.
+     * Este método busca y devuelve una lista de objetos LibroDTOResponse ordenados según el criterio especificado en el
+     * parámetro 'sort'.
+     * Si la operación es exitosa, se devuelve la lista de libros ordenada.
+     * En caso de que ocurra una excepción durante la búsqueda, se lanza una excepción con un mensaje descriptivo.
      *
-     * @param sort La información de ordenación para ordenar la lista de libros.
-     * @return Un LibroDTOResponse que contiene la lista de libros ordenada según los criterios especificados.
-     * @throws Exception Si ocurre un error durante el proceso de recuperación.
+     * @param sort El criterio de ordenamiento a aplicar a la lista de libros.
+     * @return Una lista de objetos LibroDTOResponse ordenados según el criterio especificado.
+     * @throws Exception Si ocurre un error durante la búsqueda de la lista de libros.
      */
-    public LibroDTOResponse findAllLibroSort(Sort sort) throws Exception;
+    public List<LibroDTOResponse> findAllLibroSort(Sort sort) throws Exception;
+
 
     /**
-     * Método para recuperar una página de todos los libros.
-     * Este método devuelve una página de libros, con la posibilidad de aplicar paginación y ordenación.
-     * En caso de que ocurra una excepción durante el proceso, se lanzará una excepción del tipo Exception.
+     * Este método busca y devuelve una página de objetos LibroDTOResponse de acuerdo con el criterio de paginación
+     * especificado en el parámetro 'pageable'.
+     * Si la operación es exitosa, se devuelve la página de libros.
+     * En caso de que ocurra una excepción durante la búsqueda, se lanza una excepción con un mensaje descriptivo.
      *
-     * @param pageable La información de paginación y ordenación para recuperar la página deseada de resultados.
-     * @return Un Page<LibroDTOResponse> que contiene la página solicitada de libros.
-     * @throws Exception Si ocurre un error durante el proceso de recuperación.
+     * @param pageable El objeto Pageable que especifica el criterio de paginación a aplicar a la búsqueda de libros.
+     * @return Una página de objetos LibroDTOResponse de acuerdo con el criterio de paginación especificado.
+     * @throws Exception Si ocurre un error durante la búsqueda de la página de libros.
      */
-    public LibroDTOResponse findAllLibroPage(Pageable pageable) throws Exception;
+    public Page<LibroDTOResponse> findAllLibroPage(Pageable pageable) throws Exception;
+
 
     /**
      * Método para encontrar un libro por su ID.

@@ -36,7 +36,7 @@ public interface ILibroRepository extends JpaRepository<Libro, Long> {
             "left join fetch l.categoria " +
             "left join fetch l.editorial " +
             "left join fetch l.genero")
-    public List<Libro> findAllLibro(Sort sort);
+    public List<Libro> findAllLibroSort(Sort sort);
 
     /**
      * Método de consulta JPQL personalizado para recuperar una página de libros junto con sus entidades asociadas
