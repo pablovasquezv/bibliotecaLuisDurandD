@@ -61,6 +61,7 @@ public class AutorRestController {
         List<String> errores;
 
         if (bindingResult.hasErrors()) {
+            // Si hay errores de validación, construye la respuesta con los errores y un código de estado BAD_REQUEST.
             errores = bindingResult.getAllErrors().stream()
                     .map(ObjectError::getDefaultMessage)
                     .collect(Collectors.toList());
@@ -70,20 +71,25 @@ public class AutorRestController {
         }
 
         try {
+            // Intenta guardar el nuevo autor y obtiene el resultado.
             AutorDTORequest autorFromDB = iAutorServices.saveAutor(autorDTORequest);
             if (autorFromDB != null) {
+                // Si la creación fue exitosa, construye la respuesta con el nuevo autor y un mensaje de éxito.
                 responseAsMap.put("Autor", autorDTORequest);
                 responseAsMap.put("Mensaje:", "El Autor ¡Se creó exitosamente!");
                 return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
+                // Si la creación no fue exitosa, construye la respuesta con un mensaje de error.
                 responseAsMap.put("Mensaje: ", "¡No se creó el Autor!");
                 return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException e) {
+            // Maneja cualquier excepción de acceso a datos y construye la respuesta con un mensaje de error.
             responseAsMap.put("Mensaje: ", "¡No se creó el Autor!" + e.getMostSpecificCause().toString());
             return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     /**
      * Método que actualiza un autor según su ID.
@@ -101,6 +107,7 @@ public class AutorRestController {
         ResponseEntity<Map<String, Object>> responseEntity;
 
         if (bindingResult.hasErrors()) {
+            // Si hay errores de validación, construye la respuesta con los errores y un código de estado BAD_REQUEST.
             List<String> errores = bindingResult.getAllErrors().stream()
                     .map(ObjectError::getDefaultMessage)
                     .collect(Collectors.toList());
@@ -111,18 +118,24 @@ public class AutorRestController {
         }
 
         try {
+            // Intenta actualizar el autor y obtiene el resultado.
             AutorDTOResponse autorFromDB = iAutorServices.updateAutor(id, autorDTOResponseUpdate);
 
-            if (autorFromDB != null && autorFromDB.getId_autor()  != null) {
+            if (autorFromDB != null && autorFromDB.getId_autor() != null) {
+                // Si la actualización fue exitosa, construye la respuesta con el autor actualizado y un mensaje.
                 responseAsMap.put("Autor", autorDTOResponseUpdate);
-                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autorDTOResponseUpdate.getId_autor() + "!");
+                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " +
+                        autorDTOResponseUpdate.getId_autor() + "!");
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
+                // Si la actualización no fue exitosa, construye la respuesta con un mensaje de error.
                 responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor!");
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException dataAccessException) {
-            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " + dataAccessException.getMostSpecificCause().toString());
+            // Maneja cualquier excepción de acceso a datos y construye la respuesta con un mensaje de error.
+            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " +
+                    dataAccessException.getMostSpecificCause().toString());
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
@@ -137,23 +150,34 @@ public class AutorRestController {
      */
     @GetMapping(value = "autor/get/all")
     @ResponseStatus(HttpStatus.OK)
-    private ResponseEntity<List<AutorDTOResponse>> findAllAutor(@RequestParam(required = false) Integer page,
-                                                                @RequestParam(required = false) Integer size) {
+    private ResponseEntity<List<AutorDTOResponse>> getPagedAuthor(@RequestParam(required = false) Integer page,
+                                                                  @RequestParam(required = false) Integer size) {
+        // Se define el criterio de ordenamiento por el campo "nombres_autor".
         Sort sortByName = Sort.by("nombres_autor");
+        // Declaración de variables para almacenar los resultados de la búsqueda.
         List<AutorDTOResponse> autores;
         Pageable pageable = null;
 
         try {
+            // Verifica si se proporcionan parámetros de paginación y crea el objeto Pageable correspondiente.
             if (page != null && size != null) {
                 pageable = PageRequest.of(page, size, sortByName);
                 autores = iAutorServices.findAllAutorPage(pageable).getContent();
             } else {
+                // Si no se proporcionan parámetros de paginación, se recuperan todos los autores ordenados.
                 autores = iAutorServices.findAllAutorSort(sortByName);
             }
 
+            // Determina el código de estado HTTP en función de si la lista de autores está vacía o no.
             HttpStatus responseStatus = autores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+
+            // Devuelve una respuesta con la lista de AutorDTOResponse y el código de estado HTTP correspondiente.
             return new ResponseEntity<>(autores, responseStatus);
         } catch (Exception e) {
+            /**
+             * Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+             * error interno del servidor
+             */
             log.error("Ocurrió un error al listar todos los Autores! " + e.getCause().toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -167,13 +191,22 @@ public class AutorRestController {
      */
 
     @GetMapping(value = "autor/{id}")
-    private ResponseEntity<AutorDTOResponse> findById(@PathVariable int id) {
+    private ResponseEntity<AutorDTOResponse> getAuthorById(@PathVariable int id) {
         AutorDTOResponse autor;
         try {
+            // Busca el autor por su ID y asigna el resultado a la variable 'autor'.
             autor = iAutorServices.findByIdAutor(id);
+
+            // Determina el código de estado HTTP en función de si se encontró el autor o no.
             HttpStatus responseStatus = (autor != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+
+            // Devuelve una respuesta con el AutorDTOResponse y el código de estado HTTP correspondiente.
             return new ResponseEntity<>(autor, responseStatus);
         } catch (Exception e) {
+            /**
+             * Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+             * error interno del servidor
+             */
             log.error("Ocurrió un error: " + e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -181,22 +214,31 @@ public class AutorRestController {
 
 
     /**
-     * Méetodo que elimina un autor según su ID.
+     * Método que elimina un autor según su ID.
      *
      * @param id El ID del autor a eliminar.
      * @return ResponseEntity con un valor booleano que indica el resultado de la eliminación.
      */
+
     @DeleteMapping(value = "autor/delete/{id}")
-    private ResponseEntity<Void> deleteById(@PathVariable Long id) {
+    private ResponseEntity<Void> deleteAuthorById(@PathVariable Long id) {
         try {
+            // Busca el autor por su ID.
             AutorDTOResponse autor = iAutorServices.findByIdAutor(id);
+
             if (autor != null) {
+                // Si se encuentra el autor, se procede con la eliminación y se devuelve un código de estado OK.
                 iAutorServices.deleteAutorById(id);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
+                // Si el autor no existe, se devuelve un código de estado NO_CONTENT.
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
+            /**
+             * Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+             * error interno del servidor
+             */
             log.error("Ocurrió un error al eliminar un Autor: " + e.getCause().toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

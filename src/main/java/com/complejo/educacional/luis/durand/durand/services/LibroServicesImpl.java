@@ -91,7 +91,7 @@ public class LibroServicesImpl implements ILibroServices {
 
             log.info("---Inicio de creción Libro----" + objectMapper.writeValueAsString(libroDTORequest));
             createLibro = iLibroRepository.save(createLibro);
-            log.info("Json de Salida =>", objectMapper.writeValueAsString(createLibro));
+            log.info("Json de Salida =>" + objectMapper.writeValueAsString(createLibro));
             log.info("----Fin de método Creación Libro----");
 
             return new LibroDTORequest(
@@ -143,7 +143,7 @@ public class LibroServicesImpl implements ILibroServices {
                 libro.setEdicion_libro(libroDTOResponseUpdate.getEdicion_libro());
                 libro.setPaginas_libro(libroDTOResponseUpdate.getPaginas_libro());
                 Libro updateLibro = iLibroRepository.save(libro);
-                log.info("Json de Salida =>", utils.imprimirLogSalida(updateLibro));
+                log.info("Json de Salida =>" + utils.imprimirLogSalida(updateLibro));
                 return new LibroDTOResponse(
                         updateLibro.getId_libro(),
                         updateLibro.getTitulo_libro(),
@@ -253,17 +253,21 @@ public class LibroServicesImpl implements ILibroServices {
     public LibroDTOResponse findByIdLibro(long id) throws Exception {
         try {
             Libro libro = iLibroRepository.findByLibroAndAutorAndCategoriaAndEditorialAndGenero(id);
-            if (libro.getId_libro() != null) throw new Exception("¡Libro no encontrado!");
-            return new LibroDTOResponse(
-                    libro.getId_libro(),
-                    libro.getTitulo_libro(),
-                    libro.getAutor().getId_autor(),
-                    libro.getCategoria().getId_categoria(),
-                    libro.getEditorial().getId_editorial(),
-                    libro.getGenero().getId_genero(),
-                    libro.getEdicion_libro(),
-                    libro.getPaginas_libro()
-            );
+            if (libro.getId_libro() == null) {
+                throw new Exception("¡Libro no encontrado!");
+            } else {
+                return new LibroDTOResponse(
+                        libro.getId_libro(),
+                        libro.getTitulo_libro(),
+                        libro.getAutor().getId_autor(),
+                        libro.getCategoria().getId_categoria(),
+                        libro.getEditorial().getId_editorial(),
+                        libro.getGenero().getId_genero(),
+                        libro.getEdicion_libro(),
+                        libro.getPaginas_libro()
+                );
+            }
+
         } catch (Exception e) {
             log.error("Ocurrió un error al buscar el Libro con ID " + id + ": " + e.getCause().toString());
             throw new Exception("¡Ocurrió un error al buscar el Libro!");

@@ -9,13 +9,26 @@ import com.complejo.educacional.luis.durand.durand.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,24 +71,32 @@ public class LibroRestController {
     @PostMapping(value = "libro/create")
     public ResponseEntity<Map<String, Object>> addNewLibro(@Valid @RequestBody LibroDTORequest libroDTORequest,
                                                            BindingResult bindingResult) throws Exception {
-        Map<String, Object> responseASMap = new HashMap<>();
+        Map<String, Object> responseAsMap = new HashMap<>();
+
+        // Maneja los errores de validación y devuelve una respuesta de error si es necesario.
         ResponseEntity<Map<String, Object>> errorResponse = utils.handleErrors(bindingResult);
         if (errorResponse != null) {
             return errorResponse;
         }
+
         try {
+            // Intenta guardar el nuevo libro y obtiene el resultado.
             LibroDTORequest libroFromDB = iLibroServices.saveLibro(libroDTORequest);
+
             if (libroFromDB != null) {
-                responseASMap.put("Libro", libroDTORequest);
-                responseASMap.put("Mensaje: ", "¡El Libro se creó exitosamente!");
-                return new ResponseEntity<>(responseASMap, HttpStatus.OK);
+                // Si la creación fue exitosa, construye la respuesta con el libro creado y un mensaje.
+                responseAsMap.put("Libro", libroDTORequest);
+                responseAsMap.put("Mensaje: ", "¡El Libro se creó exitosamente!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
-                responseASMap.put("Mensaje: ", "¡No sé creó el Libro exitosamente!");
-                return new ResponseEntity<>(responseASMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                // Si la creación no fue exitosa, construye la respuesta con un mensaje de error.
+                responseAsMap.put("Mensaje: ", "¡No sé creó el Libro exitosamente!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException e) {
-            responseASMap.put("Mensaje: ", "¡No sé creó el Libro!" + e.getMostSpecificCause().getMessage().toString());
-            return new ResponseEntity<>(responseASMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            // Maneja cualquier excepción de acceso a datos y construye la respuesta con un mensaje de error.
+            responseAsMap.put("Mensaje: ", "¡No sé creó el Libro!" + e.getMostSpecificCause().getMessage().toString());
+            return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -95,28 +116,136 @@ public class LibroRestController {
      */
     @PutMapping(value = "libro/upadate/{id}")
     public ResponseEntity<Map<String, Object>> updateLibro(@PathVariable long id, @Valid @RequestBody
-                                                            LibroDTOResponseUpdate libroDTOResponseUpdate,
+                                                           LibroDTOResponseUpdate libroDTOResponseUpdate,
                                                            BindingResult bindingResult) throws Exception {
         Map<String, Object> responseAsMap = new HashMap<>();
+
+        // Maneja los errores de validación y devuelve una respuesta de error si es necesario.
         ResponseEntity<Map<String, Object>> errorResponse = utils.handleErrors(bindingResult);
         if (errorResponse != null) return errorResponse;
+
         try {
+            // Intenta actualizar el libro y obtiene el resultado.
             LibroDTOResponse libroFromDB = iLibroServices.updateLibro(id, libroDTOResponseUpdate);
+
             if (libroFromDB != null && libroFromDB.getId_libro() != null) {
+                // Si la actualización fue exitosa, construye la respuesta con el libro actualizado y un mensaje.
                 responseAsMap.put("Libro", libroDTOResponseUpdate);
                 responseAsMap.put("Mensaje: ", "¡Se actualizó correctamente el Autor con ID: " +
                         libroDTOResponseUpdate.getId_libro());
                 return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
             } else {
+                // Si la actualización no fue exitosa, construye la respuesta con un mensaje de error.
                 responseAsMap.put("Mensaje: ", "¡Se actualizó correctamente el Libro con ID: " +
                         libroDTOResponseUpdate.getId_libro());
                 return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (DataAccessException e) {
+            // Maneja cualquier excepción de acceso a datos y construye la respuesta con un mensaje de error.
             responseAsMap.put("Mensaje: ", "¡No se actualizó correctamente el Libro con ID: " +
                     libroDTOResponseUpdate.getId_libro());
             return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
         }
     }
 
+    /**
+     * Este método maneja las solicitudes HTTP GET para recuperar todos los libros, con la opción de paginación.
+     *
+     * @param page El número de página para la paginación de resultados (opcional).
+     * @param size El tamaño de la página para la paginación de resultados (opcional).
+     * @return Un ResponseEntity que contiene una lista de LibroDTOResponse y el código de estado HTTP correspondiente.
+     */
+    @GetMapping(value = "libro/gett/all")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<LibroDTOResponse>> getPagedBooks(@RequestParam(required = false) Integer page,
+                                                                @RequestParam(required = false) Integer size) {
+        try {
+            // Se define el criterio de ordenamiento por el campo "titulo_libro".
+            Sort sortByName = Sort.by("titulo_libro");
+
+            // Declaración de variables para almacenar los resultados de la búsqueda.
+            List<LibroDTOResponse> libroDTOResponses;
+            Pageable pageable = null;
+
+            // Verifica si se proporcionan parámetros de paginación y crea el objeto Pageable correspondiente.
+            if (page != null && size != null) {
+                pageable = PageRequest.of(page, size, sortByName);
+                libroDTOResponses = iLibroServices.findAllLibroPage(pageable).getContent();
+            } else {
+                // Si no se proporcionan parámetros de paginación, se recuperan todos los libros ordenados.
+                libroDTOResponses = iLibroServices.findAllLibroSort(sortByName);
+            }
+
+            // Determina el código de estado HTTP en función de si la lista de libros está vacía o no.
+            HttpStatus responseStatus = libroDTOResponses.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+
+            // Devuelve una respuesta con la lista de libros y el código de estado HTTP correspondiente.
+            return new ResponseEntity<>(libroDTOResponses, responseStatus);
+        } catch (Exception e) {
+            // Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+            // error interno del servidor.
+            log.error("Ocurrió un error al listar todos los Libros: " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Este método maneja las solicitudes HTTP GET para recuperar un libro por su ID.
+     *
+     * @param id El ID del libro que se va a buscar.
+     * @return Un ResponseEntity que contiene un LibroDTOResponse y el código de estado HTTP correspondiente.
+     */
+    @GetMapping(value = "libro/{id}")
+    public ResponseEntity<LibroDTOResponse> getBookById(@PathVariable int id) {
+        LibroDTOResponse libroDTOResponse;
+        try {
+            // Busca el libro por su ID y asigna el resultado a libroDTOResponse.
+            libroDTOResponse = iLibroServices.findByIdLibro(id);
+
+            // Determina el código de estado HTTP en función de si se encontró el libro o no.
+            HttpStatus responseStatus = (libroDTOResponse != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+
+            // Devuelve una respuesta con el LibroDTOResponse y el código de estado HTTP correspondiente.
+            return new ResponseEntity<>(libroDTOResponse, responseStatus);
+        } catch (Exception e) {
+            /**
+             * Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+             * error interno del servidor
+             */
+            log.error("Ocurrió un error al listar el Libro: " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Este método maneja las solicitudes para eliminar un libro por su ID.
+     *
+     * @param id El ID del libro que se va a eliminar.
+     * @return Un ResponseEntity que indica si la eliminación se realizó con éxito o si ocurrió un error.
+     */
+    @DeleteMapping(value = "libro/delete/{id}")
+    public ResponseEntity<Boolean> deleteBookById(@PathVariable Long id) {
+        try {
+            // Busca el libro por su ID.
+            LibroDTOResponse libroDTOResponse = iLibroServices.findByIdLibro(id);
+
+            if (libroDTOResponse != null && libroDTOResponse.getId_libro() != null) {
+                // Si se encuentra el libro, se procede con la eliminación y se devuelve un código de estado OK.
+                log.info("Se eliminará el Libro con ID: " + id);
+                iLibroServices.deleteLibroById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                // Si el libro no existe, se devuelve un código de estado NO_CONTENT.
+                log.error("El ID: " + id + " No existe");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            /**
+             * Maneja cualquier excepción que ocurra durante la ejecución del método y devuelve un código de estado de
+             * error interno del servidor
+             * */
+            log.error("Ocurrió un error al eliminar un Autor: " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
