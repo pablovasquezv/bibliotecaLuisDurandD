@@ -20,6 +20,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "usuario")
+@PrimaryKeyJoinColumn(name = "id_usuario")
 @AttributeOverride(name = "nombres", column = @Column(name = "nombres_usuario"))
 @AttributeOverride(name = "apellidoMaterno", column = @Column(name = "apellido_materno_usuario"))
 @AttributeOverride(name = "apellidoPaterno", column = @Column(name = "apellido_paterno_usuario"))
@@ -27,12 +28,10 @@ import javax.persistence.*;
 @AttributeOverride(name = "email", column = @Column(name = "email_usuario"))
 public class Usuario extends Persona implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    // No es necesario volver a definir los atributos de Persona, ya que se heredan de la clase base.
-
-    // Puedes agregar atributos específicos para la clase Usuario, si es necesario
-
-    // Puedes definir métodos adicionales específicos para la clase Usuario, si es necesario
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
+    protected Long id;
 }
 
 
