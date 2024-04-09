@@ -33,6 +33,7 @@ import lombok.ToString;
  * @project bibliotecaLuisDurandD
  */
 public class LibroDTOResponse {
+    private Long id_libro;
     private String titulo_libro;
     private Long id_autor;
     private Long id_categoria;

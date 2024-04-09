@@ -98,7 +98,7 @@ public class AutorServicesImp implements IAutorServices {
                 autor.setApellidos_autor(autorDTOResponseUpdate.getApellidos_autor());
                 autor.setPais(pais);
                 Autor updatedAutor = iAutorRepository.save(autor);
-                log.info("Json de Salida =>" + utils.imprimirLogSalida(updatedAutor));
+                log.info("Json de Salida =>"  ,utils.imprimirLogSalida(updatedAutor));
                 return new AutorDTOResponse(
                         updatedAutor.getId_autor(),
                         updatedAutor.getNombres_autor(),

@@ -17,7 +17,8 @@ public interface ILibroServices {
 
     /**
      * Método para guardar un libro en la base de datos.
-     * Este método recibe un objeto LibroDTORequest y lo guarda en la base de datos. En caso de que ocurra una excepción durante el proceso, se lanzará una excepción del tipo Exception.
+     * Este método recibe un objeto LibroDTORequest y lo guarda en la base de datos. En caso de que ocurra una
+     * excepción durante el proceso, se lanzará una excepción del tipo Exception.
      *
      * @param libroDTORequest El objeto LibroDTORequest que se desea guardar.
      * @return El objeto LibroDTORequest que se ha guardado.
@@ -26,14 +27,19 @@ public interface ILibroServices {
     public LibroDTORequest saveLibro(LibroDTORequest libroDTORequest) throws Exception;
 
     /**
-     * Método para actualizar un libro en la base de datos.
-     * Este método recibe un objeto LibroDTOResponseUpdate y actualiza la información del libro correspondiente en la base de datos. En caso de que ocurra una excepción durante el proceso, se lanzará una excepción del tipo Exception.
+     * Este método actualiza un libro existente identificado por su ID, utilizando la información proporcionada en el
+     * objeto LibroDTOResponseUpdate.
+     * Si la actualización es exitosa, se devuelve un objeto LibroDTOResponse que contiene la información actualizada
+     * del libro.
+     * En caso de que ocurra una excepción durante el proceso de actualización, se lanza una excepción con un mensaje
+     * descriptivo.
      *
+     * @param id El ID del libro que se va a actualizar.
      * @param libroDTOResponseUpdate El objeto LibroDTOResponseUpdate que contiene la información actualizada del libro.
-     * @return El objeto LibroDTOResponseUpdate que ha sido actualizado.
-     * @throws Exception Si ocurre un error durante el proceso de actualización.
+     * @return Un objeto LibroDTOResponse que contiene la información actualizada del libro.
+     * @throws Exception Si ocurre un error durante el proceso de actualización del libro.
      */
-    public LibroDTOResponse updateLibro(LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception;
+    public LibroDTOResponse updateLibro(Long id,LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception;
 
     /**
      * Método para recuperar una lista de todos los libros con ordenación personalizada.

@@ -1,5 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.services;
-
+// Import necesarios para la clase.
 
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.libro.LibroDTOResponse;
@@ -23,6 +23,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * @author Pablo
@@ -93,8 +95,9 @@ public class LibroServicesImpl implements ILibroServices {
                     createLibro.getCategoria().getId_categoria(),
                     createLibro.getEditorial().getId_editorial(),
                     createLibro.getGenero().getId_genero(),
-                    createLibro.getPaginas_libro(),
-                    createLibro.getEdicion_libro()
+                    createLibro.getEdicion_libro(),
+                    createLibro.getPaginas_libro()
+
             );
         } catch (Exception e) {
             log.error("Ocurrió un error al guardar el Libro: " + e.getCause().toString());
@@ -102,10 +105,59 @@ public class LibroServicesImpl implements ILibroServices {
         }
     }
 
+    /**
+     * Este método actualiza un libro existente identificado por su ID, utilizando la información proporcionada en el
+     * objeto LibroDTOResponseUpdate.
+     * Si la actualización es exitosa, se devuelve un objeto LibroDTOResponse que contiene la información actualizada
+     * del libro.
+     * En caso de que ocurra una excepción durante el proceso de actualización, se lanza una excepción con un mensaje
+     * descriptivo.
+     *
+     * @param id                     El ID del libro que se va a actualizar.
+     * @param libroDTOResponseUpdate El objeto LibroDTOResponseUpdate que contiene la información actualizada del libro.
+     * @return Un objeto LibroDTOResponse que contiene la información actualizada del libro.
+     * @throws Exception Si ocurre un error durante el proceso de actualización del libro.
+     */
     @Override
-    public LibroDTOResponse updateLibro(LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception {
-        return null;
+    public LibroDTOResponse updateLibro(Long id, LibroDTOResponseUpdate libroDTOResponseUpdate) throws Exception {
+        try {
+            Optional<Libro> libroOptional = iLibroRepository.findById(id);
+            log.info("---Inicio de actualización Libro----" + objectMapper.writeValueAsString(libroOptional));
+            if (libroOptional.isPresent()) {
+                Libro libro = libroOptional.get();
+                Autor autor = iAutorRepository.getReferenceById(libroDTOResponseUpdate.getId_autor());
+                Categoria categoria = iCategoriaRepository.getReferenceById(libroDTOResponseUpdate.getId_categoria());
+                Editorial editorial = iEditorialRepository.getReferenceById(libroDTOResponseUpdate.getId_editorial());
+                Genero genero = iGeneroRepository.getReferenceById(libroDTOResponseUpdate.getId_genero());
+                libro.setTitulo_libro(libroDTOResponseUpdate.getTitulo_libro());
+                libro.setAutor(autor);
+                libro.setCategoria(categoria);
+                libro.setEditorial(editorial);
+                libro.setGenero(genero);
+                libro.setEdicion_libro(libroDTOResponseUpdate.getEdicion_libro());
+                libro.setPaginas_libro(libroDTOResponseUpdate.getPaginas_libro());
+                Libro updateLibro = iLibroRepository.save(libro);
+                log.info("Json de Salida =>", utils.imprimirLogSalida(updateLibro));
+                return new LibroDTOResponse(
+                        updateLibro.getId_libro(),
+                        updateLibro.getTitulo_libro(),
+                        updateLibro.getAutor().getId_autor(),
+                        updateLibro.getCategoria().getId_categoria(),
+                        updateLibro.getEditorial().getId_editorial(),
+                        updateLibro.getGenero().getId_genero(),
+                        updateLibro.getEdicion_libro(),
+                        updateLibro.getPaginas_libro()
+                );
+            } else {
+                log.error("¡Ocurrió un error en la actualización del Libro!" + id + libroOptional.toString());
+                throw new Exception("¡Ocurrió un error en la actualización del Libro!");
+            }
+        } catch (Exception e) {
+            log.error("¡Ocurrió un error en la actualización del Autor con ID " + id + ": " + e.getCause().toString());
+            throw new Exception("¡Ocurrió un error en la actualización del Autor!");
+        }
     }
+
 
     @Override
     public LibroDTOResponse findAllLibroSort(Sort sort) throws Exception {
