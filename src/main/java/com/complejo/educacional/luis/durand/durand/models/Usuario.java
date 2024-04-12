@@ -1,11 +1,23 @@
 package com.complejo.educacional.luis.durand.durand.models;
-
-import lombok.*;
+//Import necesarios para la clase.
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 
 /**
  * @author Pablo
@@ -16,7 +28,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@AllArgsConstructor
 @ToString
 @Entity
 @Table(name = "usuario")
