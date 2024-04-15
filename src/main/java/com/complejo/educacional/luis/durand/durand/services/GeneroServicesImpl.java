@@ -169,7 +169,7 @@ public class GeneroServicesImpl implements IGeneroServices {
              */
             return new PageImpl<>(generoDTOResponseList, pageable, generos.getTotalElements());
             /**
-             * Creé un nuevo objeto PageImpl para devolver una página de resultados con la lista de AutorDTOResponse,
+             * Creé un nuevo objeto PageImpl para devolver una página de resultados con la lista de GeneroDTOResponse,
              * el objeto Pageable original y el número total de elementos.
              */
         } catch (Exception e) {

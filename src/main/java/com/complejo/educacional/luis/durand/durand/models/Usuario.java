@@ -43,7 +43,48 @@ public class Usuario extends Persona implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    protected Long id;
+    protected Long id_usuario;
+
+
+    /**
+     * Constructor con parámetros de la clase Usuario.
+     *
+     * @param nombresUsuario        El nombre del usuario.
+     * @param apellidoPaternoUsuario        El apellido paterno del usuario.
+     * @param apellidoMaternoUsuario        El apellido materno del usuario.
+     * @param telefonoUsuario        El número de teléfono del usuario.
+     * @param emailUsuario        El correo electrónico del usuario.
+     */
+    public Usuario(String nombresUsuario, String apellidoPaternoUsuario, String apellidoMaternoUsuario,
+                   String telefonoUsuario, String emailUsuario) {
+        this.nombres = nombresUsuario;
+        this.apellidoPaterno = apellidoPaternoUsuario;
+        this.apellidoMaterno = apellidoMaternoUsuario;
+        this.telefono = telefonoUsuario;
+        this.email = emailUsuario;
+    }
+
+
+    /**
+     * Constructor de la clase Usuario con identificador.
+     *
+     * @param id_usuario             El identificador del usuario.
+     * @param nombresUsuario         El nombre del usuario.
+     * @param apellidoPaternoUsuario El apellido paterno del usuario.
+     * @param apellidoMaternoUsuario El apellido materno del usuario.
+     * @param telefonoUsuario        El número de teléfono del usuario.
+     * @param emailUsuario           El correo electrónico del usuario.
+     */
+    public Usuario(Long id_usuario, String nombresUsuario, String apellidoPaternoUsuario, String apellidoMaternoUsuario,
+                   String telefonoUsuario, String emailUsuario) {
+        this.id_usuario = id_usuario;
+        this.nombres = nombresUsuario;
+        this.apellidoPaterno = apellidoPaternoUsuario;
+        this.apellidoMaterno = apellidoMaternoUsuario;
+        this.telefono = telefonoUsuario;
+        this.email = emailUsuario;
+    }
+
 }
 
 
