@@ -26,7 +26,7 @@ public interface IAutorRepository extends JpaRepository<Autor, Long> {
      * @param sort La información de clasificación para ordenar la lista de autores.
      * @return Una lista de autores con el país asociado cargado de manera inmediata.
      */
-    @Query(value = "select a from Autor a left join fetch a.pais")
+    @Query(value = "select a from Autor a left join fetch a.pais" )
     public List<Autor> findAllAutorSort(Sort sort);
 
     @Query("SELECT DISTINCT a FROM Autor a LEFT JOIN FETCH a.pais")

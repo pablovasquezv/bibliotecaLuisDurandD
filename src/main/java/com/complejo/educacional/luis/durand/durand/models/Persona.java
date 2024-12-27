@@ -40,9 +40,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "persona")
+
 public abstract class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

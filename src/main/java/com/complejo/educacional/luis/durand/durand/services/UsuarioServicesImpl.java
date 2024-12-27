@@ -51,6 +51,7 @@ public class UsuarioServicesImpl implements IUsuarioServices {
         try {
             // Crear un nuevo objeto Usuario con los datos proporcionados
             Usuario createUsuario = new Usuario(
+                    null,
                     usuarioDTORequest.getNombres_usuario(),
                     usuarioDTORequest.getApellido_paterno_usuario(),
                     usuarioDTORequest.getApellido_materno_usuario(),
