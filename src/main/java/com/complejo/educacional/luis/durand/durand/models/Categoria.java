@@ -9,14 +9,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.CATEGORYBOOK;
+
 /**
  * @author Pablo
  * @Entity: para decir a JPA Y HIBERANTE que esta será una entidad y se tiene
@@ -68,6 +75,10 @@ public class Categoria implements Serializable {
     @Size(min = 4, max = 50, message = "¡El campo nombre categoría debe contener 4 carácters como minimo y 50 como máximo!")
     @Column(name = "descripcion_categoria")
     private String descripcion_categoria;
+
+
+    @OneToMany(mappedBy = CATEGORYBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Libro> libros;
 
     @Column(updatable = false)
     private Date createAt;

@@ -5,6 +5,7 @@ package com.complejo.educacional.luis.durand.durand.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -27,6 +28,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.AUTORLIBRO;
 
 /**
  * @author Pablo
@@ -84,6 +87,9 @@ public class Autor implements Serializable {
 	@NotNull(message = "¡El campo id_pais no debe ser vacío!")
 	@JoinColumn(name = "id_pais")
 	private Pais pais;
+
+	@OneToMany(mappedBy = AUTORLIBRO, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	private List<Libro>libros;
 
 	// This will not allow the createdAt column to be updated after creation
 	@Column(updatable = false)

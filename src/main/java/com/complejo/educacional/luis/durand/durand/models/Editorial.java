@@ -1,4 +1,5 @@
 package com.complejo.educacional.luis.durand.durand.models;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -6,17 +7,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+
+import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.EDIORIALBOOK;
 
 /**
  * @author Pablo
@@ -80,6 +87,9 @@ public class Editorial implements Serializable {
     @NotEmpty(message = "¡El correo de la Editorial no debe ser vacío!")
     @Size(min = 4,max = 50, message = "¡El teléfono  debe contener 4 carácteres y 50 como máximo!")
     private String correoElectronico_editorial;
+
+    @OneToMany(mappedBy = EDIORIALBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Libro> libros;
 
     @Column(updatable = false)
     private Date createAt;

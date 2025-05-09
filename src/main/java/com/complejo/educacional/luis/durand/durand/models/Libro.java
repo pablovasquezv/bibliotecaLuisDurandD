@@ -87,21 +87,25 @@ public class Libro implements Serializable{
     @Column(name = "titulo_libro",unique = true)
     private String titulo_libro;
 
+    // Muchos libros pueden tener un autor
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo autor_id no debe ser vacío!")
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "autor_id", referencedColumnName = "id_autor")
     private Autor autor;
 
+    // Muchos libros pueden pertenecer a una categoría
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo categoria_id no debe ser vacío!")
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    // Muchos libros pueden ser publicados por una editorial
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo editorial_id no debe ser vacío!")
     @JoinColumn(name = "editorial_id")
     private Editorial editorial;
 
+    // Muchos libros pueden pertenecer a un género
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo genero_id no debe ser vacío!")
     @JoinColumn(name = "genero_id")
@@ -117,7 +121,7 @@ public class Libro implements Serializable{
     @Min(value = 0, message = "¡El número de páginas debe ser mayor a 0 años!")
     @Max(value = 100000, message = "¡El número de páginas no deber mayor a 10000!")
     @Column(name = "paginas_libro")
-    private int paginas_libro;
+    private Integer paginas_libro;
 
     // This will not allow the createdAt column to be updated after creation
     @Column(name = "createdAt",updatable = false)
