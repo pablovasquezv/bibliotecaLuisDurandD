@@ -6,10 +6,13 @@ package com.complejo.educacional.luis.durand.durand.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequest;
 import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTORequestUpdate;
 import com.complejo.educacional.luis.durand.durand.dto.pais.PaisDTOResponse;
+import com.complejo.educacional.luis.durand.durand.models.Autor;
+import com.complejo.educacional.luis.durand.durand.repositories.IAutorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +36,10 @@ public class PaisServicesImpl implements IPaisServices {
 
     @Autowired
     private IPaisRepository iPaisRepository;
+
+    @Autowired
+    private IAutorRepository iAutorRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -46,13 +53,21 @@ public class PaisServicesImpl implements IPaisServices {
     public PaisDTORequest createPais(PaisDTORequest paisDTORequest) throws Exception {
         // TODO Auto-generated method stub
         try {
-            Pais createPais = new Pais(
-                    null,
-                    paisDTORequest.getNombre_pais(),
-                    paisDTORequest.getAutores(),
-                    paisDTORequest.getCreatedAt(),
-                    paisDTORequest.getUpdatedAt()
-            );
+
+
+            Pais createPais = new Pais();
+            createPais.setId_pais(null);
+            createPais.setNombre_pais(paisDTORequest.getNombre_pais());
+
+            // Traemos los autores por sus IDs
+            List<Autor> autorList = iAutorRepository.findAllById(paisDTORequest.getAutoresIds());
+
+            // Asociamos cada autor al pais
+            autorList.forEach(autor -> autor.setPais(createPais));
+
+            createPais.setCreatedAt(paisDTORequest.getCreatedAt());
+            createPais.setUpdatedAt(paisDTORequest.getUpdatedAt());
+
             log.info("¡Creación del País");
             iPaisRepository.save(createPais);
             log.info("¡País Creado! ", objectMapper.writeValueAsString(createPais));
@@ -87,7 +102,7 @@ public class PaisServicesImpl implements IPaisServices {
             paisOptional = iPaisRepository.findById(id);
             if (paisOptional.isPresent()) {
                 iPaisRepository.save(paisUpdate);
-                log.info("¡País actulizado!", objectMapper.writeValueAsString(paisUpdate));
+                log.info("¡País actualizado!", objectMapper.writeValueAsString(paisUpdate));
             } else {
                 log.error("Falló la actualización del País =>");
             }
@@ -175,7 +190,6 @@ public class PaisServicesImpl implements IPaisServices {
     }
 
     /**
-     *
      * @param id
      * @throws Exception
      */

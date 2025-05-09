@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.dto.pais;
 
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponse;
 import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,7 @@ import java.util.List;
 public class PaisDTORequest {
     //Atributos
     private String nombre_pais;
-    private List<Autor> autores = new ArrayList<>();
+    private List<Long> autoresIds;
     private Date createdAt;
     private Date updatedAt;
 }
