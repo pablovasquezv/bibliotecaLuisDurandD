@@ -4,6 +4,7 @@
 package com.complejo.educacional.luis.durand.durand.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -28,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import net.minidev.json.annotate.JsonIgnore;
 
 import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.AUTORLIBRO;
 
@@ -83,13 +85,14 @@ public class Autor implements Serializable {
 	@Column(name = "apellidos_autor")
 	private String apellidos_autor;
 	
-	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@NotNull(message = "¡El campo id_pais no debe ser vacío!")
 	@JoinColumn(name = "id_pais")
+	@JsonIgnore
 	private Pais pais;
 
 	@OneToMany(mappedBy = AUTORLIBRO, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	private List<Libro>libros;
+	private List<Libro>libro = new ArrayList<>();
 
 	// This will not allow the createdAt column to be updated after creation
 	@Column(updatable = false)
