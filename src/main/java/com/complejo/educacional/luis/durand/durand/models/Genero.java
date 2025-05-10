@@ -2,6 +2,7 @@ package com.complejo.educacional.luis.durand.durand.models;
 //Import necesarias para la clase.
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -87,9 +88,9 @@ public class Genero implements Serializable, IGestionGeneros {
     @Size(min = 4, max = 150, message = "¡El campo descripcion_genero debe tener 4 carácteres y 50 máximo !")
     @Column(name = "descripcion_genero")
     private String descripcion_genero;
-/*
+
     @OneToMany(mappedBy = GENERBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<Libro> libros= new ArrayList<>();*/
+    private List<Libro> libros= new ArrayList<>();
 
     // This will not allow the createdAt column to be updated after creation
     @Column(updatable = false)
