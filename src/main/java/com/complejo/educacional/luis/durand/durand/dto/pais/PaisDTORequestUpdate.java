@@ -4,6 +4,7 @@ import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.Builder;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "autoresIds") // Si quieres evitar imprimir la lista completa en logs
 @Builder
 public class PaisDTORequestUpdate {
     //Atributos

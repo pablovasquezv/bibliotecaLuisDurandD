@@ -3,6 +3,7 @@ package com.complejo.educacional.luis.durand.durand.dto.pais;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.Builder;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "autoresIds") // Si quieres evitar imprimir la lista completa en logs
 @Builder
 public class PaisDTOResponse {
     //Atributos
