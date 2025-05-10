@@ -51,13 +51,12 @@ public class GeneroServicesImpl implements IGeneroServices {
     @Transactional(readOnly = false)
     public GeneroDTORequest saveGenero(GeneroDTORequest generoDTORequest) throws Exception {
         try {
-            Genero creatGenero = new Genero(
-                    null,
-                    generoDTORequest.getNombre_genero().toUpperCase(),
-                    generoDTORequest.getDescripcion_genero(),
-                    generoDTORequest.getCreatedAt(),
-                    generoDTORequest.getUpdatedAt()
-            );
+            Genero creatGenero = new Genero();
+            creatGenero.setId_genero(null);
+            creatGenero.setNombre_genero(generoDTORequest.getNombre_genero().toUpperCase());
+            creatGenero.setDescripcion_genero(generoDTORequest.getDescripcion_genero());
+            creatGenero.setCreatedAt(generoDTORequest.getCreatedAt());
+            creatGenero.setUpdatedAt(generoDTORequest.getUpdatedAt());
             log.info("---Incio de la Creación del Género---" + objectMapper.writeValueAsString(creatGenero));
             creatGenero = iGeneroRepository.save(creatGenero);
             log.info("Json de Salida ==>" + objectMapper.writeValueAsString(creatGenero));
