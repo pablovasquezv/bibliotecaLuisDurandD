@@ -1,19 +1,17 @@
 package com.complejo.educacional.luis.durand.durand.dto.libro;
 //Import necesarios para la clase.
 import lombok.AllArgsConstructor;
-import lombok.Setter;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Builder;
 
 import java.util.Date;
 
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 /**
  * @version 1.0

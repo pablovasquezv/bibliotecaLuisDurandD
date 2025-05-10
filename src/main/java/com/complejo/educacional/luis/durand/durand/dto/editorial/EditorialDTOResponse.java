@@ -3,7 +3,6 @@ package com.complejo.educacional.luis.durand.durand.dto.editorial;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.Builder;
 
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 public class EditorialDTOResponse {
     //Atributos

@@ -4,7 +4,6 @@ import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.Builder;
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
 public class PaisDTORequestUpdate {
     //Atributos

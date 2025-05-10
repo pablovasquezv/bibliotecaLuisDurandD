@@ -1,10 +1,9 @@
 package com.complejo.educacional.luis.durand.durand.dto.genero;
 //Import necesarios para la clase.
 import lombok.AllArgsConstructor;
-import lombok.Setter;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 import lombok.Builder;
 
 import java.util.Date;
@@ -17,11 +16,9 @@ import java.util.Date;
  * @ToString para obtener los datos.
  */
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 /**
  * @author Pablo
