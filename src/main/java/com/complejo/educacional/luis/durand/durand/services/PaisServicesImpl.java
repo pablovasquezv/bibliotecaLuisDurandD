@@ -64,6 +64,7 @@ public class PaisServicesImpl implements IPaisServices {
 
             // Asociamos cada autor al pais
             autorList.forEach(autor -> autor.setPais(createPais));
+            createPais.setAutores(autorList);
 
             createPais.setCreatedAt(paisDTORequest.getCreatedAt());
             createPais.setUpdatedAt(paisDTORequest.getUpdatedAt());
