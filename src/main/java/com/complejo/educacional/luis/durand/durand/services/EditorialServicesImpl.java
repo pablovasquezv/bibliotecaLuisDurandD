@@ -42,16 +42,15 @@ public class EditorialServicesImpl implements IEditorialServices {
     public EditorialDTORequest saveEditorial(EditorialDTORequest editorialDTORequest) throws Exception {
 
         try {
-            Editorial editorialCreate = new Editorial(
-                    null,
-                    editorialDTORequest.getNombre_editorial(),
-                    editorialDTORequest.getDescripcion_editorial(),
-                    editorialDTORequest.getDireccion_editorial(),
-                    editorialDTORequest.getTelefono_editorial(),
-                    editorialDTORequest.getCorreoElectronico_editorial(),
-                    editorialDTORequest.getCreateAt(),
-                    editorialDTORequest.getUpdateAt()
-            );
+            Editorial editorialCreate = new Editorial();
+           // editorialCreate.setId_editorial(null);
+            editorialCreate.setNombre_editorial(editorialDTORequest.getNombre_editorial());
+            editorialCreate.setDescripcion_editorial(editorialDTORequest.getDescripcion_editorial());
+            editorialCreate.setDireccion_editorial(editorialDTORequest.getDireccion_editorial());
+            editorialCreate.setTelefono_editorial(editorialDTORequest.getTelefono_editorial());
+            editorialCreate.setCorreoElectronico_editorial(editorialDTORequest.getCorreoElectronico_editorial());
+            editorialCreate.setCreateAt(editorialDTORequest.getCreateAt());
+            editorialCreate.setUpdateAt(editorialDTORequest.getUpdateAt());
             log.info("¡Creación de Editorial");
             iEditorialRepository.save(editorialCreate);
             log.info("¡Editorial creada!" + objectMapper.writeValueAsString(editorialDTORequest));
@@ -74,16 +73,15 @@ public class EditorialServicesImpl implements IEditorialServices {
     public EditorialDTOResponse updateEditorial(Long id, EditorialDTORequestUpdate editorialDTORequestUpdate) throws Exception {
         Optional<Editorial> optionalEditorial = null;
         EditorialDTOResponse editorialDTOResponse = new EditorialDTOResponse();
-        Editorial editorialUpdate = new Editorial(
-                editorialDTORequestUpdate.getId_editorial(),
-                editorialDTORequestUpdate.getNombre_editorial(),
-                editorialDTORequestUpdate.getDescripcion_editorial(),
-                editorialDTORequestUpdate.getDireccion_editorial(),
-                editorialDTORequestUpdate.getTelefono_editorial(),
-                editorialDTORequestUpdate.getCorreoElectronico_editorial(),
-                editorialDTORequestUpdate.getCreateAt(),
-                editorialDTORequestUpdate.getUpdateAt()
-        );
+        Editorial editorialUpdate = new Editorial();
+        editorialUpdate.setId_editorial(editorialDTORequestUpdate.getId_editorial());
+        editorialUpdate.setNombre_editorial(editorialDTORequestUpdate.getNombre_editorial());
+        editorialUpdate.setDireccion_editorial(editorialDTORequestUpdate.getDescripcion_editorial());
+        editorialUpdate.setDescripcion_editorial(editorialDTORequestUpdate.getDireccion_editorial());
+        editorialUpdate.setTelefono_editorial(editorialDTORequestUpdate.getTelefono_editorial());
+        editorialUpdate.setCorreoElectronico_editorial(editorialDTORequestUpdate.getCorreoElectronico_editorial());
+        editorialUpdate.setCreateAt(editorialDTORequestUpdate.getCreateAt());
+        editorialUpdate.setUpdateAt(editorialDTORequestUpdate.getUpdateAt() );
 
         try {
             optionalEditorial = iEditorialRepository.findById(id);
