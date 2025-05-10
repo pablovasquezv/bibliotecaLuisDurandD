@@ -1,11 +1,10 @@
 package com.complejo.educacional.luis.durand.durand.dto.pais;
 
-import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponse;
-import com.complejo.educacional.luis.durand.durand.models.Autor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class PaisDTORequest {
     //Atributos
     private String nombre_pais;

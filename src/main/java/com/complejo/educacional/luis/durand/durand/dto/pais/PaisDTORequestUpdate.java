@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class PaisDTORequestUpdate {
     //Atributos
     private Long id_pais;
