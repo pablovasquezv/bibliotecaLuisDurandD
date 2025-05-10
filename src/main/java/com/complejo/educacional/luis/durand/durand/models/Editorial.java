@@ -1,6 +1,7 @@
 package com.complejo.educacional.luis.durand.durand.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -89,7 +90,7 @@ public class Editorial implements Serializable {
     private String correoElectronico_editorial;
 
     @OneToMany(mappedBy = EDIORIALBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<Libro> libros;
+    private List<Libro> libros= new ArrayList<>();
 
     @Column(updatable = false)
     private Date createAt;
