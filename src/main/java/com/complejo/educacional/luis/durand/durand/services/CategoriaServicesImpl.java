@@ -38,13 +38,12 @@ public class CategoriaServicesImpl implements ICategoriaServices {
     public CategoriaDTORequest saveCategoria(CategoriaDTORequest categoriaDTORequest) throws Exception {
 
         try {
-            Categoria categoriaCreate = new Categoria(
-                    null,
-                    categoriaDTORequest.getNombre_categoria(),
-                    categoriaDTORequest.getDescripcion_categoria(),
-                    categoriaDTORequest.getCreateAt(),
-                    categoriaDTORequest.getCreateAt()
-            );
+            Categoria categoriaCreate = new Categoria();
+            categoriaCreate.setId_categoria(null);
+            categoriaCreate.setNombre_categoria(categoriaDTORequest.getNombre_categoria());
+            categoriaCreate.setDescripcion_categoria(categoriaDTORequest.getDescripcion_categoria());
+            categoriaCreate.setCreateAt(categoriaDTORequest.getCreateAt());
+            categoriaCreate.setUdpdateAt(categoriaDTORequest.getCreateAt());
             log.info("¡Creación de Categoría!");
             iCategoriaRepository.save(categoriaCreate);
             log.info("Categoría creda", objectMapper.writeValueAsString(categoriaDTORequest));
@@ -66,13 +65,12 @@ public class CategoriaServicesImpl implements ICategoriaServices {
     public CategoriaDTOResponse updateCategoria(Long id, CategoriaRequestUpdate categoriaRequestUpdate) throws Exception {
         Optional<Categoria> optionalCategoria = null;
         CategoriaDTOResponse categoriaDTOResponse = null;
-        Categoria categoriaUpdate = new Categoria(
-                categoriaRequestUpdate.getId_categoria(),
-                categoriaRequestUpdate.getNombre_categoria(),
-                categoriaRequestUpdate.getDescripcion_categoria(),
-                categoriaRequestUpdate.getCreateAt(),
-                categoriaRequestUpdate.getUdpdateAt()
-        );
+        Categoria categoriaUpdate = new Categoria();
+        categoriaUpdate.setId_categoria(categoriaRequestUpdate.getId_categoria());
+        categoriaUpdate.setNombre_categoria(categoriaRequestUpdate.getNombre_categoria());
+        categoriaUpdate.setDescripcion_categoria(categoriaRequestUpdate.getDescripcion_categoria());
+        categoriaUpdate.setCreateAt(categoriaRequestUpdate.getCreateAt());
+        categoriaUpdate.setUdpdateAt(categoriaRequestUpdate.getUdpdateAt());
         try {
             optionalCategoria = iCategoriaRepository.findById(id);
             if (optionalCategoria.isPresent()) {
