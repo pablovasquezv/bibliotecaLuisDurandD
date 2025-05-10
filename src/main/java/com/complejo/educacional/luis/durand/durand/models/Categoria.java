@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -79,6 +80,7 @@ public class Categoria implements Serializable {
 
 
     @OneToMany(mappedBy = CATEGORYBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Libro> libros= new ArrayList<>();
 
     @Column(updatable = false)

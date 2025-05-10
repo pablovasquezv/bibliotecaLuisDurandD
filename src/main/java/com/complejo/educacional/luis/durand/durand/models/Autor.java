@@ -25,6 +25,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,7 +49,7 @@ import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.AUTOR
 @Table(name = "autor")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"pais", "libro"})
 public class Autor implements Serializable {
 	/**
 	 * Serializable:para hacer la persistencia del objeto y convertilo en una
@@ -87,11 +89,12 @@ public class Autor implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@NotNull(message = "¡El campo id_pais no debe ser vacío!")
-	@JoinColumn(name = "id_pais")
-	@JsonIgnore
+	@JoinColumn(name = "id_pais", referencedColumnName = "id_pais")
+	@JsonBackReference
 	private Pais pais;
 
 	@OneToMany(mappedBy = AUTORLIBRO, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Libro>libro = new ArrayList<>();
 
 	// This will not allow the createdAt column to be updated after creation

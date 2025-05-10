@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.complejo.educacional.luis.durand.durand.interfaces.IGestionGeneros;
 import com.complejo.educacional.luis.durand.durand.repositories.IGeneroRepository;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -90,6 +91,7 @@ public class Genero implements Serializable, IGestionGeneros {
     private String descripcion_genero;
 
     @OneToMany(mappedBy = GENERBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Libro> libros= new ArrayList<>();
 
     // This will not allow the createdAt column to be updated after creation

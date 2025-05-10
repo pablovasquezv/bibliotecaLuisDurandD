@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,7 +48,7 @@ import lombok.ToString;
 @Table(name = "libro")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"autor", "categoria", "editorial", "genero"}) // Excluye relaciones
 public class Libro implements Serializable{
     /**
      * Serializable:para hacer la persistencia del objeto y convertilo en una secuencia de Bytes para poder almacenarlo
@@ -96,33 +98,37 @@ public class Libro implements Serializable{
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo autor_id no debe ser vacío!")
     @JoinColumn(name = "autor_id", referencedColumnName = "id_autor")
+    @JsonBackReference
     private Autor autor;
 
     // Muchos libros pueden pertenecer a una categoría
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo categoria_id no debe ser vacío!")
     @JoinColumn(name = "categoria_id",referencedColumnName = "id_categoria")
+    @JsonBackReference
     private Categoria categoria;
 
     // Muchos libros pueden ser publicados por una editorial
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo editorial_id no debe ser vacío!")
     @JoinColumn(name = "editorial_id",referencedColumnName = "id_editorial")
+    @JsonBackReference
     private Editorial editorial;
 
     // Muchos libros pueden pertenecer a un género
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @NotNull(message = "¡El campo genero_id no debe ser vacío!")
     @JoinColumn(name = "genero_id",referencedColumnName = "id_genero")
+    @JsonBackReference
     private Genero genero;
 
-    @NotEmpty(message = "¡La edición del libro no debe ser vacío!")
+    @NotNull(message = "¡La edición del libro no debe ser vacío!")
     @Min(value = 0, message = "¡La edición deber se mayor a 0 !")
     @Max(value = 120, message = "¡La edición no deber mayor a 120!")
     @Column(name = "edicion_libro")
     private Integer edicion_libro;
 
-    @NotEmpty(message = "¡El número de páginas del libro no debe ser vacío!")
+    @NotNull(message = "¡El número de páginas del libro no debe ser vacío!")
     @Min(value = 0, message = "¡El número de páginas debe ser mayor a 0 años!")
     @Max(value = 100000, message = "¡El número de páginas no deber mayor a 10000!")
     @Column(name = "paginas_libro")

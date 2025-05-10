@@ -24,6 +24,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,7 @@ import lombok.ToString;
 @Table(name = "pais")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "autores")
 public class Pais implements Serializable {
 	/**
 	 * Serializable:para hacer la persistencia del objeto y convertilo en una
@@ -79,6 +80,7 @@ public class Pais implements Serializable {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "pais", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JsonManagedReference
 	private List<Autor> autores = new ArrayList<>();
 	// This will not allow the createdAt column to be updated after creation
 	@Column(updatable = false)

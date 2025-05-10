@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -90,6 +92,7 @@ public class Editorial implements Serializable {
     private String correoElectronico_editorial;
 
     @OneToMany(mappedBy = EDIORIALBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Libro> libros= new ArrayList<>();
 
     @Column(updatable = false)
