@@ -7,6 +7,7 @@ import lombok.ToString;
 import lombok.Builder;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Pablo
@@ -25,6 +26,7 @@ public class PaisDTOResponse {
     //Atributos
     private Long id_pais;
     private String nombre_pais;
+    private List<Long> autoresIds;
     private Date createdAt;
     private Date updatedAt;
 }

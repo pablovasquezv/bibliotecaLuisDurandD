@@ -28,7 +28,7 @@ public class PaisDTORequestUpdate {
     //Atributos
     private Long id_pais;
     private String nombre_pais;
-    private List<Autor> autores = new ArrayList<>();
+    private List<Long> autoresIds;
     private Date createdAt;
     private Date updatedAt;
 }
