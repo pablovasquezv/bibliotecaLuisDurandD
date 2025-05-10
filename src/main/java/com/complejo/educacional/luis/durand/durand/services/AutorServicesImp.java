@@ -57,14 +57,14 @@ public class AutorServicesImp implements IAutorServices {
     public AutorDTORequest saveAutor(AutorDTORequest autorDTORequest) throws Exception {
         try {
             Pais pais = iPaisRepository.getReferenceById(autorDTORequest.getId_pais());
-            Autor createAutor = new Autor(
-                    null,
-                    autorDTORequest.getNombres_autor(),
-                    autorDTORequest.getApellidos_autor(),
-                    pais,
-                    autorDTORequest.getCreatedAt(),
-                    autorDTORequest.getUpdatedAt()
-            );
+            Autor createAutor = new Autor();
+            createAutor.setId_autor(null);
+            createAutor.setNombres_autor(autorDTORequest.getNombres_autor());
+            createAutor.setApellidos_autor(autorDTORequest.getApellidos_autor());
+            createAutor.setPais(pais);
+            createAutor.setCreatedAt(autorDTORequest.getCreatedAt());
+            createAutor.setUpdatedAt( autorDTORequest.getUpdatedAt());
+
             log.info("---Inicio de creción Autor----" + objectMapper.writeValueAsString(autorDTORequest));
             createAutor = iAutorRepository.save(createAutor);
             log.info("Json de Salida =>" + objectMapper.writeValueAsString(createAutor));
