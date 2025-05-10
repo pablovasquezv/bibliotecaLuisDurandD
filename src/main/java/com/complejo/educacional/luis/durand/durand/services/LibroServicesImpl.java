@@ -49,9 +49,8 @@ public class LibroServicesImpl implements ILibroServices {
             Editorial editorial_id = iEditorialRepository.getReferenceById(libroDTORequest.getId_editorial());
             Genero genero_id = iGeneroRepository.getReferenceById(libroDTORequest.getId_genero());
             Libro libroCreate = new Libro();
-            libroCreate.setId_libro(null);
             libroCreate.setTitulo_libro(libroDTORequest.getTitulo_libro());
-            libroCreate.setDescripcion_libro(libroCreate.getDescripcion_libro());
+            libroCreate.setDescripcion_libro(libroDTORequest.getDescripcion_libro());
             libroCreate.setAutor(autor_id);
             libroCreate.setCategoria(categoria_id);
             libroCreate.setEditorial(editorial_id);
