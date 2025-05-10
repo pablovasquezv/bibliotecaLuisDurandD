@@ -29,6 +29,5 @@ public class PaisDTORequestUpdate {
     private Long id_pais;
     private String nombre_pais;
     private List<Long> autoresIds;
-    private Date createdAt;
     private Date updatedAt;
 }

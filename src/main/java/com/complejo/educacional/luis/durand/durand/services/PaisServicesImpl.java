@@ -92,13 +92,18 @@ public class PaisServicesImpl implements IPaisServices {
         // TODO Auto-generated method stub
         Optional<Pais> paisOptional = null;
         PaisDTOResponse paisDTOResponse = null;
-        Pais paisUpdate = new Pais(
-                paisDTORequestUpdate.getId_pais(),
-                paisDTORequestUpdate.getNombre_pais(),
-                paisDTORequestUpdate.getAutores(),
-                paisDTORequestUpdate.getCreatedAt(),
-                paisDTORequestUpdate.getUpdatedAt()
-        );
+
+        Pais paisUpdate = new Pais();
+        paisUpdate.setId_pais(paisDTORequestUpdate.getId_pais());
+        paisUpdate.setNombre_pais(paisDTORequestUpdate.getNombre_pais());
+        // Traemos los autores por sus IDs
+        List<Autor> autorList = iAutorRepository.findAllById(paisDTORequestUpdate.getAutoresIds());
+
+        // Asociamos cada autor al pais
+        autorList.forEach(autor -> autor.setPais(paisUpdate));
+        paisUpdate.setAutores(autorList);
+        paisUpdate.setUpdatedAt(paisDTORequestUpdate.getUpdatedAt());
+
         try {
             paisOptional = iPaisRepository.findById(id);
             if (paisOptional.isPresent()) {
@@ -107,9 +112,15 @@ public class PaisServicesImpl implements IPaisServices {
             } else {
                 log.error("Falló la actualización del País =>");
             }
+            // Convertir lista de Autor a lista de IDs
+            List<Long> autoresIds = paisUpdate.getAutores()
+                    .stream()
+                    .map(Autor::getId_autor)
+                    .collect(Collectors.toList());
             paisDTOResponse = new PaisDTOResponse(
                     paisUpdate.getId_pais(),
                     paisUpdate.getNombre_pais(),
+                    autoresIds,
                     paisUpdate.getCreatedAt(),
                     paisUpdate.getUpdatedAt()
             );
@@ -131,12 +142,21 @@ public class PaisServicesImpl implements IPaisServices {
     @Transactional(readOnly = true)
     public List<PaisDTOResponse> findAllPaisSort(Sort sort) throws Exception {
         // TODO Auto-generated method stub
+        // Convertir lista de Autor a lista de IDs
+
+
         List<PaisDTOResponse> paisDTOResponses = new ArrayList<PaisDTOResponse>();
         for (Pais pais : iPaisRepository.findAllPaisSort(sort)) {
+            // Convertir lista de Autor a lista de IDs
+            List<Long> autoresIds = pais.getAutores()
+                    .stream()
+                    .map(Autor::getId_autor)
+                    .collect(Collectors.toList());
             paisDTOResponses.add(
                     new PaisDTOResponse(
                             pais.getId_pais(),
                             pais.getNombre_pais(),
+                            autoresIds,
                             pais.getCreatedAt(),
                             pais.getUpdatedAt()
                     )
@@ -156,10 +176,16 @@ public class PaisServicesImpl implements IPaisServices {
         // TODO Auto-generated method stub
         List<PaisDTOResponse> paisDTOResponses = new ArrayList<PaisDTOResponse>();
         for (Pais pais : iPaisRepository.findAllPaisPage(pageable)) {
+            // Convertir lista de Autor a lista de IDs
+            List<Long> autoresIds = pais.getAutores()
+                    .stream()
+                    .map(Autor::getId_autor)
+                    .collect(Collectors.toList());
             paisDTOResponses.add(
                     new PaisDTOResponse(
                             pais.getId_pais(),
                             pais.getNombre_pais(),
+                            autoresIds,
                             pais.getCreatedAt(),
                             pais.getUpdatedAt()
                     )
@@ -181,10 +207,15 @@ public class PaisServicesImpl implements IPaisServices {
         if (pais == null) {
             throw new Exception("¡País not found");
         }
-
+        // Convertir lista de Autor a lista de IDs
+        List<Long> autoresIds = pais.getAutores()
+                .stream()
+                .map(Autor::getId_autor)
+                .collect(Collectors.toList());
         return new PaisDTOResponse(
                 pais.getId_pais(),
                 pais.getNombre_pais(),
+                autoresIds,
                 pais.getCreatedAt(),
                 pais.getUpdatedAt()
         );
