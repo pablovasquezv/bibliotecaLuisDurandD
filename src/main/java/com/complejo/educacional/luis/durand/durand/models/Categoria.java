@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class Categoria implements Serializable {
 
 
     @OneToMany(mappedBy = CATEGORYBOOK, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<Libro> libros;
+    private List<Libro> libros= new ArrayList<>();
 
     @Column(updatable = false)
     private Date createAt;
