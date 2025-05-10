@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Builder;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
+@Builder
 /**
  * @author Pablo
  * @version 1.0
