@@ -2,25 +2,27 @@ package com.complejo.educacional.luis.durand.durand.models;
 //Import necesarias para la clase.
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.ManyToOne;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,34 +30,27 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.complejo.educacional.luis.durand.durand.utils.enums.EstadoPrestamo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.BOOKLOAN;
-
-
 /**
- * @author Pablo
- * @Entity: para decir a JPA Y HIBERANTE que esta será una entidad y se tiene
- * que guardar como tal en la BD
- * @Table: Para indicar que está será una tabla en la BD.
- * @Data: Para crear los gett y sett
- * @AllArgsConstructor: Constructor con parámetros
- * @NoArgsConstructor:Constructor sin parámetros
+ * @version 1.0
+ * @autor Pablo
+ * @creates 10-05-2025 20:45
+ * @proyect bibliotecaLuisDurandD
  */
 @Entity
 @Data
-@Table(name = "libro")
+@Table(name = "prestamo")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"autor", "categoria", "editorial", "genero"}) // Excluye relaciones
-public class Libro implements Serializable{
+@ToString(exclude = {"usuario", "libro"}) // Excluye relaciones
+public class Prestamo implements Serializable{
     /**
      * Serializable:para hacer la persistencia del objeto y convertilo en una secuencia de Bytes para poder almacenarlo
      * en algún medio de almacenamiento en esta caso una BD.
@@ -87,58 +82,43 @@ public class Libro implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_libro")
-    private Long id_libro;
+    @Column(name = "id_prestamo")
+    private Long id_prestamo;
 
-    @NotEmpty(message = "¡El título del libro no debe ser vacío!")
-    @Size(min = 4, max = 30, message = "¡El campo titulo_libro debe tener 4 carácteres y 50 máximo !")
-    @Column(name = "titulo_libro",unique = true)
-    private String titulo_libro;
-
-    @NotEmpty(message = "¡La descripción del libro no debe ser vacío!")
-    @Size(min = 4, max = 100, message = "¡El campo descripción del libro debe tener 4 carácteres y 50 máximo !")
-    @Column(name = "descripcion_libro")
-    private String descripcion_libro;
-
-    // Muchos libros pueden tener un autor
+    // Muchos prestamos pueden pertenecer a un usuario
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @NotNull(message = "¡El campo autor_id no debe ser vacío!")
-    @JoinColumn(name = "autor_id", referencedColumnName = "id_autor")
+    @NotNull(message = "¡El campo usuario_id del prestamo no debe ser vacío!")
+    @JoinColumn(name = "usuario_id",referencedColumnName = "id_usuario")
     @JsonBackReference
-    private Autor autor;
+    private Usuario usuario;
 
-    // Muchos libros pueden pertenecer a una categoría
+    // Muchos prestamos pueden pertenecer a un libro
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @NotNull(message = "¡El campo categoria_id no debe ser vacío!")
-    @JoinColumn(name = "categoria_id",referencedColumnName = "id_categoria")
+    @NotNull(message = "¡El campo libro_id del prestamo no debe ser vacío!")
+    @JoinColumn(name = "libro_id",referencedColumnName = "id_libro")
     @JsonBackReference
-    private Categoria categoria;
+    private Libro libro;
 
-    // Muchos libros pueden ser publicados por una editorial
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @NotNull(message = "¡El campo editorial_id no debe ser vacío!")
-    @JoinColumn(name = "editorial_id",referencedColumnName = "id_editorial")
-    @JsonBackReference
-    private Editorial editorial;
+    @Column(name = "fecha_prestamo", nullable = false)
+    private LocalDate fechaPrestamo;
 
-    // Muchos libros pueden pertenecer a un género
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @NotNull(message = "¡El campo genero_id no debe ser vacío!")
-    @JoinColumn(name = "genero_id",referencedColumnName = "id_genero")
-    @JsonBackReference
-    private Genero genero;
+    @Column(name = "fecha_devolucion_prevista", nullable = false)
+    private LocalDate fechaDevolucionPrevista;
 
-    @NotNull(message = "¡La edición del libro no debe ser vacío!")
-    @Min(value = 0, message = "¡La edición deber se mayor a 0 !")
-    @Max(value = 120, message = "¡La edición no deber mayor a 120!")
-    @Column(name = "edicion_libro")
-    private Integer edicion_libro;
+    @Column(name = "fecha_devolucion_real")
+    private LocalDate fechaDevolucionReal;
 
-    @NotNull(message = "¡El número de páginas del libro no debe ser vacío!")
-    @Min(value = 0, message = "¡El número de páginas debe ser mayor a 0 años!")
-    @Max(value = 100000, message = "¡El número de páginas no deber mayor a 10000!")
-    @Column(name = "paginas_libro")
-    private Integer paginas_libro;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoPrestamo estado;
+
+    @Column(name = "multa")
+    private BigDecimal multa;
+
+    @NotEmpty(message = "¡Las observaciones del prestamo no debe ser vacío!")
+    @Size(min = 4, max = 100, message = "¡El campo observaciones del prestamo debe tener 4 carácteres y 100 máximo !")
+    @Column(name = "observaciones")
+    private String observaciones;
 
     // This will not allow the createdAt column to be updated after creation
     @Column(name = "createdAt",updatable = false)
@@ -150,11 +130,6 @@ public class Libro implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date updatedAt;
-
-    @OneToMany(mappedBy = BOOKLOAN, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Prestamo> prestamos= new ArrayList<>();
-
     // other getters and setters removed for brevitycopy
     @PrePersist
     protected void onCreate() {
@@ -165,5 +140,5 @@ public class Libro implements Serializable{
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
-}
 
+}

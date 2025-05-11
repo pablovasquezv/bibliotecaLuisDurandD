@@ -1,17 +1,27 @@
 package com.complejo.educacional.luis.durand.durand.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import java.util.List;
+
+
+import static com.complejo.educacional.luis.durand.durand.utils.ColumNames.USERSLOAN;
 
 /**
  * @version 1.0
@@ -24,7 +34,7 @@ import java.io.Serializable;
 @Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "prestamos")//Para evitar bucles en las relaciones.
 public class Usuario extends Persona implements Serializable {
     /**
      * Serializable:para hacer la persistencia del objeto y convertilo en una
@@ -41,5 +51,7 @@ public class Usuario extends Persona implements Serializable {
     @Column(name = "id_usuario")
     private Long id_usuario;
 
-
+    @OneToMany(mappedBy = USERSLOAN, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Prestamo> prestamos= new ArrayList<>();
 }
