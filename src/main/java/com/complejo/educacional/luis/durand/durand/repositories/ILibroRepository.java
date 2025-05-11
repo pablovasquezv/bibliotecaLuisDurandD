@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Repository
 public interface ILibroRepository extends JpaRepository<Libro, Long> {
-    // Seleccionar todas la instancias desde la BD y haciendo un Join con la tabla
+        // Seleccionar todas la instancias desde la BD y haciendo un Join con la tabla
     @Query(value = "select l from Libro l " +
             "left join fetch l.autor " +
             "left join fetch l.categoria " +
