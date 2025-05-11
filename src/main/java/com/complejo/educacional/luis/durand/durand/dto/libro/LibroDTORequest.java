@@ -21,7 +21,6 @@ import java.util.Date;
  */
 public class LibroDTORequest {
     //Atributos
-    private Long id_libro;
     private String titulo_libro;
     private String descripcion_libro;
     private Long id_autor;
