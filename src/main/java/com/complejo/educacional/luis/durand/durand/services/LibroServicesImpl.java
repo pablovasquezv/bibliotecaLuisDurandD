@@ -64,7 +64,6 @@ public class LibroServicesImpl implements ILibroServices {
             log.info("--Json del Libro => " + objectMapper.writeValueAsString(iLibroRepository.save(libroCreate)));
             log.info("----Fin de método Creación Libro----");
             return new LibroDTORequest(
-                    libroDTORequest.getId_libro(),
                     libroDTORequest.getTitulo_libro(),
                     libroDTORequest.getDescripcion_libro(),
                     libroDTORequest.getId_autor(),
