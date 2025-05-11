@@ -15,6 +15,6 @@ public class ColumNames {
     public static final String GENERBOOK = "genero";
     public static final String EDIORIALBOOK = "editorial";
 
-    public static final String USERSLOAN = "prestamo";
+    public static final String USERSLOAN = "usuario";
     public static final String BOOKLOAN = "libro";
 }
