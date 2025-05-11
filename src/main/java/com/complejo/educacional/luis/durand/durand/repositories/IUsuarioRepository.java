@@ -20,7 +20,7 @@ import java.util.List;
 public interface IUsuarioRepository extends JpaRepository<Usuario,Long> {
     // Seleccionar todas la instancias desde Usuario la BD.
     @Query(value = "SELECT u FROM Usuario u")
-    List<Usuario> findAllUsuario(Sort sort);
+    List<Usuario> findAllUsuarioSort(Sort sort);
 
     // Contar la cantidad de Categoria que vienen en la búsqueda y páginarlos.
     @Query(value = "SELECT u FROM Usuario u", countQuery = "SELECT COUNT (u) FROM Usuario u")
