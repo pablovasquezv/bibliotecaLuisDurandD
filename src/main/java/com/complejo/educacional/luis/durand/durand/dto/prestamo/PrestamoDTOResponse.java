@@ -1,5 +1,6 @@
 package com.complejo.educacional.luis.durand.durand.dto.prestamo;
 
+import com.complejo.educacional.luis.durand.durand.utils.enums.EstadoPrestamo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class PrestamoDTOResponse {
     private Long id_usuario;
     private Long id_libro;
     private LocalDate fechaPrestamo;
+    private LocalDate fechaDevolucionPrevista;
+    private LocalDate fechaDevolucionReal;
+    private EstadoPrestamo estado;
     private BigDecimal multa;
     private String observaciones;
     private Date createdAt;
