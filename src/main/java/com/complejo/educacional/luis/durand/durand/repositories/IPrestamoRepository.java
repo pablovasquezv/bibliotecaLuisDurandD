@@ -23,7 +23,7 @@ public interface IPrestamoRepository extends JpaRepository<Prestamo, Long> {
     @Query(value = "SELECT p FROM Prestamo p " +
             "LEFT JOIN FETCH p.usuario " +
             "LEFT JOIN FETCH p.libro")
-    List<Libro> findAllPrestamosSort(Sort sort);
+    List<Prestamo> findAllPrestamosSort(Sort sort);
 
     /**
      * Contar la cantidad de Libro que vienen en la búsqueda y páginarlos
