@@ -1,0 +1,45 @@
+@Entity
+public class Libro {
+    @Id
+    private String isbn;  // Identificador único
+
+    private String titulo;
+    private String autor;
+    // otros campos...
+
+    @OneToMany(mappedBy = "libro")
+    private List<Prestamo> prestamos;
+}
+
+@Entity
+public class Cliente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nombre;
+    private String email;
+    // otros campos...
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Prestamo> prestamos;
+}
+
+@Entity
+public class Prestamo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "libro_isbn", nullable = false)
+    private Libro libro;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
+
+    private LocalDate fechaPrestamo;
+    private LocalDate fechaDevolucion;
+    // otros campos, como estado, multas, etc.
+}

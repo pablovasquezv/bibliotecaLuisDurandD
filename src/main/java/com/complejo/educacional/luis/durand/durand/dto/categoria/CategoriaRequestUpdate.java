@@ -1,0 +1,28 @@
+package com.complejo.educacional.luis.durand.durand.dto.categoria;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
+
+import java.util.Date;
+
+/**
+ * @author Pablo
+ * @Data: Para crear los gett y sett
+ * @AllArgsConstructor: Constructor con parámetros
+ * @NoArgsConstructor:Constructor sin parámetros
+ * @ToString para obtener los datos
+ */
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CategoriaRequestUpdate {
+    //Atributos
+    private Long id_categoria;
+    private String nombre_categoria;
+    private String descripcion_categoria;
+    private Date createAt;
+    private Date udpdateAt;
+}

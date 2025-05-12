@@ -1,16 +1,19 @@
 /**
- * 
+ *
  */
 package com.complejo.educacional.luis.durand.durand.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTORequest;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponse;
+import com.complejo.educacional.luis.durand.durand.dto.autor.AutorDTOResponseUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -20,115 +23,177 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.complejo.educacional.luis.durand.durand.implementsServices.IAutorImplements;
-import com.complejo.educacional.luis.durand.durand.models.Autor;
-import com.complejo.educacional.luis.durand.durand.models.Pais;
+import com.complejo.educacional.luis.durand.durand.services.implementsServices.IAutorServices;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Pablo
- *
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "biblioteca/autor")
+@RequestMapping(value = "/biblioteca/v1/")
 public class AutorRestController {
-	@Autowired
-	private IAutorImplements iAutorImplements;
+    @Autowired
+    private IAutorServices iAutorServices;
 
-	@PostMapping(value = "create")
-	private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody Autor autor,
-			BindingResult bindingResult) throws Exception {
-		Map<String, Object> responseAsMap = new HashMap<String, Object>();
-		ResponseEntity<Map<String, Object>> responseEntity = null;
-		List<String> errores = null;
-		if (bindingResult.hasErrors()) {
-			errores = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				errores.add(error.getDefaultMessage());
-			}
-			responseAsMap.put("errores", errores);
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
-			return responseEntity;
-		}
-		try {
-			Autor autorFromDB = iAutorImplements.saveAutor(autor);
-			if (autorFromDB != null) {
-				responseAsMap.put("Autor", autor);
-				responseAsMap.put("Mensaje:", "El Autor con ID:" + autor.getId_autor() + "¡Sé creó exitosamente!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
-			} else {
-				responseAsMap.put("Mensaje: ", "¡No sé creó el País!");
-				responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap,
-						HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		} catch (DataAccessException e) {
-			responseAsMap.put("Mensaje: ", "¡No sé creo el País!" + e.getMostSpecificCause().toString());
-			responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		return responseEntity;
-	}
+    /**
+     * @param autorDTORequest
+     * @param bindingResult
+     * @return responseEntity
+     * @throws Exception
+     */
+    @PostMapping(value = "autor/create")
+    private ResponseEntity<Map<String, Object>> addNewAutor(@Valid @RequestBody AutorDTORequest autorDTORequest,
+                                                            BindingResult bindingResult) throws Exception {
+        Map<String, Object> responseAsMap = new HashMap<>();
+        List<String> errores;
 
-	@GetMapping(value = "/get/all")
-	@ResponseStatus(HttpStatus.OK)
-	private ResponseEntity<List<Autor>> findAllAutor(@RequestParam(required = false) Integer page,
-												     @RequestParam(required = false) Integer size) {
-		// Para ordenar la búsqueda
-		Sort sortByName = Sort.by("nombres_autor");
-		ResponseEntity<List<Autor>> responseEntity = null;
-		List<Autor> autores = null;
+        if (bindingResult.hasErrors()) {
+            errores = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
 
-		try {
-			if (page != null & size != null) {
-				Pageable pageable = PageRequest.of(page, size, sortByName);
-				autores = iAutorImplements.findAllAutorPage(pageable).getContent();
-			} else {
-				autores = iAutorImplements.findAllAutorSort(sortByName);
-			}
-			// Validación sí tiene Paises la lista
-			responseEntity=(autores.size() > 0)?
-					new ResponseEntity<List<Autor>>(autores,HttpStatus.OK)
-					:
-				    new ResponseEntity<List<Autor>>(autores,HttpStatus.NO_CONTENT);
-				/**
-			if (autores.size() > 0) {
-				responseEntity = new ResponseEntity<List<Autor>>(autores,HttpStatus.OK);
-			} else {
-				responseEntity = new ResponseEntity<List<Autor>>(autores,HttpStatus.NO_CONTENT);
-			}*/
-		} catch (Exception e) {
-			// TODO: handle exception
-			log.error("Ocurrio un error =>" + e);
-		}
-		
-		return responseEntity;
-	}
+            responseAsMap.put("errores", errores);
+            return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+        }
 
-	@GetMapping(value = "{id}")
-	private ResponseEntity<Autor> findById(@PathVariable int id) {
-		Autor autor = null;
-		ResponseEntity<Autor> responseEntity = null;
-		try {
-			autor = iAutorImplements.findById(id);
-			if (autor != null) {
-				responseEntity = new ResponseEntity<Autor>(autor, HttpStatus.OK);
-			} else {
-				responseEntity = new ResponseEntity<Autor>(autor, HttpStatus.NO_CONTENT);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			log.error("Ocurrio un error =>" + e);
-		}
-		return responseEntity;
-	}
+        try {
+            AutorDTORequest autorFromDB = iAutorServices.saveAutor(autorDTORequest);
+            if (autorFromDB != null) {
+                responseAsMap.put("Autor", autorDTORequest);
+                responseAsMap.put("Mensaje:", "El Autor ¡Se creó exitosamente!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensaje: ", "¡No se creó el Autor!");
+                return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException e) {
+            responseAsMap.put("Mensaje: ", "¡No se creó el Autor!" + e.getMostSpecificCause().toString());
+            return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param id
+     * @param autorDTOResponseUpdate
+     * @param bindingResult
+     * @return responseEntity
+     * @throws Exception
+     */
+    @PutMapping(value = "autor/update/{id}")
+    private ResponseEntity<Map<String, Object>> updateAutor(@PathVariable long id, @Valid @RequestBody AutorDTOResponseUpdate autorDTOResponseUpdate, BindingResult bindingResult) throws Exception {
+        Map<String, Object> responseAsMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity;
+
+        if (bindingResult.hasErrors()) {
+            List<String> errores = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList());
+
+            responseAsMap.put("Errores", errores);
+            responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+            return responseEntity;
+        }
+
+        try {
+            AutorDTOResponse autorFromDB = iAutorServices.updateAutor(id, autorDTOResponseUpdate);
+
+            if (autorFromDB != null && autorFromDB.getId_autor() != null) {
+                responseAsMap.put("Autor", autorDTOResponseUpdate);
+                responseAsMap.put("Mensaje:", "¡Se actualizó correctamente el Autor con ID: " + autorDTOResponseUpdate.getId_autor() + "!");
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } else {
+                responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor!");
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (DataAccessException dataAccessException) {
+            responseAsMap.put("Mensaje", "¡No se pudo actualizar el Autor! " + dataAccessException.getMostSpecificCause().toString());
+            responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
+    }
+
+    /**
+     * @param page
+     * @param size
+     * @return responseEntity
+     */
+    @GetMapping(value = "autor/get/all")
+    @ResponseStatus(HttpStatus.OK)
+    private ResponseEntity<List<AutorDTOResponse>> findAllAutor(@RequestParam(required = false) Integer page,
+                                                                @RequestParam(required = false) Integer size) {
+        Sort sortByName = Sort.by("nombres_autor");
+        List<AutorDTOResponse> autores;
+        Pageable pageable = null;
+
+        try {
+            if (page != null && size != null) {
+                pageable = PageRequest.of(page, size, sortByName);
+                autores = iAutorServices.findAllAutorPage(pageable).getContent();
+            } else {
+                autores = iAutorServices.findAllAutorSort(sortByName);
+            }
+
+            HttpStatus responseStatus = autores.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+            return new ResponseEntity<>(autores, responseStatus);
+        } catch (Exception e) {
+            log.error("Ocurrió un error al listar todos los Autores! " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    /**
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "autor/{id}")
+    private ResponseEntity<AutorDTOResponse> findById(@PathVariable int id) {
+        AutorDTOResponse autor;
+        try {
+            autor = iAutorServices.findByIdAutor(id);
+            HttpStatus responseStatus = (autor != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+            return new ResponseEntity<>(autor, responseStatus);
+        } catch (Exception e) {
+            log.error("Ocurrió un error: " + e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    /**
+     * @param id
+     * @return responseEntity
+     * @throws Exception
+     */
+    @DeleteMapping(value = "autor/delete/{id}")
+    private ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        try {
+            AutorDTOResponse autor = iAutorServices.findByIdAutor(id);
+            if (autor != null) {
+                iAutorServices.deleteAutorById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            log.error("Ocurrió un error al eliminar un Autor: " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
