@@ -70,19 +70,19 @@ public interface IPrestamoService {
     boolean estaAtrasado(PrestamoDTOResponse prestamo) throws Exception;
 
     /**
-     * @param prestamo
+     * @param prestamoDTOResponse
      * @param multaDiaria
      * @return
      * @throws Exception
      */
-    BigDecimal calcularMulta(PrestamoDTOResponse prestamo, BigDecimal multaDiaria) throws Exception;
+    BigDecimal calcularMulta(PrestamoDTOResponse prestamoDTOResponse, BigDecimal multaDiaria) throws Exception;
 
     /**
-     * @param prestamo
+     * @param prestamoId
      * @param fechaDevolucion
      * @throws Exception
      */
-    void marcarComoDevuelto(PrestamoDTOResponse prestamo, LocalDate fechaDevolucion) throws Exception;
+    void marcarComoDevuelto(Long prestamoId, LocalDate fechaDevolucion) throws Exception;
 
     /**
      * @param prestamo

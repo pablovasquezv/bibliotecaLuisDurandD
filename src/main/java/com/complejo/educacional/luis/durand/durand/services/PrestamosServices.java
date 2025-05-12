@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -176,13 +177,19 @@ public class PrestamosServices implements IPrestamoService {
     /**
      * Marca un préstamo como devuelto, actualizando fecha y estado.
      *
-     * @param prestamo        préstamo a actualizar
+     * @param prestamoId        préstamo a actualizar
      * @param fechaDevolucion fecha real de devolución
      */
     @Override
-    public void marcarComoDevuelto(PrestamoDTOResponse prestamo, LocalDate fechaDevolucion) throws Exception {
+    public void marcarComoDevuelto(Long prestamoId,LocalDate fechaDevolucion) throws Exception {
+        Optional<Prestamo> optPrestamo = iPrestamoRepository.findById(prestamoId);
+        if (optPrestamo.isEmpty()) {
+            throw new Exception("Préstamo no encontrado");
+        }
+        Prestamo prestamo=new Prestamo();
         prestamo.setFechaDevolucionReal(fechaDevolucion);
         prestamo.setEstado(EstadoPrestamo.DEVUELTO);
+        iPrestamoRepository.save(prestamo);
     }
 
     /**

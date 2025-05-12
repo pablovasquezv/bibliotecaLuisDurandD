@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping(value = "/biblioteca/v1/")
-public class PrestamoRepository {
+public class PrestamoRestController {
     @Autowired
     private IPrestamoService iPrestamoService;
 
@@ -87,4 +90,33 @@ public class PrestamoRepository {
         }
     }
 
+
+    @PostMapping("/{id}/devolver")
+    public ResponseEntity<String> devolverPrestamo(
+            @PathVariable Long id,
+            @RequestParam(value = "fechaDevolucion", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDevolucion) throws Exception {
+        log.info("Fecha de devolución recibida: " + fechaDevolucion); // Agrega esta línea
+        // Aquí deberías obtener el préstamo desde el repositorio
+        PrestamoDTOResponse prestamo = /* obtener prestamo por id */ null;
+        try {
+            if (prestamo == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (fechaDevolucion == null) {
+                //Decides que hacer si la fecha es nula
+                fechaDevolucion = LocalDate.now(); // Por ejemplo, usar la fecha actual
+            }
+            iPrestamoService.marcarComoDevuelto(id, fechaDevolucion);
+            BigDecimal multa = iPrestamoService.calcularMulta(prestamo, new BigDecimal("1.50"));
+            prestamo.setMulta(multa);
+            // Guardar préstamo actualizado
+            return ResponseEntity.ok("Préstamo devuelto. Multa: " + multa);
+        } catch (Exception e) {
+            log.error("Ocurrió un error al devolver el Prestamo! " + e.getCause().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+
