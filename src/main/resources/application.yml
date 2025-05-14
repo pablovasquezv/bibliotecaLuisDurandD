@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: Biblioteca
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+      data-locations: classpath:sql/data-postgresql.sql
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: ""
+  port: 9898
+
+logging:
+  level:
+    org.springframework.jdbc.datasource.init: ERROR
+    org.springframework.boot.sql.init: ERROR
+    org.springframework.beans.factory: ERROR
+    org.springframework: WARN
+
+#conexiï¿½n a Heroku
+#spring.datasource.url=jdbc:postgresql://ec2-34-201-95-176.compute-1.amazonaws.com:5432/dcub5oueb41s0v
+#DB_CLOSE_ON_EXIT=FALSE
+#spring.datasource.username=jgwyjgufmtjvvr
+#spring.datasource.password=f686aa7d7512a6d2ceb3bfb42207254fb10f6486e599c827ead9532af5efac87
+
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+
+
+#Permite listar todos los datos de los JSON
+#spring.jackson.serialization.FAIL_ON_EMPTY_BEANS=false
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+#spring.jpa.hibernate.ddl-auto = update
+
