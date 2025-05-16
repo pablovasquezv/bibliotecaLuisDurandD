@@ -2,9 +2,9 @@ spring:
   application:
     name: Biblioteca
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_SCHEMA:luisdurand}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:admin.123}
   jpa:
     show-sql: true
     hibernate:
