@@ -1,0 +1,7 @@
+# Definición de variables de entorno
+env:
+  DB_USER: postgres
+  DB_PASS: admin.123
+  DB_HOST: localhost
+  DB_SCHEMA: luisdurand
+  DB_PORT: 5432
