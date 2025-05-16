@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres-db:
     image: postgres:latest
-    container_name: luisdurand-postgres-db
+    container_name: ${CONTAINER_NAME}
     environment:
       POSTGRES_USER: ${DB_HOST}
       POSTGRES_PASSWORD: ${DB_PASS}
