@@ -1,29 +1,39 @@
-  version: '3.8'
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: luisdurand-postgres-db
+    environment:
+      POSTGRES_USER: miusuario
+      POSTGRES_PASSWORD: miclave
+      POSTGRES_DB: mibasededatos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - biblioteca-net
 
-  services:
-    postgres-db:
-      image: postgres:latest
-      container_name: ${CONTAINER_NAME}
-      environment:
-        POSTGRES_USER: ${DB_USER}
-        POSTGRES_PASSWORD: ${DB_PASS}
-        POSTGRES_DB: ${DB_SCHEMA}
-      ports:
-        - "5432:5432"
-      volumes:
-        - postgres-data:/var/lib/postgresql/data
+  app-java:
+    build: .
+    container_name: app-java
+    ports:
+      - "9898:9898"
+    environment:
+      # IMPORTANTE: El host debe ser 'postgres-db' porque así se llama el servicio arriba
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/mibasededatos
+      SPRING_DATASOURCE_USERNAME: miusuario
+      SPRING_DATASOURCE_PASSWORD: miclave
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    depends_on:
+      - postgres-db
+    networks:
+      - biblioteca-net
+    restart: on-failure
 
-    app-java:
-      build: .
-      container_name: app-java
-      ports:
-        - "9898:9898"
-      environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}
-        SPRING_DATASOURCE_USERNAME: ${DB_USER}
-        SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
-      depends_on:
-        - postgres-db
+volumes:
+  postgres-data:
 
-  volumes:
-    postgres-data:
+networks:
+  biblioteca-net:
+    driver: bridge

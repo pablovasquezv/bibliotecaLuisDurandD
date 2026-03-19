@@ -1,14 +1,23 @@
-# Usamos una imagen base de OpenJDK 17 (ajusta versión si usas otra)
-FROM eclipse-temurin:17-jdk-alpine
-
-# Directorio de trabajo dentro del contenedor
+# --- ETAPA 1: Compilación (Usamos Java 17 ahora) ---
+FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
-# Copiamos el JAR generado al contenedor
-COPY target/bibliotecaLuisDurandD-0.0.1-SNAPSHOT.jar app.jar
+# 1. Copiamos el pom y descargamos dependencias
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Exponemos el puerto donde corre la app (ajusta si usas otro)
-EXPOSE 8080
+# 2. Copiamos el código y generamos el JAR
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Comando para ejecutar la aplicación
+# --- ETAPA 2: Ejecución (También con Java 17) ---
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# 3. Traemos el archivo de la etapa anterior
+COPY --from=build /app/target/*.jar app.jar
+
+# Puerto ajustado a tu Swagger
+EXPOSE 9898
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
